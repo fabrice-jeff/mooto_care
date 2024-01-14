@@ -21,7 +21,7 @@ class HomeView extends GetView<HomeController> {
             child: Column(
               children: [
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   decoration: BoxDecoration(
                     color: Colors.white,
                   ),
@@ -100,7 +100,9 @@ class HomeView extends GetView<HomeController> {
                     children: [
                       Expanded(
                         child: InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            Get.toNamed(Routes.BIENS);
+                          },
                           child: Container(
                             height: 150,
                             width: double.infinity,
@@ -131,9 +133,7 @@ class HomeView extends GetView<HomeController> {
                       ),
                       Expanded(
                         child: InkWell(
-                          onTap: () {
-                            Get.toNamed(Routes.BIENS);
-                          },
+                          onTap: () {},
                           child: Container(
                             height: 150,
                             width: double.infinity,

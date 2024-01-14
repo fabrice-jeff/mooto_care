@@ -33,7 +33,6 @@ class Acteur {
       updatedAt: dateTimeFormat(json['updated_at']['date']),
     );
   }
-
   Map<String, dynamic> toJson() => {
         "id": id,
         'nom': nom,

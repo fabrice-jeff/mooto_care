@@ -1,8 +1,6 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
-
-import '../../app/api/api.dart';
+import '../../src/api/api.dart';
 
 class ActeurRepository {
   final String api;
@@ -35,6 +33,7 @@ class ActeurRepository {
     );
     late Map<String, dynamic> results;
     if (response.statusCode == 200) {
+      print(response.body);
       results = jsonDecode(response.body);
     }
     return results;

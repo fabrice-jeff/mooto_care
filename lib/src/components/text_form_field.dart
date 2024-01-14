@@ -1,4 +1,4 @@
-import 'package:autocare/app/components/text.dart';
+import 'package:autocare/src/components/text.dart';
 import 'package:autocare/utils/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +20,6 @@ class TextFormFieldsComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 50,
       width: double.infinity,
       child: TextFormField(
         controller: controller,
@@ -37,7 +36,7 @@ class TextFormFieldsComponent extends StatelessWidget {
           hintStyle: TextStyle(color: AppColors.inputColor),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(
-              color: Colors.black12,
+              color: Colors.black38,
             ),
             borderRadius: BorderRadius.circular(10),
           ),
