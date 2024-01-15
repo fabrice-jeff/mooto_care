@@ -39,10 +39,7 @@ class BaseView extends GetView<BaseController> {
         bottomNavigationBar: Container(
           decoration: BoxDecoration(),
           child: ClipRRect(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(15),
-              topRight: Radius.circular(15),
-            ),
+            borderRadius: BorderRadius.only(),
             child: BottomNavigationBar(
               backgroundColor: AppColors.backgroundColor,
               currentIndex: controller.currentIndex,

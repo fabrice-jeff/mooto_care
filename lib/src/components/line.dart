@@ -13,7 +13,7 @@ class LineComponnent extends StatelessWidget {
     return Align(
       alignment: alignment,
       child: Container(
-        height: 7,
+        height: 10,
         width: width,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(

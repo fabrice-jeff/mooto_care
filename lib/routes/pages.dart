@@ -10,6 +10,7 @@ import '../src/modules/screens/home_view.dart';
 import '../src/modules/screens/security/login_view.dart';
 import '../src/modules/screens/security/register_view.dart';
 import '../src/modules/screens/splash_screen_view.dart';
+import '../src/modules/screens/verification_view.dart';
 import 'routes.dart';
 
 class AppPage {
@@ -46,6 +47,11 @@ class AppPage {
     GetPage(
       name: Routes.ADD_BIEN,
       page: () => const AddBienView(),
+      binding: BiensBinding(),
+    ),
+    GetPage(
+      name: Routes.VERIFICATION,
+      page: () => const VerificationView(),
       binding: BiensBinding(),
     ),
   ];

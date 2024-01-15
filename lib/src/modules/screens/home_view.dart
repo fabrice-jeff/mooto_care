@@ -21,7 +21,9 @@ class HomeView extends GetView<HomeController> {
             child: Column(
               children: [
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 10,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.white,
                   ),
@@ -34,7 +36,7 @@ class HomeView extends GetView<HomeController> {
                         height: 10,
                       ),
                       Container(
-                        height: 180,
+                        height: 150,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
                           image: DecorationImage(
@@ -52,7 +54,7 @@ class HomeView extends GetView<HomeController> {
                   ),
                 ),
                 SizedBox(
-                  height: 50,
+                  height: 10,
                 ),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 20),
@@ -104,7 +106,7 @@ class HomeView extends GetView<HomeController> {
                             Get.toNamed(Routes.BIENS);
                           },
                           child: Container(
-                            height: 150,
+                            height: 100,
                             width: double.infinity,
                             decoration: BoxDecoration(
                               color: AppColors.backgroundColor,
@@ -135,7 +137,7 @@ class HomeView extends GetView<HomeController> {
                         child: InkWell(
                           onTap: () {},
                           child: Container(
-                            height: 150,
+                            height: 100,
                             width: double.infinity,
                             decoration: BoxDecoration(
                               color: AppColors.backgroundColor,
@@ -168,7 +170,7 @@ class HomeView extends GetView<HomeController> {
                 Container(
                   width: double.infinity,
                   margin: EdgeInsets.symmetric(horizontal: 10),
-                  height: 150,
+                  height: 100,
                   decoration: BoxDecoration(
                     color: AppColors.backgroundColor,
                     borderRadius: BorderRadius.circular(20),
@@ -189,13 +191,18 @@ class HomeView extends GetView<HomeController> {
                     ],
                   ),
                 ),
+                SizedBox(
+                  height: 20,
+                ),
               ],
             ),
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () {
+          Get.toNamed(Routes.VERIFICATION);
+        },
         label: TextComponent(
           text: "Vérification",
           color: AppColors.backgroundColor,

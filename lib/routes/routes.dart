@@ -8,4 +8,5 @@ class Routes {
   static const HOME = "/home";
   static const BIENS = "/biens";
   static const ADD_BIEN = "/add_bien";
+  static const VERIFICATION = "/verification";
 }

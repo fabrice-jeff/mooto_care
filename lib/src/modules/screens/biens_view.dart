@@ -65,12 +65,12 @@ class BiensView extends GetView<BiensController> {
                           child: ListTile(
                             leading: Icon(Icons.list_alt),
                             title: TextComponent(
-                              text: controller.biens[position].nomBien,
+                              text: controller.biensByActeur[position].nomBien,
                               fontWeight: FontWeight.bold,
                             ),
                             subtitle: TextComponent(
                               text:
-                                  "Num: ${controller.biens[position].numPlaque}",
+                                  "Num: ${controller.biensByActeur[position].numPlaque}",
                             ),
                             trailing: Icon(Icons.edit),
                           ),
@@ -81,7 +81,7 @@ class BiensView extends GetView<BiensController> {
                   separatorBuilder: (context, position) {
                     return Divider();
                   },
-                  itemCount: controller.biens.length,
+                  itemCount: controller.biensByActeur.length,
                 ),
               )),
         ),
