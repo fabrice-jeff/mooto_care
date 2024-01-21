@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 
 import '../../../datas/models/acteur.dart';
-import '../../../datas/models/bien.dart';
 import '../../../datas/models/plainte.dart';
 import '../../../datas/repository/plaintes.dart';
 import '../../../routes/routes.dart';

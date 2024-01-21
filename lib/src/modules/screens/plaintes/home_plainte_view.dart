@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 
 import '../../../../routes/routes.dart';
 import '../../../../utils/colors.dart';
-import '../../../../utils/constants.dart';
 import '../../../components/text.dart';
 import '../../controllers/plaintes_controller.dart';
 

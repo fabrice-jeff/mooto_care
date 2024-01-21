@@ -6,9 +6,8 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../services/upload_image_firebase.dart';
 import '../../../../utils/colors.dart';
-import '../../../../utils/constants.dart';
+
 import '../../../components/container_round.dart';
 import '../../../components/text.dart';
 import '../../../components/text_form_field.dart';

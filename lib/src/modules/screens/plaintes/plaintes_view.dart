@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:get/get.dart';
 
 import '../../../../routes/routes.dart';
 import '../../../../utils/colors.dart';
 import '../../../components/no_data.dart';
 import '../../../components/text.dart';
-import '../../controllers/biens_controller.dart';
 import '../../controllers/plaintes_controller.dart';
 
 class PlaintesView extends GetView<PlaintesController> {
