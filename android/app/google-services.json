@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "248617165165",
+    "project_id": "mootocare-f3de8",
+    "storage_bucket": "mootocare-f3de8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:248617165165:android:65fad7dd9436f277493a64",
+        "android_client_info": {
+          "package_name": "com.example.autocare"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMNr7qV-FDXOPSNXiqxG45gjT925GdMLY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

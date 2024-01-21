@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:autocare/utils/constants.dart';
 import 'package:http/http.dart' as http;
-import '../../src/api/api.dart';
+import '../../src/api.dart';
 import '../models/bien.dart';
 
 class BienRepository {

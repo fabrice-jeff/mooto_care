@@ -8,7 +8,7 @@ import '../../../datas/repository/biens.dart';
 import '../../../routes/routes.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/share_preference.dart';
-import '../../api/api.dart';
+import '../../api.dart';
 
 class BiensController extends GetxController {
   final bienRepository = BienRepository(api: Api.BASE_URL);
@@ -33,7 +33,6 @@ class BiensController extends GetxController {
   // Ajout d'un bien
   add(Map<String, dynamic> data) async {
     Map<String, dynamic>? response = await bienRepository.add(data);
-    print(response);
     if (response!['code'] == Constants.SUCCESS) {
       allByActeur();
       Get.toNamed(Routes.BIENS);

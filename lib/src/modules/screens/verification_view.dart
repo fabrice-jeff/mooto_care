@@ -3,7 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 
 import 'package:get/get.dart';
 
-import '../../../utils/colors.dart';
+import '../../../../utils/colors.dart';
 import '../../components/no_data.dart';
 import '../../components/text.dart';
 import '../../components/text_form_field.dart';

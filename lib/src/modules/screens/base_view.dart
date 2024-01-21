@@ -13,16 +13,12 @@ class BaseView extends GetView<BaseController> {
       builder: (_) => Scaffold(
         drawer: Drawer(child: MenuApp()),
         appBar: AppBar(
+          backgroundColor: AppColors.backgroundColor,
           title: Text("MootoCare"),
           actions: [
             Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
-                image: DecorationImage(
-                  image: AssetImage('assets/images/user.webp'),
-                ),
+              child: Icon(
+                Icons.notifications,
               ),
               margin: EdgeInsets.only(right: 20),
             )
@@ -60,6 +56,13 @@ class BaseView extends GetView<BaseController> {
                     Icons.settings_outlined,
                   ),
                   label: "Paramètres",
+                ),
+                BottomNavigationBarItem(
+                  backgroundColor: Colors.white,
+                  icon: Icon(
+                    Icons.person,
+                  ),
+                  label: "Profile",
                 ),
               ],
               onTap: controller.changeScreen,

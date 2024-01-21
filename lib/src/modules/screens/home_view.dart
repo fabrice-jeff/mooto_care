@@ -25,7 +25,7 @@ class HomeView extends GetView<HomeController> {
                     horizontal: 10,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: AppColors.backgroundColor3,
                   ),
                   child: Column(
                     children: [
@@ -135,7 +135,9 @@ class HomeView extends GetView<HomeController> {
                       ),
                       Expanded(
                         child: InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            Get.toNamed(Routes.PLAINTES);
+                          },
                           child: Container(
                             height: 100,
                             width: double.infinity,
@@ -153,7 +155,7 @@ class HomeView extends GetView<HomeController> {
                                   ),
                                 ),
                                 Icon(
-                                  Icons.warning,
+                                  Icons.warning_amber_rounded,
                                   color: Colors.white,
                                 ),
                               ],
@@ -167,28 +169,33 @@ class HomeView extends GetView<HomeController> {
                 SizedBox(
                   height: 20,
                 ),
-                Container(
-                  width: double.infinity,
-                  margin: EdgeInsets.symmetric(horizontal: 10),
-                  height: 100,
-                  decoration: BoxDecoration(
-                    color: AppColors.backgroundColor,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        child: TextComponent(
-                          text: "Déposer une nouvelle plainte",
+                InkWell(
+                  onTap: () {
+                    Get.toNamed(Routes.HOME_PLAINTE);
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    height: 100,
+                    decoration: BoxDecoration(
+                      color: AppColors.backgroundColor,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          child: TextComponent(
+                            text: "Déposer une nouvelle plainte",
+                            color: Colors.white,
+                          ),
+                        ),
+                        Icon(
+                          Icons.add_card,
                           color: Colors.white,
                         ),
-                      ),
-                      Icon(
-                        Icons.add_card,
-                        color: Colors.white,
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(

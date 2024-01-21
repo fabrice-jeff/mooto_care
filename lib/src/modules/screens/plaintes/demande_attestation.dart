@@ -1,15 +1,15 @@
-import 'package:autocare/src/modules/controllers/biens_controller.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-import '../../../utils/colors.dart';
-import '../../../utils/constants.dart';
-import '../../components/text.dart';
-import '../../components/text_form_field.dart';
 
-class AddBienView extends GetView<BiensController> {
-  const AddBienView();
+import '../../../../utils/colors.dart';
+import '../../../components/container_round.dart';
+import '../../../components/text.dart';
+import '../../../components/text_form_field.dart';
+import '../../controllers/plaintes_controller.dart';
+
+class DemandeAttestationView extends GetView<PlaintesController> {
+  const DemandeAttestationView();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,19 +25,15 @@ class AddBienView extends GetView<BiensController> {
           ),
         ),
         title: TextComponent(
-          text: Constants.nameApp,
+          text: "Demande d'attestation",
           color: Colors.white,
         ),
         actions: [
           InkWell(
             child: Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
-                image: DecorationImage(
-                  image: AssetImage('assets/images/user.webp'),
-                ),
+              child: Icon(
+                Icons.notifications,
+                color: Colors.white,
               ),
               margin: EdgeInsets.only(right: 20),
             ),
@@ -47,39 +43,51 @@ class AddBienView extends GetView<BiensController> {
       ),
       body: SafeArea(
         child: Center(
-          child: AddBienForm(controller: controller),
+          child: DemandeAttestationForm(
+            controller: controller,
+          ),
         ),
       ),
     );
   }
 }
 
-class AddBienForm extends StatefulWidget {
-  final BiensController controller;
-  const AddBienForm({required this.controller});
+class DemandeAttestationForm extends StatefulWidget {
+  final PlaintesController controller;
+  const DemandeAttestationForm({super.key, required this.controller});
+
   @override
-  State<AddBienForm> createState() => _AddBienFormState();
+  State<DemandeAttestationForm> createState() => _DemandeAttestationFormState();
 }
 
-class _AddBienFormState extends State<AddBienForm> {
-  TextEditingController nomBien = TextEditingController();
-  TextEditingController numChassis = TextEditingController();
-  TextEditingController numPlaque = TextEditingController();
-  TextEditingController adresse = TextEditingController();
-  DateTime? selectedDate = DateTime.now();
-
+class _DemandeAttestationFormState extends State<DemandeAttestationForm> {
+  TextEditingController numeroPlaque = TextEditingController();
+  TextEditingController description = TextEditingController();
+  var reasonValidation = true;
+  DateTime? selectedDate;
   @override
   Widget build(BuildContext context) {
     return Form(
       child: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 10),
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: Column(
             children: [
+              SizedBox(
+                height: 10,
+              ),
+              ComtainerRoundComponent(
+                icon: Icons.add_task,
+                height: 100,
+                width: 100,
+              ),
               Container(
+                alignment: Alignment.center,
                 child: TextComponent(
                   text:
-                      "Cher partenaire, enregistrez votre voiture ou votre motocyclette,et retrouvez les plus facilement en cas de vol.",
+                      "Vous n'avez pas encore signaler la perte de votre bien à la police?",
+                  fontWeight: FontWeight.bold,
+                  textAlign: TextAlign.center,
                   size: 15,
                 ),
               ),
@@ -87,9 +95,9 @@ class _AddBienFormState extends State<AddBienForm> {
                 height: 30,
               ),
               TextFormFieldsComponent(
-                hintText: "Nom du bien",
+                hintText: "Numéro de plaque du bien",
                 prefixIcon: Icons.list_alt,
-                controller: nomBien,
+                controller: numeroPlaque,
                 textInputType: TextInputType.name,
               ),
               SizedBox(
@@ -103,8 +111,8 @@ class _AddBienFormState extends State<AddBienForm> {
                     Icons.calendar_month,
                     color: AppColors.inputColor,
                   ),
-                  hintText: "Date d'acquisition",
-                  label: TextComponent(text: "Date acquisition"),
+                  hintText: "Date de perte",
+                  label: TextComponent(text: "Date de Perte"),
                   hintStyle: TextStyle(color: AppColors.inputColor),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
@@ -138,29 +146,32 @@ class _AddBienFormState extends State<AddBienForm> {
               SizedBox(
                 height: 30,
               ),
-              TextFormFieldsComponent(
-                hintText: "Numéro de la plaque",
-                prefixIcon: Icons.backpack,
-                controller: numPlaque,
-                textInputType: TextInputType.name,
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              TextFormFieldsComponent(
-                hintText: "Numéro chassis",
-                prefixIcon: Icons.backpack,
-                controller: numChassis,
-                textInputType: TextInputType.name,
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              TextFormFieldsComponent(
-                hintText: "Domicile",
-                prefixIcon: Icons.place,
-                controller: adresse,
-                textInputType: TextInputType.name,
+              Container(
+                child: TextFormField(
+                  controller: description,
+                  maxLines: 7,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    hintText: "Entrer une description",
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.black38,
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: AppColors.backgroundColor,
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    border: OutlineInputBorder(),
+                    alignLabelWithHint: false,
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                    label: TextComponent(
+                        text: "Description des ciconstances de perte"),
+                  ),
+                ),
               ),
               SizedBox(
                 height: 30,
@@ -168,15 +179,11 @@ class _AddBienFormState extends State<AddBienForm> {
               InkWell(
                 onTap: () {
                   Map<String, dynamic> data = {
-                    'nom_bien': nomBien.text,
-                    'date_acquisition': selectedDate.toString(),
-                    'num_plaque': numPlaque.text,
-                    'num_chassis': numChassis.text,
-                    'adresse': adresse.text,
-                    'acteur': widget.controller.acteur!.code
+                    'numero_plaque': numeroPlaque.text,
+                    'date_perte': selectedDate.toString(),
+                    'description': description.text,
                   };
-
-                  widget.controller.add(data);
+                  widget.controller.addDemandeAttestation(data);
                 },
                 child: Container(
                   alignment: Alignment.center,
@@ -187,10 +194,13 @@ class _AddBienFormState extends State<AddBienForm> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: TextComponent(
-                    text: "Ajouter le bien",
+                    text: "Faire une demande",
                     color: Colors.white,
                   ),
                 ),
+              ),
+              SizedBox(
+                height: 10,
               )
             ],
           ),

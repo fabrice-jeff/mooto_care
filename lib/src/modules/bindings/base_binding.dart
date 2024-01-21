@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../controllers/base_controller.dart';
 import '../controllers/biens_controller.dart';
 import '../controllers/home_controller.dart';
+import '../controllers/plaintes_controller.dart';
 
 class BaseBinding extends Bindings {
   @override
@@ -10,5 +11,6 @@ class BaseBinding extends Bindings {
     Get.lazyPut<BaseController>(() => BaseController());
     Get.lazyPut<HomeController>(() => HomeController());
     Get.lazyPut<BiensController>(() => BiensController());
+    Get.lazyPut<PlaintesController>(() => PlaintesController());
   }
 }

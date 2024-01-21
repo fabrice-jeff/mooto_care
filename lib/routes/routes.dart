@@ -9,4 +9,8 @@ class Routes {
   static const BIENS = "/biens";
   static const ADD_BIEN = "/add_bien";
   static const VERIFICATION = "/verification";
+  static const ADD_PLAINTE = "/add_plainte";
+  static const HOME_PLAINTE = "/home_plainte";
+  static const DEMANDE_ATTESTATION = "/demande_attestation";
+  static const PLAINTES = "/plaintes";
 }

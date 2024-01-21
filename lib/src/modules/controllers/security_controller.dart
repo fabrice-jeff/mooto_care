@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import '../../../routes/routes.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/share_preference.dart';
-import '../../api/api.dart';
+import '../../api.dart';
 import '../../../datas/repository/acteurs.dart';
 
 class SecurityController extends GetxController {
