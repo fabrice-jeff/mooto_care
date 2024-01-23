@@ -13,4 +13,5 @@ class Routes {
   static const HOME_PLAINTE = "/home_plainte";
   static const DEMANDE_ATTESTATION = "/demande_attestation";
   static const PLAINTES = "/plaintes";
+  static const PAIEMENT = "/paiement";
 }
