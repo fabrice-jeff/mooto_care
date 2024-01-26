@@ -16,8 +16,6 @@ class PlaintesController extends GetxController {
   PlainteRepository _plainteRepository = PlainteRepository(api: Api.BASE_URL);
   Acteur? acteur = SharePreferences.getActeur();
   late String statusPaiement;
-  String username = 'mootocare@gmail.com';
-  String password = 'MootoCare2024';
 
   @override
   void onInit() {
@@ -35,13 +33,18 @@ class PlaintesController extends GetxController {
         email: acteur!.email,
       ),
     );
-
+    // Confirmation du succes du paiement
     if (statusPaiement == Constants.SUCCESS) {
       data['code_acteur'] = acteur!.code;
       var result = await _plainteRepository.addDemandeAttestation(data);
       if (result!['code'] == Constants.SUCCESS) {
-        _sendEmail(username: username, password: password);
-        Get.toNamed(Routes.HOME);
+        _sendEmail(
+          recipient: acteur!.email,
+          subject: "Paiement",
+          content: "Votre paiements a été effectué avec succès",
+        );
+
+        Get.toNamed(Routes.BASE);
       } else {
         Get.toNamed(Routes.DEMANDE_ATTESTATION);
       }
@@ -132,19 +135,28 @@ class PlaintesController extends GetxController {
     }
   }
 
-  void _sendEmail({required String username, required String password}) async {
+  void _sendEmail({
+    required String recipient,
+    required String subject,
+    required String content,
+  }) async {
+    String username = 'mootocare@gmail.com';
+    // String password = 'eetp stzy wrvx yntb';
+    String password = 'eetpstzywrvxyntb';
+
     final smtpServer = gmail(username, password);
 
     final message = Message()
-      ..from = Address(username, 'Your name')
-      ..recipients.add('mootocare@gmail.com')
+      ..from = Address(username, 'MootoCare Service')
+      ..recipients.add(recipient)
       // ..ccRecipients.addAll(['destCc1@example.com', 'destCc2@example.com'])
       // ..bccRecipients.add(Address('bccAddress@example.com'))
-      ..subject = 'Test Dart Mailer library :: 😀 :: ${DateTime.now()}'
-      // ..text = 'This is the plain text.\nThis is line 2 of the text part.'
-      ..html = "<h1>Test</h1>\n<p>Hey! Here's some HTML content</p>";
+      ..subject = subject
+      // ..text = 'This is the plain text.\nThis is line 2 of the text part.!'
+      ..html = content;
 
     try {
+      print("Bonjour");
       final sendReport = await send(message, smtpServer);
       print('Message sent: ' + sendReport.toString());
     } on MailerException catch (e) {
