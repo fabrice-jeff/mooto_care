@@ -38,12 +38,14 @@ class PlaintesController extends GetxController {
       data['code_acteur'] = acteur!.code;
       var result = await _plainteRepository.addDemandeAttestation(data);
       if (result!['code'] == Constants.SUCCESS) {
+        // Générer le fichier PDF
+
+        // Envoyer un email
         _sendEmail(
           recipient: acteur!.email,
           subject: "Paiement",
           content: "Votre paiements a été effectué avec succès",
         );
-
         Get.toNamed(Routes.BASE);
       } else {
         Get.toNamed(Routes.DEMANDE_ATTESTATION);

@@ -14,4 +14,5 @@ class Routes {
   static const DEMANDE_ATTESTATION = "/demande_attestation";
   static const PLAINTES = "/plaintes";
   static const PAIEMENT = "/paiement";
+  static const PDF_VIEW = "/pdf_view";
 }
