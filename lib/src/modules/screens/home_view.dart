@@ -64,7 +64,7 @@ class HomeView extends GetView<HomeController> {
                       Container(
                         alignment: Alignment.topLeft,
                         child: TextComponent(
-                          text: "Bonjour cher partenaire",
+                          text: "Bienvenue cher partenaire",
                         ),
                       ),
                       SizedBox(
@@ -89,7 +89,8 @@ class HomeView extends GetView<HomeController> {
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   alignment: Alignment.topLeft,
                   child: TextComponent(
-                    text: "Heureux de vous comptez parmi nos utilisateurs",
+                    text:
+                        "Nous sommes ravi de vous accueillir  parmi nos utilisateurs.",
                   ),
                 ),
                 SizedBox(
@@ -117,7 +118,7 @@ class HomeView extends GetView<HomeController> {
                               children: [
                                 Container(
                                   child: TextComponent(
-                                    text: "Biens enregistrés",
+                                    text: "Motos enregistrées",
                                     color: Colors.white,
                                   ),
                                 ),

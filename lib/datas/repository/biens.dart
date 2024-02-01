@@ -19,7 +19,6 @@ class BienRepository {
       headers: {},
     );
     Map<String, dynamic>? result;
-
     if (response.statusCode == 200) {
       result = jsonDecode(response.body);
     }
@@ -41,7 +40,8 @@ class BienRepository {
       if (result['code'] == Constants.SUCCESS) {
         var datas = jsonDecode(result['biens']);
         for (var bien in datas) {
-          biens.add(Bien.fromJson(jsonDecode(bien)));
+          bien['acteur'] = jsonDecode(result['acteur']);
+          biens.add(Bien.fromJson(bien));
         }
       }
     }

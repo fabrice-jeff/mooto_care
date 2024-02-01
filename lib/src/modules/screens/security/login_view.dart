@@ -47,7 +47,7 @@ class _LoginFormState extends State<LoginForm> {
               Container(
                 alignment: Alignment.center,
                 child: TextComponent(
-                  text: "AUTOCARE",
+                  text: "MOOTOCARE",
                   color: AppColors.backgroundColor,
                   fontWeight: FontWeight.bold,
                   size: 25,

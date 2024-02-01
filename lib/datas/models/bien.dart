@@ -29,17 +29,17 @@ class Bien {
     this.deleted = false,
   });
   factory Bien.fromJson(json) {
-    Acteur acteur = Acteur.fromJson(jsonDecode(json['acteur']));
+    Acteur acteur = Acteur.fromJson(json['acteur']);
     return Bien(
       code: json['code'],
       nomBien: json['nom_bien'],
-      dateAcquisition: dateTimeFormat(json['date_acquisition']['date']),
+      dateAcquisition: dateTimeFormat(json['date_acquisition']),
       numPlaque: json['num_plaque'],
       numChassis: json['num_chassis'],
       adresse: json['adresse'],
       acteur: acteur,
-      createdAt: dateTimeFormat(json['created_at']['date']),
-      updatedAt: dateTimeFormat(json['updated_at']['date']),
+      createdAt: dateTimeFormat(json['created_at']),
+      updatedAt: dateTimeFormat(json['updated_at']),
     );
   }
 }

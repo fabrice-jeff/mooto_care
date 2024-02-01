@@ -227,7 +227,7 @@ class _AddPlainteFormState extends State<AddPlainteForm> {
                     'numero_chassis': numChassis.text,
                     'numero_plaque': numPlaque.text,
                     'nom_bien': nomBien.text,
-                    'attestation': ''
+                    'attestation': 'ok'
                   };
                   widget.controller.addPlainte(data);
                 },

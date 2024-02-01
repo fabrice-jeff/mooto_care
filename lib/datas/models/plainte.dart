@@ -31,17 +31,16 @@ class Plainte {
   });
 
   factory Plainte.fromJson(Map<String, dynamic> json) {
-    Bien bien = Bien.fromJson(jsonDecode(json['bien']));
-    print(json['updated_at']);
+    Bien bien = Bien.fromJson(json['bien']);
     return Plainte(
       code: json['code'],
       nomBien: json['nom_bien'],
-      datePerte: dateTimeFormat(json['date_perte']['date']),
+      datePerte: dateTimeFormat(json['date_perte']),
       numeroPlaque: json['numero_plaque'],
       numeroChassis: json['numero_chassis'],
-      createdAt: dateTimeFormat(json['created_at']['date']),
-      updatedAt: dateTimeFormat(json['updated_at']['date']),
-      disabled: json['disabled'],
+      createdAt: dateTimeFormat(json['created_at']),
+      updatedAt: dateTimeFormat(json['updated_at']),
+      disabled: (json['disabled'] == 0) ? false : true,
       bien: bien,
     );
   }

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -63,6 +64,11 @@ class BaseView extends GetView<BaseController> {
                     Icons.person,
                   ),
                   label: "Profile",
+                ),
+                BottomNavigationBarItem(
+                  backgroundColor: Colors.white,
+                  icon: Icon(Icons.more_vert_outlined),
+                  label: "Plus",
                 ),
               ],
               onTap: controller.changeScreen,

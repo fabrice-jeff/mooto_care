@@ -16,6 +16,7 @@ class PlainteRepository {
     final url = Uri.parse(api + endpoint);
     Map<String, dynamic>? result;
     final response = await http.post(url, body: data);
+
     if (response.statusCode == 200) {
       result = jsonDecode(response.body);
     }
@@ -40,13 +41,35 @@ class PlainteRepository {
     var url = Uri.parse(api + endpoint);
     final response = await http.get(url);
     if (response.statusCode == 200) {
-      var result = await jsonDecode(response.body);
+      var result = jsonDecode(response.body);
       if (result['code'] == Constants.SUCCESS) {
-        for (var plainte in jsonDecode(result['plaintes'])) {
-          plaintes.add(Plainte.fromJson(jsonDecode(plainte)));
+        for (var objet in jsonDecode(result['plaintes'])) {
+          var objectJson = jsonDecode(objet);
+          var acteur = jsonDecode(objectJson['acteur']);
+          var bien = jsonDecode(objectJson['bien']);
+          bien['acteur'] = acteur;
+          var plainte = jsonDecode(objectJson['plainte']);
+          plainte['bien'] = bien;
+
+          plaintes.add(Plainte.fromJson(plainte));
         }
       }
     }
     return plaintes;
+  }
+
+  Future<void> uploadPdf(Map<String, dynamic> data) async {
+    final url = 'http://10.0.2.2:8000/api/upload-pdf';
+    // Utilisez http.post pour envoyer le fichier PDF
+    final response = await http.post(
+      Uri.parse(url),
+      body: data, // Ajoutez d'autres données si nécessaire
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      print('Fichier PDF envoyé avec succès à Laravel');
+    } else {
+      print('Erreur lors de l\'envoi du fichier PDF à Laravel');
+    }
   }
 }

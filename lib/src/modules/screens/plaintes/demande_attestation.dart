@@ -63,6 +63,8 @@ class DemandeAttestationForm extends StatefulWidget {
 class _DemandeAttestationFormState extends State<DemandeAttestationForm> {
   TextEditingController numeroPlaque = TextEditingController();
   TextEditingController description = TextEditingController();
+  TextEditingController nom = TextEditingController();
+  TextEditingController prenoms = TextEditingController();
   var reasonValidation = true;
   DateTime? selectedDate;
   @override
@@ -85,11 +87,29 @@ class _DemandeAttestationFormState extends State<DemandeAttestationForm> {
                 alignment: Alignment.center,
                 child: TextComponent(
                   text:
-                      "Vous n'avez pas encore signaler la perte de votre bien à la police?",
+                      "Vous n'avez pas encore signaler la perte de votre moto à la police?",
                   fontWeight: FontWeight.bold,
                   textAlign: TextAlign.center,
                   size: 15,
                 ),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              TextFormFieldsComponent(
+                hintText: "Nom",
+                prefixIcon: Icons.list_alt,
+                controller: nom,
+                textInputType: TextInputType.name,
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              TextFormFieldsComponent(
+                hintText: "Prenoms",
+                prefixIcon: Icons.list_alt,
+                controller: prenoms,
+                textInputType: TextInputType.name,
               ),
               SizedBox(
                 height: 30,
@@ -138,7 +158,6 @@ class _DemandeAttestationFormState extends State<DemandeAttestationForm> {
                   });
                 },
                 validator: (val) {
-                  print(val);
                   return null;
                 },
                 onSaved: (val) => print(val),
@@ -179,6 +198,8 @@ class _DemandeAttestationFormState extends State<DemandeAttestationForm> {
               InkWell(
                 onTap: () {
                   Map<String, dynamic> data = {
+                    'nom': nom.text,
+                    'prenoms': prenoms.text,
                     'numero_plaque': numeroPlaque.text,
                     'date_perte': selectedDate.toString(),
                     'description': description.text,

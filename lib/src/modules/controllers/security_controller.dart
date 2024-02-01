@@ -11,7 +11,7 @@ class SecurityController extends GetxController {
   //Register
   void register(Map<String, dynamic> data) async {
     final result = await acteurRepository.register(data);
-    if (result == Constants.SUCCESS) {
+    if (result['code'] == Constants.SUCCESS) {
       Get.offNamed(Routes.LOGIN);
     }
   }
@@ -19,8 +19,8 @@ class SecurityController extends GetxController {
   //Login
   void login(Map<String, dynamic> data) async {
     final result = await acteurRepository.login(data);
-    if (result['code'] == Constants.SUCCESS) {
-      SharePreferences.prefs.setString('acteur', result['acteur']);
+    if (result!['code'] == Constants.SUCCESS) {
+      SharePreferences.prefs.setString('acteur', result!['acteur']);
       Get.offNamed(Routes.BASE);
     }
   }

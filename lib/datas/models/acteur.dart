@@ -29,8 +29,8 @@ class Acteur {
       prenoms: json['prenoms'],
       telephone: json['telephone'],
       email: json['email'],
-      createdAt: dateTimeFormat(json['created_at']['date']),
-      updatedAt: dateTimeFormat(json['updated_at']['date']),
+      createdAt: dateTimeFormat(json['created_at']),
+      updatedAt: dateTimeFormat(json['updated_at']),
     );
   }
   Map<String, dynamic> toJson() => {

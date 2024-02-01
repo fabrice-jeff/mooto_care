@@ -29,225 +29,121 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Qr code Scanner and Generated"),
-        backgroundColor: Colors.blue,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const ScanQrCode(),
-                    ),
-                  );
-                });
-              },
-              child: Text("Scan Qr Code"),
-            ),
-            SizedBox(
-              height: 40,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const GeneratedQrCode(),
-                    ),
-                  );
-                });
-              },
-              child: Text("Generated Qr Code"),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// class MyApp extends StatefulWidget {
-//   const MyApp({super.key});
+// class HomePage extends StatefulWidget {
+//   const HomePage({super.key});
 
 //   @override
-//   State<MyApp> createState() => _MainSreenState();
+//   State<HomePage> createState() => _HomePageState();
 // }
 
-// class _MainSreenState extends State<MyApp> with WidgetsBindingObserver {
-//   bool isPermissionGranted = false;
-//   late Future<void> _future;
-//   CameraController? _cameraController;
-//   TextRecognizer _textRecognizer = TextRecognizer();
-
-//   @override
-//   void initState() {
-//     super.initState();
-
-//     WidgetsBinding.instance.addObserver(this);
-//     _future = _requestCameraPermission();
-//   }
-
-//   @override
-//   dispose() {
-//     WidgetsBinding.instance.removeObserver(this);
-//     super.dispose();
-//     stopCamera();
-//     _textRecognizer.close();
-//   }
-
-//   @override
-//   void didChangeAppLifecycleState(AppLifecycleState state) {
-//     if (_cameraController == null || _cameraController!.value.isInitialized) {
-//       return;
-//     }
-//     if (state == AppLifecycleState.inactive) {
-//       stopCamera();
-//     } else if (state == AppLifecycleState.resumed &&
-//         _cameraController != null &&
-//         _cameraController!.value.isInitialized) {
-//       _startCamera();
-//     }
-//   }
-
-//   Future<void> _requestCameraPermission() async {
-//     final status = await Permission.camera.request();
-//     isPermissionGranted = status == PermissionStatus.granted;
-//   }
-
-//   void _startCamera() {
-//     if (_cameraController != null) {
-//       _cameraSelected(_cameraController!.description);
-//     }
-//   }
-
-//   void stopCamera() {
-//     if (_cameraController != null) {
-//       _cameraController?.dispose();
-//     }
-//   }
-
+// class _HomePageState extends State<HomePage> {
 //   @override
 //   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: FutureBuilder(
-//         future: _future,
-//         builder: ((context, snapshot) {
-//           return Stack(
-//             children: [
-//               if (isPermissionGranted)
-//                 FutureBuilder(
-//                   future: availableCameras(),
-//                   builder: (context, snapshot) {
-//                     if (snapshot.hasData) {
-//                       initCameraController(snapshot.data!);
-//                       return Center(
-//                         child: CameraPreview(_cameraController!),
-//                       );
-//                     } else {
-//                       return LinearProgressIndicator();
-//                     }
-//                   },
-//                 ),
-//               Scaffold(
-//                 backgroundColor:
-//                     isPermissionGranted ? Colors.transparent : null,
-//                 appBar: AppBar(
-//                   title: Text("Récupérer du text depuis une image"),
-//                 ),
-//                 body: isPermissionGranted
-//                     ? Column(
-//                         children: [
-//                           Expanded(
-//                             child: Container(),
-//                           ),
-//                           Container(
-//                             padding: EdgeInsets.only(bottom: 30),
-//                             child: Center(
-//                               child: ElevatedButton(
-//                                 onPressed: _scanImage,
-//                                 child: Text('Scan text'),
-//                               ),
-//                             ),
-//                           ),
-//                         ],
-//                       )
-//                     : Center(
-//                         child: Text(
-//                           (isPermissionGranted)
-//                               ? "Camera perms"
-//                               : "Caméra denied",
-//                         ),
-//                       ),
-//               ),
-//             ],
-//           );
-//         }),
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text("Qr code Scanner and Generated"),
+//         backgroundColor: Colors.blue,
+//       ),
+//       body: Center(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             ElevatedButton(
+//               onPressed: () {
+//                 setState(() {
+//                   Navigator.of(context).push(
+//                     MaterialPageRoute(
+//                       builder: (context) => const ScanQrCode(),
+//                     ),
+//                   );
+//                 });
+//               },
+//               child: Text("Scan Qr Code"),
+//             ),
+//             SizedBox(
+//               height: 40,
+//             ),
+//             ElevatedButton(
+//               onPressed: () {
+//                 setState(() {
+//                   Navigator.of(context).push(
+//                     MaterialPageRoute(
+//                       builder: (context) => const GeneratedQrCode(),
+//                     ),
+//                   );
+//                 });
+//               },
+//               child: Text("Generated Qr Code"),
+//             ),
+//           ],
+//         ),
 //       ),
 //     );
 //   }
+// }
 
-//   void initCameraController(List<CameraDescription> cameras) {
-//     if (_cameraController != null) {
-//       return;
-//     }
+// import 'package:autocare/services/pdf_viewer_screen.dart';
+// import 'package:flutter/material.dart';
 
-//     CameraDescription? camera;
-//     for (var i = 0; i < cameras.length; i++) {
-//       final CameraDescription current = cameras[i];
-//       if (current.lensDirection == CameraLensDirection.back) {
-//         camera = current;
-//         break;
-//       }
-//     }
+// import 'generated_attestation.dart';
 
-//     if (camera != null) {
-//       _cameraSelected(camera);
-//     }
-//   }
+// void main() {
+//   runApp(MyApp());
+// }
 
-//   Future<void> _cameraSelected(CameraDescription camera) async {
-//     _cameraController = CameraController(
-//       camera,
-//       ResolutionPreset.max,
-//       enableAudio: false,
+// class MyApp extends StatelessWidget {
+//   const MyApp();
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       home: MyHomePage(),
 //     );
-//     await _cameraController?.initialize();
-//     if (!mounted) {
-//       return;
-//     }
-//     setState(() {});
-//   }
-
-//   Future<void> _scanImage() async {
-//     if (_cameraController == null) {
-//       return;
-//     }
-//     try {
-//       final pictureFile = await _cameraController!.takePicture();
-//       final file = File(pictureFile.path);
-//       final inputImage = InputImage.fromFile(file);
-//       final recognizedText = await _textRecognizer.processImage(inputImage);
-//       await Get.to(ResultScan(text: recognizedText.text));
-//     } catch (e) {
-//       print('Bonjour');
-//     }
 //   }
 // }
 
+// class MyHomePage extends StatefulWidget {
+//   const MyHomePage({super.key});
 
+//   @override
+//   State<MyHomePage> createState() => _MyHomePageState();
+// }
+
+// class _MyHomePageState extends State<MyHomePage> {
+//   TextEditingController urlController = TextEditingController();
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('Générer et Afficher un PDF'),
+//       ),
+//       body: Center(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             Container(
+//               padding: EdgeInsets.only(left: 10, right: 10),
+//               child: TextField(
+//                 controller: urlController,
+//                 decoration: InputDecoration(
+//                   hintText: "Enter your data",
+//                   border: OutlineInputBorder(
+//                       borderRadius: BorderRadius.circular(15)),
+//                   labelText: "Enter your data",
+//                 ),
+//               ),
+//             ),
+//             SizedBox(
+//               height: 20,
+//             ),
+//             ElevatedButton(
+//               onPressed: () async {
+//                 // Générer le PDF
+//               },
+//               child: Text('Générer et Afficher le PDF'),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
