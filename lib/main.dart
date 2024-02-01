@@ -1,5 +1,3 @@
-import 'package:autocare/generated_qr_code.dart';
-import 'package:autocare/scan_qr_code.dart';
 import 'package:autocare/utils/share_preference.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

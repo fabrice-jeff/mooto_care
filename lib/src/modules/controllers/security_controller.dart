@@ -20,7 +20,7 @@ class SecurityController extends GetxController {
   void login(Map<String, dynamic> data) async {
     final result = await acteurRepository.login(data);
     if (result!['code'] == Constants.SUCCESS) {
-      SharePreferences.prefs.setString('acteur', result!['acteur']);
+      SharePreferences.prefs.setString('acteur', result['acteur']);
       Get.offNamed(Routes.BASE);
     }
   }
