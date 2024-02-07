@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../utils/colors.dart';
-
 class ComtainerRoundComponent extends StatelessWidget {
   final double height;
   final IconData icon;

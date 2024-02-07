@@ -5,7 +5,6 @@ import '../../../../routes/routes.dart';
 import '../../../../utils/colors.dart';
 import '../../../../utils/constants.dart';
 import '../../../components/intl_phone_field.dart';
-import '../../../components/line.dart';
 import '../../../components/text.dart';
 import '../../../components/text_form_field.dart';
 import '../../controllers/security_controller.dart';

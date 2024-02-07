@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../utils/colors.dart';
-import '../../components/container_round.dart';
 import '../controllers/base_controller.dart';
 import 'home_view.dart';
 import 'parametres_view.dart';
