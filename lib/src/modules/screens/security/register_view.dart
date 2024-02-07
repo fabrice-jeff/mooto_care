@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 
 import '../../../../routes/routes.dart';
 import '../../../../utils/colors.dart';
+import '../../../../utils/constants.dart';
+import '../../../components/intl_phone_field.dart';
 import '../../../components/line.dart';
 import '../../../components/text.dart';
 import '../../../components/text_form_field.dart';
@@ -47,17 +49,16 @@ class _RegisterFormState extends State<RegisterForm> {
             children: [
               Container(
                 alignment: Alignment.center,
-                child: TextComponent(
-                  text: "AUTOCARE",
-                  color: AppColors.backgroundColor,
-                  fontWeight: FontWeight.bold,
-                  size: 25,
+                child: Image.asset(
+                  Constants.logo,
+                  width: 200,
+                  height: 200,
                 ),
               ),
-              LineComponnent(
-                width: 100,
-                alignment: Alignment.center,
-              ),
+              // LineComponnent(
+              //   width: 100,
+              //   alignment: Alignment.center,
+              // ),
               SizedBox(
                 height: 20,
               ),
@@ -85,9 +86,8 @@ class _RegisterFormState extends State<RegisterForm> {
               SizedBox(
                 height: 20,
               ),
-              TextFormFieldsComponent(
-                hintText: "Téléphone",
-                prefixIcon: Icons.phone,
+              IntlPhoneFieldsComponent(
+                hintText: 'Téléphone',
                 controller: telephone,
               ),
               SizedBox(

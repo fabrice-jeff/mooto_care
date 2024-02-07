@@ -1,9 +1,11 @@
+import 'package:autocare/src/components/select_fields.dart';
 import 'package:autocare/src/modules/controllers/biens_controller.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import '../../../../utils/colors.dart';
+import '../../../components/container_round.dart';
 import '../../../components/text.dart';
 import '../../../components/text_form_field.dart';
 
@@ -24,7 +26,7 @@ class AddBienView extends GetView<BiensController> {
           ),
         ),
         title: TextComponent(
-          text: "Ajouter un bien",
+          text: "Ajouter une moto",
           color: Colors.white,
         ),
         actions: [
@@ -62,6 +64,11 @@ class _AddBienFormState extends State<AddBienForm> {
   TextEditingController numPlaque = TextEditingController();
   TextEditingController adresse = TextEditingController();
   DateTime? selectedDate = DateTime.now();
+  bool basiquePromotion = false;
+  String? couverture = "Couverture Basique";
+  void handleSelectValue(String? selectedValue) {
+    couverture = selectedValue;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,14 +78,14 @@ class _AddBienFormState extends State<AddBienForm> {
           padding: EdgeInsets.symmetric(horizontal: 10),
           child: Column(
             children: [
-              Container(
-                child: TextComponent(
-                  text:
-                      "Cher partenaire, enregistrez votre voiture ou votre motocyclette,et retrouvez les plus facilement en cas de vol.",
-                  textAlign: TextAlign.center,
-                  fontWeight: FontWeight.bold,
-                  size: 15,
-                ),
+              SizedBox(
+                height: 20,
+              ),
+              ComtainerRoundComponent(
+                icon: Icons.hourglass_bottom,
+                height: 75,
+                borderColor: Colors.transparent,
+                width: 75,
               ),
               SizedBox(
                 height: 30,
@@ -153,14 +160,59 @@ class _AddBienFormState extends State<AddBienForm> {
               SizedBox(
                 height: 30,
               ),
+              SelectFieldsWidget(
+                hintText: "Niveau de couverture",
+                icon: Icons.notes_sharp,
+                label: "Niveau de couverture",
+                items: widget.controller.couvertures,
+                onValueChanged: handleSelectValue,
+              ),
+              SizedBox(
+                height: 30,
+              ),
               TextFormFieldsComponent(
                 hintText: "Domicile",
                 prefixIcon: Icons.place,
                 controller: adresse,
                 textInputType: TextInputType.name,
               ),
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Checkbox(
+                        value: basiquePromotion,
+                        activeColor: AppColors.backgroundColor,
+                        onChanged: (value) {
+                          setState(() {
+                            basiquePromotion = !basiquePromotion;
+                          });
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            basiquePromotion = !basiquePromotion;
+                          });
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          child: TextComponent(
+                            text: "Bénéficier de 50% sur le niveau basique",
+                            size: 15,
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
               SizedBox(
-                height: 30,
+                height: 20,
               ),
               InkWell(
                 onTap: () {
@@ -170,7 +222,9 @@ class _AddBienFormState extends State<AddBienForm> {
                     'num_plaque': numPlaque.text,
                     'num_chassis': numChassis.text,
                     'adresse': adresse.text,
-                    'acteur': widget.controller.acteur!.code
+                    'acteur': widget.controller.acteur!.code,
+                    'promotion': basiquePromotion,
+                    'couverture': couverture,
                   };
 
                   widget.controller.add(data);
@@ -184,11 +238,14 @@ class _AddBienFormState extends State<AddBienForm> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: TextComponent(
-                    text: "Ajouter le bien",
+                    text: "Enregistrer",
                     color: Colors.white,
                   ),
                 ),
-              )
+              ),
+              SizedBox(
+                height: 30,
+              ),
             ],
           ),
         ),

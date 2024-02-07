@@ -30,4 +30,7 @@ class Api {
   static const ADD_PLAINTE = '/plaintes/add_plainte';
   static const ADD_DEMANDE_ATTESTATION = '/plaintes/add_demande_attestation';
   static const ALL_PLAINTES = '/plaintes/all_plaintes';
+
+  // Types
+  static const TYPE_COUVERTURE = '/type_type/convertures';
 }

@@ -1,19 +1,16 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:kkiapay_flutter_sdk/kkiapay_flutter_sdk.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 
 import '../../../datas/models/acteur.dart';
-import '../../../datas/models/bien.dart';
 import '../../../datas/models/deamende_attestaion.dart';
 import '../../../datas/models/plainte.dart';
 import '../../../datas/repository/plaintes.dart';
 import '../../../generated_attestation.dart';
 import '../../../routes/routes.dart';
-import '../../../services/pdf_viewer_screen.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/share_preference.dart';
 import '../../api.dart';
@@ -22,7 +19,6 @@ class PlaintesController extends GetxController {
   List<Plainte> plaintesDeposes = [];
   PlainteRepository _plainteRepository = PlainteRepository(api: Api.BASE_URL);
   Acteur? acteur = SharePreferences.getActeur();
-  late String statusPaiement;
 
   @override
   void onInit() {
@@ -110,59 +106,6 @@ class PlaintesController extends GetxController {
   getPlaintesDeposes() async {
     plaintesDeposes = await _plainteRepository.allPlaintes();
     update();
-  }
-
-  KKiaPay _initPaiement(
-      {required int amount,
-      required String name,
-      required String email,
-      bool sandbox = true}) {
-    var kkiapay = KKiaPay(
-      amount: amount,
-      countries: ["BJ"],
-      phone: "22961000000",
-      name: name,
-      email: email,
-      reason: 'transaction reason',
-      data: 'Fake data',
-      sandbox: sandbox,
-      apikey: "f1092c30b88711eea59f2d53a2c58eae",
-      callback: _successCallback,
-      theme: defaultTheme,
-      partnerId: 'AxXxXXxId',
-      paymentMethods: ["momo", "card"],
-    );
-    return kkiapay;
-  }
-
-  void _successCallback(response, context) {
-    switch (response['status']) {
-      case PAYMENT_CANCELLED:
-        statusPaiement = Constants.CANCEL;
-        Get.back();
-        break;
-
-      case PENDING_PAYMENT:
-        statusPaiement = Constants.PENDING;
-
-        break;
-
-      case PAYMENT_INIT:
-        statusPaiement = Constants.INIT;
-        break;
-
-      case PAYMENT_SUCCESS:
-        statusPaiement = Constants.SUCCESS;
-        Get.back();
-        break;
-
-      case PAYMENT_FAILED:
-        statusPaiement = Constants.ERROR;
-        Get.back();
-        break;
-      default:
-        break;
-    }
   }
 
   void _sendEmail({

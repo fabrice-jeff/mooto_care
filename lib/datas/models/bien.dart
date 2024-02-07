@@ -13,6 +13,8 @@ class Bien {
   final DateTime createdAt;
   final DateTime updatedAt;
   final bool deleted;
+  final int typeCouverture;
+  final bool promotion;
   Bien({
     this.id,
     required this.code,
@@ -25,6 +27,8 @@ class Bien {
     required this.createdAt,
     required this.updatedAt,
     this.deleted = false,
+    required this.typeCouverture,
+    this.promotion = false,
   });
   factory Bien.fromJson(json) {
     Acteur acteur = Acteur.fromJson(json['acteur']);
@@ -38,6 +42,8 @@ class Bien {
       acteur: acteur,
       createdAt: dateTimeFormat(json['created_at']),
       updatedAt: dateTimeFormat(json['updated_at']),
+      typeCouverture: json['type_couverture'],
+      promotion: (json['promotion'] == 0) ? false : true,
     );
   }
 }

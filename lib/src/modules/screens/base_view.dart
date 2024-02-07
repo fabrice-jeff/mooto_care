@@ -1,10 +1,15 @@
+import 'package:autocare/src/components/text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../utils/colors.dart';
+import '../../components/container_round.dart';
 import '../controllers/base_controller.dart';
 import 'home_view.dart';
+import 'parametres_view.dart';
+import 'plus_view.dart';
+import 'tarifs_view.dart';
 
 class BaseView extends GetView<BaseController> {
   const BaseView({super.key});
@@ -14,12 +19,15 @@ class BaseView extends GetView<BaseController> {
       builder: (_) => Scaffold(
         drawer: Drawer(child: MenuApp()),
         appBar: AppBar(
-          backgroundColor: AppColors.backgroundColor,
-          title: Text("MootoCare"),
+          title: TextComponent(
+            text: "MootoCare",
+            size: 24,
+          ),
           actions: [
             Container(
               child: Icon(
-                Icons.notifications,
+                Icons.notifications_active_rounded,
+                size: 20,
               ),
               margin: EdgeInsets.only(right: 20),
             )
@@ -30,6 +38,9 @@ class BaseView extends GetView<BaseController> {
             index: controller.currentIndex,
             children: [
               HomeView(),
+              TarifsView(),
+              ParametresView(),
+              PlusView(),
             ],
           ),
         ),
@@ -46,24 +57,22 @@ class BaseView extends GetView<BaseController> {
               items: [
                 BottomNavigationBarItem(
                   backgroundColor: Colors.white,
-                  icon: Icon(
-                    Icons.home,
-                  ),
+                  icon: Icon(CupertinoIcons.home),
                   label: "Accueil",
                 ),
                 BottomNavigationBarItem(
                   backgroundColor: Colors.white,
                   icon: Icon(
-                    Icons.settings_outlined,
+                    Icons.event_note_sharp,
                   ),
-                  label: "Paramètres",
+                  label: "Tarifs",
                 ),
                 BottomNavigationBarItem(
                   backgroundColor: Colors.white,
                   icon: Icon(
-                    Icons.person,
+                    CupertinoIcons.person_circle,
                   ),
-                  label: "Profile",
+                  label: "Compte",
                 ),
                 BottomNavigationBarItem(
                   backgroundColor: Colors.white,

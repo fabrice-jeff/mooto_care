@@ -25,7 +25,7 @@ class BiensView extends GetView<BiensController> {
           ),
         ),
         title: TextComponent(
-          text: "Biens enregistrés",
+          text: "Motos enregistrées",
           color: Colors.white,
         ),
         actions: [
@@ -48,7 +48,7 @@ class BiensView extends GetView<BiensController> {
               child: GetBuilder<BiensController>(
                 builder: (_) => (controller.biensByActeur.length == 0)
                     ? NoData(
-                        text: "Vous n'avez enregistré aucun bien",
+                        text: "Vous n'avez enregistré aucune moto",
                       )
                     : ListView.separated(
                         shrinkWrap: true,

@@ -5,6 +5,7 @@ import '../src/modules/bindings/biens_binding.dart';
 import '../src/modules/bindings/home_binding.dart';
 import '../src/modules/bindings/plainte_binding.dart';
 import '../src/modules/screens/biens/add_bien_view.dart';
+import '../src/modules/screens/parametres_view.dart';
 import '../src/modules/screens/plaintes/add_plainte_view.dart';
 import '../src/modules/screens/base_view.dart';
 import '../src/modules/screens/biens/biens_view.dart';
@@ -12,9 +13,11 @@ import '../src/modules/screens/home_view.dart';
 import '../src/modules/screens/plaintes/demande_attestation.dart';
 import '../src/modules/screens/plaintes/home_plainte_view.dart';
 import '../src/modules/screens/plaintes/plaintes_view.dart';
+import '../src/modules/screens/plus_view.dart';
 import '../src/modules/screens/security/login_view.dart';
 import '../src/modules/screens/security/register_view.dart';
 import '../src/modules/screens/splash_screen_view.dart';
+import '../src/modules/screens/tarifs_view.dart';
 import '../src/modules/screens/verification_view.dart';
 import 'routes.dart';
 
@@ -78,6 +81,18 @@ class AppPage {
       name: Routes.PLAINTES,
       page: () => const PlaintesView(),
       binding: PlaintesBinding(),
+    ),
+    GetPage(
+      name: Routes.PLUS,
+      page: () => const PlusView(),
+    ),
+    GetPage(
+      name: Routes.TARIFS,
+      page: () => const TarifsView(),
+    ),
+    GetPage(
+      name: Routes.PARAMETRES,
+      page: () => const ParametresView(),
     ),
   ];
 }

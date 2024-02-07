@@ -15,4 +15,7 @@ class Routes {
   static const PLAINTES = "/plaintes";
   static const PAIEMENT = "/paiement";
   static const PDF_VIEW = "/pdf_view";
+  static const PLUS = "/plus";
+  static const TARIFS = "/tarifs";
+  static const PARAMETRES = "/parametres";
 }

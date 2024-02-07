@@ -4,6 +4,7 @@ import 'package:autocare/utils/constants.dart';
 import 'package:http/http.dart' as http;
 import '../../src/api.dart';
 import '../models/bien.dart';
+import '../models/type_type.dart';
 
 class BienRepository {
   final String api;
@@ -19,6 +20,8 @@ class BienRepository {
       headers: {},
     );
     Map<String, dynamic>? result;
+    print(response.body);
+    print(response.statusCode);
     if (response.statusCode == 200) {
       result = jsonDecode(response.body);
     }
@@ -63,5 +66,23 @@ class BienRepository {
       result = jsonDecode(response.body);
     }
     return result;
+  }
+
+  Future<List<TypeType>> getCouvertures() async {
+    final endpoint = Api.TYPE_COUVERTURE;
+    final url = Uri.parse(api + endpoint);
+    List<TypeType> couvertures = [];
+    final response = await http.get(
+      url,
+      headers: {},
+    );
+    if (response.statusCode == 200) {
+      var datas = jsonDecode(jsonDecode(response.body)['couvertures']);
+      for (var couverture in datas) {
+        couvertures.add(TypeType.fromJson(couverture));
+      }
+      // result = jsonDecode(response.body);
+    }
+    return couvertures;
   }
 }

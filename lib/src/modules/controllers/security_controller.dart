@@ -11,7 +11,7 @@ class SecurityController extends GetxController {
   //Register
   void register(Map<String, dynamic> data) async {
     final result = await acteurRepository.register(data);
-    if (result['code'] == Constants.SUCCESS) {
+    if (result!['code'] == Constants.SUCCESS) {
       Get.offNamed(Routes.LOGIN);
     }
   }
