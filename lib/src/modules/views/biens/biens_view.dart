@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 
 import '../../../../routes/routes.dart';
@@ -14,41 +13,30 @@ class BiensView extends GetView<BiensController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 70,
-        leading: InkWell(
-          onTap: () {
-            Get.back();
-          },
-          child: Icon(
-            Icons.arrow_back,
-            color: Colors.white,
+        title: Expanded(
+          child: TextComponent(
+            text: 'Motos enregistrées',
+            size: 20,
           ),
         ),
-        title: TextComponent(
-          text: "Motos enregistrées",
-          color: Colors.white,
-        ),
-        actions: [
-          InkWell(
-            child: Container(
-              child: Icon(
-                Icons.notifications,
-                color: Colors.white,
-              ),
-              margin: EdgeInsets.only(right: 20),
-            ),
-          )
-        ],
-        backgroundColor: AppColors.backgroundColor,
+        elevation: 5,
+        shadowColor: Colors.black,
       ),
+
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
               padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
               child: GetBuilder<BiensController>(
                 builder: (_) => (controller.biensByActeur.length == 0)
-                    ? NoData(
-                        text: "Vous n'avez enregistré aucune moto",
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          NoData(
+                            text: "Vous n'avez enregistré aucune moto",
+                          ),
+                        ],
                       )
                     : ListView.separated(
                         shrinkWrap: true,

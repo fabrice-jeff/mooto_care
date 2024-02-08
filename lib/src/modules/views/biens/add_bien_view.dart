@@ -2,7 +2,7 @@ import 'package:autocare/src/components/select_fields.dart';
 import 'package:autocare/src/modules/controllers/biens_controller.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:get/get.dart';
 import '../../../../utils/colors.dart';
 import '../../../components/container_round.dart';
@@ -15,32 +15,14 @@ class AddBienView extends GetView<BiensController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 70,
-        leading: InkWell(
-          onTap: () {
-            Get.back();
-          },
-          child: Icon(
-            Icons.arrow_back,
-            color: Colors.white,
+        title: Expanded(
+          child: TextComponent(
+            text: "Enregistrement d'une moto",
+            size: 20,
           ),
         ),
-        title: TextComponent(
-          text: "Ajouter une moto",
-          color: Colors.white,
-        ),
-        actions: [
-          InkWell(
-            child: Container(
-              child: Icon(
-                Icons.notifications,
-                color: Colors.white,
-              ),
-              margin: EdgeInsets.only(right: 20),
-            ),
-          )
-        ],
-        backgroundColor: AppColors.backgroundColor,
+        elevation: 5,
+        shadowColor: Colors.black,
       ),
       body: SafeArea(
         child: Center(
@@ -91,7 +73,7 @@ class _AddBienFormState extends State<AddBienForm> {
                 height: 30,
               ),
               TextFormFieldsComponent(
-                hintText: "Nom du bien",
+                hintText: "Nom de la moto",
                 prefixIcon: Icons.list_alt,
                 controller: nomBien,
                 textInputType: TextInputType.name,

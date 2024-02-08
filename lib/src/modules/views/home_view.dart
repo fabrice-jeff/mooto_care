@@ -4,8 +4,6 @@ import 'package:get/get.dart';
 
 import '../../../routes/routes.dart';
 import '../../../utils/colors.dart';
-import '../../components/line.dart';
-import '../../components/screen_title.dart';
 import '../../components/text.dart';
 import '../controllers/home_controller.dart';
 
@@ -20,44 +18,23 @@ class HomeView extends GetView<HomeController> {
           child: SingleChildScrollView(
             child: Column(
               children: [
+                SizedBox(
+                  height: 5,
+                ),
                 Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 10,
-                  ),
                   decoration: BoxDecoration(
                     color: AppColors.backgroundColor3,
                   ),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 10,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        height: 150,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          image: DecorationImage(
-                            image: AssetImage('assets/images/banniere.png'),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      ScreenTitleComponent(title: "Services"),
-                      LineComponnent(width: 130),
-                    ],
+                  child: Image.asset(
+                    'assets/images/banniere.png',
+                    fit: BoxFit.contain,
                   ),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  padding: EdgeInsets.symmetric(horizontal: 10),
                   alignment: Alignment.topLeft,
                   child: Row(
                     children: [
@@ -75,7 +52,8 @@ class HomeView extends GetView<HomeController> {
                         child: TextComponent(
                           text: controller.acteur!.prenoms +
                               " " +
-                              controller.acteur!.nom,
+                              controller.acteur!.nom +
+                              ".",
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -86,9 +64,10 @@ class HomeView extends GetView<HomeController> {
                   height: 5,
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  padding: EdgeInsets.symmetric(horizontal: 10),
                   alignment: Alignment.topLeft,
                   child: TextComponent(
+                    textAlign: TextAlign.justify,
                     text:
                         "Nous sommes ravi de vous accueillir  parmi nos utilisateurs.",
                   ),

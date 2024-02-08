@@ -14,32 +14,14 @@ class PlaintesView extends GetView<PlaintesController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 70,
-        leading: InkWell(
-          onTap: () {
-            Get.back();
-          },
-          child: Icon(
-            Icons.arrow_back,
-            color: Colors.white,
+        title: Expanded(
+          child: TextComponent(
+            text: 'Plaintes déposées',
+            size: 20,
           ),
         ),
-        title: TextComponent(
-          text: "Plaintes déposées",
-          color: Colors.white,
-        ),
-        actions: [
-          InkWell(
-            child: Container(
-              child: Icon(
-                Icons.notifications,
-                color: Colors.white,
-              ),
-              margin: EdgeInsets.only(right: 20),
-            ),
-          )
-        ],
-        backgroundColor: AppColors.backgroundColor,
+        elevation: 5,
+        shadowColor: Colors.black,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
