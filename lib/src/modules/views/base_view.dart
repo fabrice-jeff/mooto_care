@@ -50,7 +50,7 @@ class BaseView extends GetView<BaseController> {
                 width: 30,
                 height: 30,
               ),
-              margin: EdgeInsets.only(right: 20),
+              margin: EdgeInsets.only(right: 5),
             )
           ],
         ),

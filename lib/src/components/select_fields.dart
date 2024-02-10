@@ -26,9 +26,11 @@ class SelectFieldsWidget extends StatelessWidget {
     return Column(
       children: [
         Container(
+          height: 50,
           child: DropdownButtonFormField2<String>(
             isExpanded: true,
             decoration: InputDecoration(
+              contentPadding: EdgeInsets.all(0),
               enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black38),
                   borderRadius: BorderRadius.circular(10)),
@@ -42,7 +44,7 @@ class SelectFieldsWidget extends StatelessWidget {
             ),
             hint: Text(
               hintText,
-              style: TextStyle(fontSize: 17, color: Colors.black38),
+              style: TextStyle(fontSize: 15, color: Colors.black38),
             ),
             items: items
                 .map((item) => DropdownMenuItem<String>(
@@ -51,6 +53,7 @@ class SelectFieldsWidget extends StatelessWidget {
                         item,
                         style: TextStyle(
                           fontSize: 17,
+                          color: Colors.black38,
                         ),
                       ),
                     ))

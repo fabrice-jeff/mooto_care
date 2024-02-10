@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:get/get.dart';
 
@@ -16,6 +17,7 @@ class BiensController extends GetxController {
   final bienRepository = BienRepository(api: Api.BASE_URL);
   Acteur? acteur = SharePreferences.getActeur();
   List<Bien> biensByActeur = [];
+  bool showPromotion = false;
   List<TypeType> typesCouvertures = [];
   List<String> couvertures = [];
   Map<String, dynamic>? statutPaiement;
@@ -48,21 +50,27 @@ class BiensController extends GetxController {
     );
     await Get.to(paiement.initPaiement());
 
-    if (statutPaiement != null &&
-        statutPaiement!['code'] == Constants.SUCCESS) {
-      print(statutPaiement);
-      // Ajout des informations pour la transactions
-      data['amount'] = amount.toString();
-      data['transaction_id'] = statutPaiement!['transactionId'];
-      data['promotion'] = data['promotion'].toString();
-      Map<String, dynamic>? response = await bienRepository.add(data);
-      if (response!['code'] == Constants.SUCCESS) {
-        allByActeur();
-        Get.toNamed(Routes.BIENS);
-      } else {
-        Get.toNamed(Routes.ADD_BIEN);
-      }
+    // if (statutPaiement != null &&
+    //     statutPaiement!['code'] == Constants.SUCCESS) {
+    print(statutPaiement);
+    // Ajout des informations pour la transactions
+    data['amount'] = amount.toString();
+    // data['transaction_id'] = statutPaiement!['transactionId'];
+    data['transaction_id'] = "kbsdjjks";
+
+    data['promotion'] = data['promotion'].toString();
+    data['file'] = base64Encode(data['file'].readAsBytesSync());
+    data['filename'] = _generateRandomFileName();
+    // print(data);
+    Map<String, dynamic>? response = await bienRepository.add(data);
+    showPromo(false);
+    if (response!['code'] == Constants.SUCCESS) {
+      allByActeur();
+      Get.toNamed(Routes.BIENS);
+    } else {
+      Get.toNamed(Routes.ADD_BIEN);
     }
+    // }
   }
 
   void handleStatutPaiement(Map<String, dynamic>? selectedValue) {
@@ -91,19 +99,19 @@ class BiensController extends GetxController {
 
   int _amountByCouverture(String couverture, bool promotion) {
     int amount;
-    TypeType? couvertureObjet;
-    for (var element in typesCouvertures) {
-      if (element.libelle == couverture) {
-        couvertureObjet = element;
-        break;
-      }
-    }
+    // TypeType? couvertureObjet;
+    // for (var element in typesCouvertures) {
+    //   if (element.libelle == couverture) {
+    //     couvertureObjet = element;
+    //     break;
+    //   }
+    // }
     // Vérifier le type de couverture
-    switch (couvertureObjet!.codeReference) {
+    switch (couverture) {
       case Constants.TYPE_COUVERTURE_BASIQUE:
         amount = 5000;
         if (promotion) {
-          amount = (amount * 0.80).round();
+          amount = 1000;
         }
         break;
       case Constants.TYPE_COUVERTURE_GOLD:
@@ -117,5 +125,18 @@ class BiensController extends GetxController {
         break;
     }
     return amount;
+  }
+
+  showPromo(bool value) {
+    showPromotion = value;
+    update();
+  }
+
+  String _generateRandomFileName() {
+    var now = DateTime.now();
+    var formattedDate =
+        '${now.year}${now.month}${now.day}_${now.hour}${now.minute}${now.second}';
+
+    return 'file_${formattedDate}';
   }
 }

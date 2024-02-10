@@ -65,6 +65,9 @@ dependencies:
   data_table_2: ^2.5.9
   dropdown_button2: ^2.3.9
   intl_phone_field: ^3.2.0
+  image_picker: ^1.0.7
+  video_player: ^2.8.2
+  file_picker: ^6.1.1
 
 
 

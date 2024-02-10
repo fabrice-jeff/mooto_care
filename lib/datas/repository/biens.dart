@@ -43,8 +43,9 @@ class BienRepository {
       if (result['code'] == Constants.SUCCESS) {
         var datas = jsonDecode(result['biens']);
         for (var bien in datas) {
-          bien['acteur'] = jsonDecode(result['acteur']);
-          biens.add(Bien.fromJson(bien));
+          bien['bien']['acteur'] = jsonDecode(result['acteur']);
+          bien['bien']['fichier'] = jsonDecode(bien['fichier']);
+          biens.add(Bien.fromJson(bien['bien']));
         }
       }
     }

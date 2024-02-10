@@ -78,12 +78,6 @@ class VerificationView extends GetView<BiensController> {
                                 SizedBox(
                                   height: 10,
                                 ),
-                                Expanded(
-                                  child: _rowInformation(
-                                    label: "Domicile:",
-                                    value: controller.bienByNum!.adresse,
-                                  ),
-                                ),
                                 SizedBox(
                                   height: 10,
                                 ),

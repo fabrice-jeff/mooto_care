@@ -16,7 +16,8 @@ class ActeurRepository {
       headers: {},
     );
     Map<String, dynamic>? results;
-
+    print(response.statusCode);
+    print(response.body);
     if (response.statusCode == 200) {
       results = jsonDecode(response.body);
       print(results);
