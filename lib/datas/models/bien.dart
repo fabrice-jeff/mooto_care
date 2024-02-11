@@ -1,6 +1,7 @@
 import '../../services/datetime_format.dart';
 import 'acteur.dart';
 import 'fichier.dart';
+import 'type_type.dart';
 
 class Bien {
   final int? id;
@@ -14,7 +15,7 @@ class Bien {
   final DateTime createdAt;
   final DateTime updatedAt;
   final bool deleted;
-  final int typeCouverture;
+  final TypeType typeCouverture;
   final bool promotion;
   Bien({
     this.id,
@@ -34,6 +35,7 @@ class Bien {
   factory Bien.fromJson(json) {
     Acteur acteur = Acteur.fromJson(json['acteur']);
     Fichier fichier = Fichier.fromJson(json['fichier']);
+    TypeType typeType = TypeType.fromJson(json['type_couverture']);
     return Bien(
       code: json['code'],
       nomBien: json['nom_bien'],
@@ -44,7 +46,7 @@ class Bien {
       fichier: fichier,
       createdAt: dateTimeFormat(json['created_at']),
       updatedAt: dateTimeFormat(json['updated_at']),
-      typeCouverture: json['type_couverture'],
+      typeCouverture: typeType,
       promotion: (json['promotion'] == 0) ? false : true,
     );
   }

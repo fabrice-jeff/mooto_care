@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:get/get.dart';
 
@@ -8,6 +7,7 @@ import '../../../datas/models/bien.dart';
 import '../../../datas/models/type_type.dart';
 import '../../../datas/repository/biens.dart';
 import '../../../routes/routes.dart';
+import '../../../services/generate_random_file_name.dart';
 import '../../../services/paiement.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/share_preference.dart';
@@ -50,27 +50,26 @@ class BiensController extends GetxController {
     );
     await Get.to(paiement.initPaiement());
 
-    // if (statutPaiement != null &&
-    //     statutPaiement!['code'] == Constants.SUCCESS) {
-    print(statutPaiement);
-    // Ajout des informations pour la transactions
-    data['amount'] = amount.toString();
-    // data['transaction_id'] = statutPaiement!['transactionId'];
-    data['transaction_id'] = "kbsdjjks";
+    if (statutPaiement != null &&
+        statutPaiement!['code'] == Constants.SUCCESS) {
+      print(statutPaiement);
+      // Ajout des informations pour la transactions
+      data['amount'] = amount.toString();
+      data['transaction_id'] = statutPaiement!['transactionId'];
+      // data['transaction_id'] = "kbsdjjks";
 
-    data['promotion'] = data['promotion'].toString();
-    data['file'] = base64Encode(data['file'].readAsBytesSync());
-    data['filename'] = _generateRandomFileName();
-    // print(data);
-    Map<String, dynamic>? response = await bienRepository.add(data);
-    showPromo(false);
-    if (response!['code'] == Constants.SUCCESS) {
-      allByActeur();
-      Get.toNamed(Routes.BIENS);
-    } else {
-      Get.toNamed(Routes.ADD_BIEN);
+      data['promotion'] = data['promotion'].toString();
+      data['file'] = base64Encode(data['file'].readAsBytesSync());
+      data['filename'] = generateRandomFileName('file');
+      Map<String, dynamic>? response = await bienRepository.add(data);
+      showPromo(false);
+      if (response!['code'] == Constants.SUCCESS) {
+        allByActeur();
+        Get.toNamed(Routes.BIENS);
+      } else {
+        Get.toNamed(Routes.ADD_BIEN);
+      }
     }
-    // }
   }
 
   void handleStatutPaiement(Map<String, dynamic>? selectedValue) {
@@ -130,13 +129,5 @@ class BiensController extends GetxController {
   showPromo(bool value) {
     showPromotion = value;
     update();
-  }
-
-  String _generateRandomFileName() {
-    var now = DateTime.now();
-    var formattedDate =
-        '${now.year}${now.month}${now.day}_${now.hour}${now.minute}${now.second}';
-
-    return 'file_${formattedDate}';
   }
 }

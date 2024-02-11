@@ -16,7 +16,7 @@ class PlainteRepository {
     final url = Uri.parse(api + endpoint);
     Map<String, dynamic>? result;
     final response = await http.post(url, body: data);
-
+    print(response.body);
     if (response.statusCode == 200) {
       result = jsonDecode(response.body);
     }

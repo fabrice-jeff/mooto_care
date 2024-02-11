@@ -37,4 +37,5 @@ class Constants {
   static const helpIcon = 'assets/vectors/help.svg';
   static const logoutIcon = 'assets/vectors/logout.svg';
   static const share = 'assets/vectors/share.svg';
+  static const bien = 'assets/vectors/bien.svg';
 }

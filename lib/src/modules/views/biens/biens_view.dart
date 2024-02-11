@@ -1,8 +1,11 @@
+import 'package:autocare/src/modules/views/biens/bien_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../../../../routes/routes.dart';
 import '../../../../utils/colors.dart';
+import '../../../../utils/constants.dart';
 import '../../../components/no_data.dart';
 import '../../../components/text.dart';
 import '../../controllers/biens_controller.dart';
@@ -22,7 +25,6 @@ class BiensView extends GetView<BiensController> {
         elevation: 5,
         shadowColor: Colors.black,
       ),
-
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -51,17 +53,41 @@ class BiensView extends GetView<BiensController> {
                             child: Card(
                               child: Center(
                                 child: ListTile(
-                                  leading: Icon(Icons.list_alt),
+                                  onTap: () {
+                                    print(controller.biensByActeur[position]
+                                        .typeCouverture);
+
+                                    Get.to(BienView(
+                                        bien: controller
+                                            .biensByActeur[position]));
+                                  },
                                   title: TextComponent(
                                     text: controller
                                         .biensByActeur[position].nomBien,
                                     fontWeight: FontWeight.bold,
                                   ),
-                                  subtitle: TextComponent(
-                                    text:
-                                        "Num: ${controller.biensByActeur[position].numPlaque}",
+                                  subtitle: Padding(
+                                    padding: EdgeInsets.only(top: 5),
+                                    child: TextComponent(
+                                      text:
+                                          "Numéro d'immatriculation: ${controller.biensByActeur[position].numPlaque}",
+                                      size: 13,
+                                    ),
                                   ),
-                                  trailing: Icon(Icons.edit),
+                                  leading: Container(
+                                    width: 60,
+                                    height: 60,
+                                    decoration: BoxDecoration(
+                                      color: AppColors.backgroundColor,
+                                      borderRadius: BorderRadius.circular(60),
+                                    ),
+                                    child: Center(
+                                      child: SvgPicture.asset(
+                                        Constants.bien,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
@@ -86,25 +112,6 @@ class BiensView extends GetView<BiensController> {
         ),
         heroTag: null,
       ),
-      // Container(
-      //   alignment: Alignment.bottomRight,
-      //   child: Column(
-      //     mainAxisAlignment: MainAxisAlignment.end,
-      //     children: [
-      //       FloatingActionButton(
-      //         backgroundColor: AppColors.backgroundColor,
-      //         onPressed: () {},
-      //         child: Icon(
-      //           Icons.search,
-      //           color: Colors.white,
-      //         ),
-      //       ),
-      //       SizedBox(
-      //         height: 10,
-      //       ),
-      //     ],
-      //   ),
-      // ),
     );
   }
 }

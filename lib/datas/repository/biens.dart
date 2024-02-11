@@ -20,10 +20,12 @@ class BienRepository {
       headers: {},
     );
     Map<String, dynamic>? result;
+
     print(response.body);
-    print(response.statusCode);
+
     if (response.statusCode == 200) {
       result = jsonDecode(response.body);
+      print(response.body);
     }
     return result;
   }
@@ -45,6 +47,8 @@ class BienRepository {
         for (var bien in datas) {
           bien['bien']['acteur'] = jsonDecode(result['acteur']);
           bien['bien']['fichier'] = jsonDecode(bien['fichier']);
+          print(jsonDecode(bien['type_type']));
+          bien['bien']['type_couverture'] = jsonDecode(bien['type_type']);
           biens.add(Bien.fromJson(bien['bien']));
         }
       }

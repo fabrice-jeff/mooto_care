@@ -3,11 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-import 'datas/models/deamende_attestaion.dart';
-
-Future<Uint8List> generatePDF(
-  DemandeAttestation demandeAttestation,
-) async {
+Future<Uint8List> generatePDF(Map<String, dynamic> data) async {
   final pdf = pw.Document();
 
   pdf.addPage(
@@ -40,9 +36,7 @@ Future<Uint8List> generatePDF(
                           children: [
                             pw.SizedBox(height: 10),
                             pw.Text(
-                              demandeAttestation.bien.acteur.prenoms +
-                                  " " +
-                                  demandeAttestation.bien.acteur.nom,
+                              data['nom'] + " " + data['prenoms'],
                               style: pw.TextStyle(
                                 color: PdfColor.fromHex("#000000"),
                                 fontWeight: pw.FontWeight.bold,
@@ -52,7 +46,7 @@ Future<Uint8List> generatePDF(
                             pw.Text(
                               "Perdu le " +
                                   DateFormat("dd/MM/yyyy")
-                                      .format(demandeAttestation.datePerte),
+                                      .format(data['date_perte']),
                               style: pw.TextStyle(
                                 color: PdfColor.fromHex("#000000"),
                                 fontWeight: pw.FontWeight.bold,
@@ -60,8 +54,7 @@ Future<Uint8List> generatePDF(
                             ),
                             pw.SizedBox(height: 10),
                             pw.Text(
-                              "Numéro plaque : " +
-                                  demandeAttestation.bien.numPlaque,
+                              "Numéro plaque : " + data['numero_plaque'],
                               style: pw.TextStyle(
                                 color: PdfColor.fromHex("#000000"),
                                 fontWeight: pw.FontWeight.bold,
@@ -86,11 +79,11 @@ Future<Uint8List> generatePDF(
                   ),
                 ),
                 pw.SizedBox(height: 30),
-                pw.Text(
-                  'Fait le ' +
-                      DateFormat("dd/MM/yyyy")
-                          .format(demandeAttestation.createdAt),
-                ),
+                // pw.Text(
+                //   'Fait le ' +
+                //       DateFormat("dd/MM/yyyy")
+                //           .format(demandeAttestation.createdAt),
+                // ),
               ],
             ),
           ),

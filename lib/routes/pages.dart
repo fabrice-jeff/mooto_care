@@ -10,7 +10,7 @@ import '../src/modules/views/plaintes/add_plainte_view.dart';
 import '../src/modules/views/base_view.dart';
 import '../src/modules/views/biens/biens_view.dart';
 import '../src/modules/views/home_view.dart';
-import '../src/modules/views/plaintes/demande_attestation.dart';
+import '../src/modules/views/plaintes/demande_attestation_view.dart';
 import '../src/modules/views/plaintes/home_plainte_view.dart';
 import '../src/modules/views/plaintes/plaintes_view.dart';
 import '../src/modules/views/plus_view.dart';

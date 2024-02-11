@@ -19,4 +19,5 @@ class Routes {
   static const TARIFS = "/tarifs";
   static const PARAMETRES = "/parametres";
   static const NOTIFICATIONS = "/notifications";
+  static const BIEN = '/bien';
 }

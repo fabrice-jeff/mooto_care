@@ -5,11 +5,12 @@ import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 
 import '../../../datas/models/acteur.dart';
-import '../../../datas/models/deamende_attestaion.dart';
 import '../../../datas/models/plainte.dart';
 import '../../../datas/repository/plaintes.dart';
 import '../../../generated_attestation.dart';
 import '../../../routes/routes.dart';
+import '../../../services/generate_random_file_name.dart';
+import '../../../services/paiement.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/share_preference.dart';
 import '../../api.dart';
@@ -18,6 +19,7 @@ class PlaintesController extends GetxController {
   List<Plainte> plaintesDeposes = [];
   PlainteRepository _plainteRepository = PlainteRepository(api: Api.BASE_URL);
   Acteur? acteur = SharePreferences.getActeur();
+  Map<String, dynamic>? statutPaiement;
 
   @override
   void onInit() {
@@ -27,53 +29,63 @@ class PlaintesController extends GetxController {
 
   // Ajout d'une demande d'attestation de perte
   addDemandeAttestation(Map<String, dynamic> data) async {
-    // Générer le fichier PDF
-
     // Demande de paiement
-    // await Get.to(
-    //   _initPaiement(
-    //     amount: 500,
-    //     name: acteur!.nom + " " + acteur!.prenoms,
-    //     email: acteur!.email,
-    //   ),
-    // );
-    // // Confirmation du succes du paiement
-    // if (statusPaiement == Constants.SUCCESS) {
+    int amount = 1000;
+    var paiement = Paiement(
+      amount: amount,
+      name: acteur!.nom + " " + acteur!.prenoms,
+      email: acteur!.email,
+      onStatutPaiementsChanged: handleStatutPaiement,
+    );
+    // await Get.to(paiement.initPaiement());
+
+    // if (statutPaiement != null &&
+    //     statutPaiement!['code'] == Constants.SUCCESS) {
+    print(statutPaiement);
     data['code_acteur'] = acteur!.code;
+    // Ajout des informations pour la transactions
+    data['amount'] = amount.toString();
+    // data['transaction_id'] = statutPaiement!['transactionId'];
+    data['transaction_id'] = "kbsdjjks";
+
+    // Générer le fichier PDF
+    Map<String, dynamic> attestationDemande = {
+      'nom': acteur!.nom,
+      'prenoms': acteur!.prenoms,
+      'date_perte': data['date_perte'],
+      'numero_plaque': data['numero_plaque'],
+    };
+    final pdfData = await generatePDF(attestationDemande);
+    String file = base64Encode(pdfData);
+    String filename = generateRandomFileName('demande');
+    String extension = "pdf";
+    data['file'] = file;
+    data['filename'] = filename;
+    data['extension'] = extension;
+    data['date_perte'] = data['date_perte'].toString();
+
     var result = await _plainteRepository.addDemandeAttestation(data);
 
-    if (result!['code'] == Constants.SUCCESS) {
-      var bien = jsonDecode(result['bien']);
-      bien['acteur'] = jsonDecode(result['acteur']);
+    // if (result!['code'] == Constants.SUCCESS) {
+    //   var bien = jsonDecode(result['bien']);
+    //   bien['acteur'] = jsonDecode(result['acteur']);
+    //   // Envoyer un email
+    //   _sendEmail(
+    //     recipient: acteur!.email,
+    //     subject: "Paiement",
+    //     content: "Votre paiements a été effectué avec succès",
+    //   );
+    //   Get.toNamed(Routes.BASE);
+    // } else {
+    //   Get.toNamed(Routes.DEMANDE_ATTESTATION);
+    // }
 
-      var demande = jsonDecode(result['demande_attestation']);
-      demande['bien'] = bien;
-
-      DemandeAttestation demandeAttestation =
-          DemandeAttestation.fromJson(demande);
-
-      // Générer le fichier PDF
-      final pdfData = await generatePDF(demandeAttestation);
-      String base64Data = base64Encode(pdfData);
-      String filename = demandeAttestation.code + ".pdf";
-      Map<String, dynamic> data = {
-        'pdf_data': base64Data,
-        'filename': filename
-      };
-      _plainteRepository.uploadPdf(data);
-
-      // Envoyer un email
-      // _sendEmail(
-      //   recipient: acteur!.email,
-      //   subject: "Paiement",
-      //   content: "Votre paiements a été effectué avec succès",
-      // );
-      // Get.toNamed(Routes.BASE);
-    } else {
-      Get.toNamed(Routes.DEMANDE_ATTESTATION);
-    }
     // }
     update();
+  }
+
+  void handleStatutPaiement(Map<String, dynamic>? selectedValue) {
+    statutPaiement = selectedValue;
   }
 
   // Ajout d'une plainte
