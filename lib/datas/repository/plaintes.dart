@@ -46,8 +46,14 @@ class PlainteRepository {
         for (var objet in jsonDecode(result['plaintes'])) {
           var objectJson = jsonDecode(objet);
           var acteur = jsonDecode(objectJson['acteur']);
+          var fichier = jsonDecode(objectJson['fichier']);
+          var typeType = jsonDecode(objectJson['type_type']);
+
           var bien = jsonDecode(objectJson['bien']);
           bien['acteur'] = acteur;
+          bien['fichier'] = fichier;
+          bien['type_couverture'] = typeType;
+
           var plainte = jsonDecode(objectJson['plainte']);
           plainte['bien'] = bien;
 

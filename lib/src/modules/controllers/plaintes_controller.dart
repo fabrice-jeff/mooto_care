@@ -66,19 +66,17 @@ class PlaintesController extends GetxController {
 
     var result = await _plainteRepository.addDemandeAttestation(data);
 
-    // if (result!['code'] == Constants.SUCCESS) {
-    //   var bien = jsonDecode(result['bien']);
-    //   bien['acteur'] = jsonDecode(result['acteur']);
-    //   // Envoyer un email
-    //   _sendEmail(
-    //     recipient: acteur!.email,
-    //     subject: "Paiement",
-    //     content: "Votre paiements a été effectué avec succès",
-    //   );
-    //   Get.toNamed(Routes.BASE);
-    // } else {
-    //   Get.toNamed(Routes.DEMANDE_ATTESTATION);
-    // }
+    if (result!['code'] == Constants.SUCCESS) {
+      // Envoyer un email
+      // _sendEmail(
+      //   recipient: acteur!.email,
+      //   subject: "Paiement",
+      //   content: "Votre paiements a été effectué avec succès",
+      // );
+      Get.toNamed(Routes.BASE);
+    } else {
+      Get.toNamed(Routes.DEMANDE_ATTESTATION);
+    }
 
     // }
     update();
@@ -91,17 +89,27 @@ class PlaintesController extends GetxController {
   // Ajout d'une plainte
   addPlainte(Map<String, dynamic> data) async {
     // Demande de paiement
-    // await Get.to(
-    //   _initPaiement(
-    //     amount: 200,
-    //     name: acteur!.nom + " " + acteur!.prenoms,
-    //     email: acteur!.email,
-    //   ),
-    // );
-    // if (statusPaiement == Constants.SUCCESS) {
+    int amount = 1000;
+    var paiement = Paiement(
+      amount: amount,
+      name: acteur!.nom + " " + acteur!.prenoms,
+      email: acteur!.email,
+      onStatutPaiementsChanged: handleStatutPaiement,
+    );
+    // await Get.to(paiement.initPaiement());
+
+    // if (statutPaiement != null &&
+    //     statutPaiement!['code'] == Constants.SUCCESS) {
+    print(statutPaiement);
     data['code_acteur'] = acteur!.code;
+    // Ajout des informations pour la transactions
+    data['amount'] = amount.toString();
+    // data['transaction_id'] = statutPaiement!['transactionId'];
+    data['transaction_id'] = "kbsdjjks";
+    // Informations sur le fichier
+    data['attestation'] = base64Encode(data['attestation'].readAsBytesSync());
+    data['filename'] = generateRandomFileName('attestation');
     var results = await _plainteRepository.addPlainte(data);
-    print(results);
 
     if (results!['code'] == Constants.SUCCESS) {
       getPlaintesDeposes();
@@ -109,7 +117,6 @@ class PlaintesController extends GetxController {
     } else {
       Get.toNamed(Routes.ADD_PLAINTE);
     }
-    // }
 
     update();
   }

@@ -48,12 +48,12 @@ class PlaintesView extends GetView<PlaintesController> {
                                   leading: Icon(Icons.list_alt),
                                   title: TextComponent(
                                     text: controller
-                                        .plaintesDeposes[position].nomBien,
+                                        .plaintesDeposes[position].bien.nomBien,
                                     fontWeight: FontWeight.bold,
                                   ),
                                   subtitle: TextComponent(
                                     text:
-                                        "Num: ${controller.plaintesDeposes[position].numeroPlaque}",
+                                        "Num: ${controller.plaintesDeposes[position].bien.numPlaque}",
                                   ),
                                   trailing: Icon(Icons.edit),
                                 ),

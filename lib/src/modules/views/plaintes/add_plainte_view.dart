@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:date_time_picker/date_time_picker.dart';
-import 'package:document_scanner_flutter/document_scanner_flutter.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -46,18 +46,36 @@ class AddPlainteForm extends StatefulWidget {
 }
 
 class _AddPlainteFormState extends State<AddPlainteForm> {
-  TextEditingController nomBien = TextEditingController();
+  // TextEditingController nomBien = TextEditingController();
   TextEditingController datePerte = TextEditingController();
   TextEditingController numPlaque = TextEditingController();
   TextEditingController numChassis = TextEditingController();
   DateTime? selectedDate;
-  File? _scannerImage;
+  File? _file;
+  bool _fileSelected = false;
+  String? _extension;
 
-  void startScan(BuildContext context) async {
-    var image = await DocumentScannerFlutter.launch(context);
-    if (image != null) {
+  // void startScan(BuildContext context) async {
+  //   var image = await DocumentScannerFlutter.launch(context);
+  //   if (image != null) {
+  //     setState(() {
+  //       _scannerImage = image;
+  //     });
+  //   }
+  // }
+
+  void _openFileExplorer() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'jpeg', 'png', 'pdf'], // Extensions autorisées
+    );
+
+    if (result != null) {
       setState(() {
-        _scannerImage = image;
+        var platformFile = result.files.single;
+        _file = File(platformFile.path!);
+        _extension = platformFile.extension; // Récupérer l'extension du fichier
+        _fileSelected = true;
       });
     }
   }
@@ -102,12 +120,12 @@ class _AddPlainteFormState extends State<AddPlainteForm> {
               SizedBox(
                 height: 30,
               ),
-              TextFormFieldsComponent(
-                hintText: "Nom du Bien",
-                prefixIcon: Icons.list_alt,
-                controller: nomBien,
-                textInputType: TextInputType.name,
-              ),
+              // TextFormFieldsComponent(
+              //   hintText: "Nom du Bien",
+              //   prefixIcon: Icons.list_alt,
+              //   controller: nomBien,
+              //   textInputType: TextInputType.name,
+              // ),
               SizedBox(
                 height: 30,
               ),
@@ -176,27 +194,37 @@ class _AddPlainteFormState extends State<AddPlainteForm> {
                 alignment: Alignment.topLeft,
                 child: TextComponent(text: " Ajoutez l'attestation de perte"),
               ),
-              DottedBorder(
-                padding: EdgeInsets.all(20),
-                borderType: BorderType.RRect,
-                radius: Radius.circular(10),
-                color: Colors.black38,
-                child: InkWell(
-                  onTap: () => startScan(context),
-                  child: (_scannerImage != null)
-                      ? Image.file(
-                          _scannerImage!,
-                          fit: BoxFit.cover,
-                        )
-                      : Container(
-                          height: 85,
-                          child: Center(
+              InkWell(
+                onTap: _openFileExplorer,
+                child: DottedBorder(
+                  color: Colors.black38,
+                  borderType: BorderType.RRect,
+                  radius: Radius.circular(10),
+                  padding: EdgeInsets.all(6),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                    child: _fileSelected
+                        ? Container(
+                            alignment: Alignment.center,
+                            height: 100,
+                            width: double.infinity,
+                            child: Text(
+                              'Fichier sélectionné',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          )
+                        : Container(
+                            height: 100,
+                            width: double.infinity,
                             child: Icon(
-                              Icons.document_scanner_outlined,
+                              Icons.attach_file,
                               color: Colors.black38,
+                              size: 30,
                             ),
                           ),
-                        ),
+                  ),
                 ),
               ),
               SizedBox(
@@ -208,9 +236,11 @@ class _AddPlainteFormState extends State<AddPlainteForm> {
                     'date_perte': selectedDate.toString(),
                     'numero_chassis': numChassis.text,
                     'numero_plaque': numPlaque.text,
-                    'nom_bien': nomBien.text,
-                    'attestation': 'ok'
+                    // 'nom_bien': nomBien.text,
+                    'attestation': _file,
+                    'extension': _extension,
                   };
+
                   widget.controller.addPlainte(data);
                 },
                 child: Container(
