@@ -49,6 +49,7 @@ class BienRepository {
           bien['bien']['fichier'] = jsonDecode(bien['fichier']);
           print(jsonDecode(bien['type_type']));
           bien['bien']['type_couverture'] = jsonDecode(bien['type_type']);
+          bien['bien']['status'] = jsonDecode(bien['status']);
           biens.add(Bien.fromJson(bien['bien']));
         }
       }

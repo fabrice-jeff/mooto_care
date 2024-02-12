@@ -38,4 +38,7 @@ class Constants {
   static const logoutIcon = 'assets/vectors/logout.svg';
   static const share = 'assets/vectors/share.svg';
   static const bien = 'assets/vectors/bien.svg';
+
+  static const STATUT_MOTO_SECURITE = "STATUT_MOTO_SECURITE";
+  static const STATUT_MOTO_VOLE_PERDU = "STATUT_MOTO_VOLE_PERDU";
 }

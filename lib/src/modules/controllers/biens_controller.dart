@@ -84,7 +84,12 @@ class BiensController extends GetxController {
     dynamic result = await bienRepository.getByNum(data);
 
     if (result['code'] == Constants.SUCCESS) {
-      bienByNum = Bien.fromJson(jsonDecode(result['bien']));
+      var bien = jsonDecode(result['bien']);
+      bien['type_couverture'] = jsonDecode(result['type_type']);
+      bien['fichier'] = jsonDecode(result['fichier']);
+      bien['acteur'] = jsonDecode(result['acteur']);
+      bien['status'] = jsonDecode(result['status']);
+      bienByNum = Bien.fromJson(bien);
     }
     update();
   }
