@@ -54,12 +54,12 @@ class BiensView extends GetView<BiensController> {
                               child: Center(
                                 child: ListTile(
                                   onTap: () {
-                                    print(controller.biensByActeur[position]
-                                        .typeCouverture);
-
-                                    Get.to(BienView(
-                                        bien: controller
-                                            .biensByActeur[position]));
+                                    Get.to(
+                                      BienView(
+                                        bien:
+                                            controller.biensByActeur[position],
+                                      ),
+                                    );
                                   },
                                   title: TextComponent(
                                     text: controller
@@ -88,6 +88,17 @@ class BiensView extends GetView<BiensController> {
                                       ),
                                     ),
                                   ),
+                                  trailing: (controller.biensByActeur[position]
+                                              .typeCouverture ==
+                                          null)
+                                      ? Icon(
+                                          Icons.not_interested,
+                                          color: Colors.red,
+                                        )
+                                      : Icon(
+                                          Icons.verified,
+                                          color: Colors.green,
+                                        ),
                                 ),
                               ),
                             ),

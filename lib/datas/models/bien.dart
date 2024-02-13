@@ -16,7 +16,7 @@ class Bien {
   final DateTime createdAt;
   final DateTime updatedAt;
   final bool deleted;
-  final TypeType typeCouverture;
+  final TypeType? typeCouverture;
   final bool promotion;
   final Status? status;
   Bien({
@@ -31,14 +31,16 @@ class Bien {
     required this.createdAt,
     required this.updatedAt,
     this.deleted = false,
-    required this.typeCouverture,
+    this.typeCouverture,
     this.promotion = false,
     this.status,
   });
   factory Bien.fromJson(json) {
     Acteur acteur = Acteur.fromJson(json['acteur']);
     Fichier fichier = Fichier.fromJson(json['fichier']);
-    TypeType typeType = TypeType.fromJson(json['type_couverture']);
+    TypeType? typeType = (json['type_couverture'] == null)
+        ? null
+        : TypeType.fromJson(json['type_couverture']);
     Status status = Status.fromJson(json['status']);
     return Bien(
       code: json['code'],

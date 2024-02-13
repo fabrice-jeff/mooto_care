@@ -40,29 +40,28 @@ class BiensController extends GetxController {
 
   // Ajout d'un bien
   add(Map<String, dynamic> data) async {
-    var amount = _amountByCouverture(data['couverture'], data['promotion']);
+    // var amount = _amountByCouverture(data['couverture'], data['promotion']);
     // Demande de paiement
-    var paiement = Paiement(
-      amount: amount,
-      name: acteur!.nom + " " + acteur!.prenoms,
-      email: acteur!.email,
-      onStatutPaiementsChanged: handleStatutPaiement,
-    );
+    // var paiement = Paiement(
+    //   amount: amount,
+    //   name: acteur!.nom + " " + acteur!.prenoms,
+    //   email: acteur!.email,
+    //   onStatutPaiementsChanged: handleStatutPaiement,
+    // );
     // await Get.to(paiement.initPaiement());
 
     // if (statutPaiement != null &&
     //     statutPaiement!['code'] == Constants.SUCCESS) {
-    print(statutPaiement);
+    // print(statutPaiement);
     // Ajout des informations pour la transactions
-    data['amount'] = amount.toString();
+    // data['amount'] = amount.toString();
     // data['transaction_id'] = statutPaiement!['transactionId'];
-    data['transaction_id'] = "kbsdjjks";
+    // data['transaction_id'] = "kbsdjjks";
 
     data['promotion'] = data['promotion'].toString();
     data['file'] = base64Encode(data['file'].readAsBytesSync());
     data['filename'] = generateRandomFileName('file');
     Map<String, dynamic>? response = await bienRepository.add(data);
-    showPromo(false);
     if (response!['code'] == Constants.SUCCESS) {
       allByActeur();
       Get.toNamed(Routes.BIENS);

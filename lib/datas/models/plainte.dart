@@ -1,6 +1,5 @@
 import '../../services/datetime_format.dart';
 import 'bien.dart';
-import 'fichier.dart';
 
 class Plainte {
   final int? id;

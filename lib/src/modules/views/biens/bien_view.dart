@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../../datas/models/bien.dart';
 import '../../../../utils/colors.dart';
 import '../../../components/text.dart';
+import 'assure_bien_view.dart';
 
 class BienView extends StatelessWidget {
   final Bien bien;
@@ -96,7 +98,9 @@ class BienView extends StatelessWidget {
                     _infoUser(libelle: "Numéro plaque:", value: bien.numPlaque),
                     _infoUser(
                         libelle: "Niveau de couverture:",
-                        value: bien.typeCouverture.libelle),
+                        value: (bien.typeCouverture == null)
+                            ? "Pas assurée"
+                            : bien.typeCouverture!.libelle),
                     _infoUser(libelle: "Carte grise:", value: "0"),
                   ],
                 ),
@@ -104,22 +108,54 @@ class BienView extends StatelessWidget {
               SizedBox(
                 height: 20,
               ),
-              InkWell(
-                onTap: () {},
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10),
-                  alignment: Alignment.center,
-                  height: 50,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: AppColors.backgroundColor,
-                    borderRadius: BorderRadius.circular(10),
+              Row(
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {},
+                      child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 10),
+                        alignment: Alignment.center,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: AppColors.backgroundColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: TextComponent(
+                          text: "Modifier",
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
                   ),
-                  child: TextComponent(
-                    text: "Modifier",
-                    color: Colors.white,
+                  SizedBox(
+                    width: 10,
                   ),
-                ),
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        Get.to(
+                          AssureBienView(
+                            bien: bien,
+                          ),
+                        );
+                      },
+                      child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 10),
+                        alignment: Alignment.center,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: AppColors.backgroundColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: TextComponent(
+                          text: "Assurer",
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

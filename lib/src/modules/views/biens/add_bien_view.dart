@@ -9,13 +9,13 @@ import 'package:get/get.dart';
 import '../../../../utils/colors.dart';
 import '../../../../utils/constants.dart';
 import '../../../components/container_round.dart';
-import '../../../components/select_fields.dart';
 import '../../../components/text.dart';
 import '../../../components/text_form_field.dart';
 import '../../controllers/biens_controller.dart';
 
 class AddBienView extends GetView<BiensController> {
   const AddBienView();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -214,16 +214,16 @@ class _AddBienFormState extends State<AddBienForm> {
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 30,
-                ),
-                SelectFieldsWidget(
-                  hintText: "Niveau de couverture",
-                  icon: Icons.notes_sharp,
-                  label: "Niveau de couverture",
-                  items: controller.couvertures,
-                  onValueChanged: handleSelectValue,
-                ),
+                // SizedBox(
+                //   height: 30,
+                // ),
+                // SelectFieldsWidget(
+                //   hintText: "Niveau de couverture",
+                //   icon: Icons.notes_sharp,
+                //   label: "Niveau de couverture",
+                //   items: controller.couvertures,
+                //   onValueChanged: handleSelectValue,
+                // ),
                 SizedBox(
                   height: 10,
                 ),
@@ -276,7 +276,7 @@ class _AddBienFormState extends State<AddBienForm> {
                       'adresse': adresse.text,
                       'acteur': widget.controller.acteur!.code,
                       'promotion': basiquePromotion,
-                      'couverture': couverture,
+                      // 'couverture': couverture,
                       'file': _file,
                       'extension': _extension,
                     };

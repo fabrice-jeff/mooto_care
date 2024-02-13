@@ -21,11 +21,8 @@ class BienRepository {
     );
     Map<String, dynamic>? result;
 
-    print(response.body);
-
     if (response.statusCode == 200) {
       result = jsonDecode(response.body);
-      print(response.body);
     }
     return result;
   }
@@ -47,8 +44,9 @@ class BienRepository {
         for (var bien in datas) {
           bien['bien']['acteur'] = jsonDecode(result['acteur']);
           bien['bien']['fichier'] = jsonDecode(bien['fichier']);
-          print(jsonDecode(bien['type_type']));
-          bien['bien']['type_couverture'] = jsonDecode(bien['type_type']);
+          var typeType = bien['type_type'];
+          bien['bien']['type_couverture'] =
+              (typeType == null) ? null : jsonDecode(typeType);
           bien['bien']['status'] = jsonDecode(bien['status']);
           biens.add(Bien.fromJson(bien['bien']));
         }
