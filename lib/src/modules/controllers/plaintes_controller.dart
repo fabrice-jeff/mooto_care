@@ -37,48 +37,46 @@ class PlaintesController extends GetxController {
       email: acteur!.email,
       onStatutPaiementsChanged: handleStatutPaiement,
     );
-    // await Get.to(paiement.initPaiement());
+    await Get.to(paiement.initPaiement());
 
-    // if (statutPaiement != null &&
-    //     statutPaiement!['code'] == Constants.SUCCESS) {
-    print(statutPaiement);
-    data['code_acteur'] = acteur!.code;
-    // Ajout des informations pour la transactions
-    data['amount'] = amount.toString();
-    // data['transaction_id'] = statutPaiement!['transactionId'];
-    data['transaction_id'] = "kbsdjjks";
+    if (statutPaiement != null &&
+        statutPaiement!['code'] == Constants.SUCCESS) {
+      data['code_acteur'] = acteur!.code;
+      // Ajout des informations pour la transactions
+      data['amount'] = amount.toString();
+      data['transaction_id'] = statutPaiement!['transactionId'];
+      // data['transaction_id'] = "kbsdjjks";
 
-    // Générer le fichier PDF
-    Map<String, dynamic> attestationDemande = {
-      'nom': acteur!.nom,
-      'prenoms': acteur!.prenoms,
-      'date_perte': data['date_perte'],
-      'numero_plaque': data['numero_plaque'],
-    };
-    final pdfData = await generatePDF(attestationDemande);
-    String file = base64Encode(pdfData);
-    String filename = generateRandomFileName('demande');
-    String extension = "pdf";
-    data['file'] = file;
-    data['filename'] = filename;
-    data['extension'] = extension;
-    data['date_perte'] = data['date_perte'].toString();
+      // Générer le fichier PDF
+      Map<String, dynamic> attestationDemande = {
+        'nom': acteur!.nom,
+        'prenoms': acteur!.prenoms,
+        'date_perte': data['date_perte'],
+        'numero_plaque': data['numero_plaque'],
+      };
+      final pdfData = await generatePDF(attestationDemande);
+      String file = base64Encode(pdfData);
+      String filename = generateRandomFileName('demande');
+      String extension = "pdf";
+      data['file'] = file;
+      data['filename'] = filename;
+      data['extension'] = extension;
+      data['date_perte'] = data['date_perte'].toString();
 
-    var result = await _plainteRepository.addDemandeAttestation(data);
+      var result = await _plainteRepository.addDemandeAttestation(data);
 
-    if (result!['code'] == Constants.SUCCESS) {
-      // Envoyer un email
-      // _sendEmail(
-      //   recipient: acteur!.email,
-      //   subject: "Paiement",
-      //   content: "Votre paiements a été effectué avec succès",
-      // );
-      Get.toNamed(Routes.BASE);
-    } else {
-      Get.toNamed(Routes.DEMANDE_ATTESTATION);
+      if (result!['code'] == Constants.SUCCESS) {
+        // Envoyer un email
+        // _sendEmail(
+        //   recipient: acteur!.email,
+        //   subject: "Paiement",
+        //   content: "Votre paiements a été effectué avec succès",
+        // );
+        Get.toNamed(Routes.BASE);
+      } else {
+        Get.toNamed(Routes.DEMANDE_ATTESTATION);
+      }
     }
-
-    // }
     update();
   }
 
@@ -96,26 +94,26 @@ class PlaintesController extends GetxController {
       email: acteur!.email,
       onStatutPaiementsChanged: handleStatutPaiement,
     );
-    // await Get.to(paiement.initPaiement());
+    await Get.to(paiement.initPaiement());
 
-    // if (statutPaiement != null &&
-    //     statutPaiement!['code'] == Constants.SUCCESS) {
-    print(statutPaiement);
-    data['code_acteur'] = acteur!.code;
-    // Ajout des informations pour la transactions
-    data['amount'] = amount.toString();
-    // data['transaction_id'] = statutPaiement!['transactionId'];
-    data['transaction_id'] = "kbsdjjks";
-    // Informations sur le fichier
-    data['attestation'] = base64Encode(data['attestation'].readAsBytesSync());
-    data['filename'] = generateRandomFileName('attestation');
-    var results = await _plainteRepository.addPlainte(data);
+    if (statutPaiement != null &&
+        statutPaiement!['code'] == Constants.SUCCESS) {
+      data['code_acteur'] = acteur!.code;
+      // Ajout des informations pour la transactions
+      data['amount'] = amount.toString();
+      // data['transaction_id'] = statutPaiement!['transactionId'];
+      data['transaction_id'] = "kbsdjjks";
+      // Informations sur le fichier
+      data['attestation'] = base64Encode(data['attestation'].readAsBytesSync());
+      data['filename'] = generateRandomFileName('attestation');
+      var results = await _plainteRepository.addPlainte(data);
 
-    if (results!['code'] == Constants.SUCCESS) {
-      getPlaintesDeposes();
-      Get.toNamed(Routes.PLAINTES);
-    } else {
-      Get.toNamed(Routes.ADD_PLAINTE);
+      if (results!['code'] == Constants.SUCCESS) {
+        getPlaintesDeposes();
+        Get.toNamed(Routes.PLAINTES);
+      } else {
+        Get.toNamed(Routes.ADD_PLAINTE);
+      }
     }
 
     update();

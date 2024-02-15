@@ -40,25 +40,6 @@ class BiensController extends GetxController {
 
   // Ajout d'un bien
   add(Map<String, dynamic> data) async {
-    // var amount = _amountByCouverture(data['couverture'], data['promotion']);
-    // Demande de paiement
-    // var paiement = Paiement(
-    //   amount: amount,
-    //   name: acteur!.nom + " " + acteur!.prenoms,
-    //   email: acteur!.email,
-    //   onStatutPaiementsChanged: handleStatutPaiement,
-    // );
-    // await Get.to(paiement.initPaiement());
-
-    // if (statutPaiement != null &&
-    //     statutPaiement!['code'] == Constants.SUCCESS) {
-    // print(statutPaiement);
-    // Ajout des informations pour la transactions
-    // data['amount'] = amount.toString();
-    // data['transaction_id'] = statutPaiement!['transactionId'];
-    // data['transaction_id'] = "kbsdjjks";
-
-    // data['promotion'] = data['promotion'].toString();
     data['file'] = base64Encode(data['file'].readAsBytesSync());
     data['filename'] = generateRandomFileName('file');
     Map<String, dynamic>? response = await bienRepository.add(data);
@@ -68,7 +49,6 @@ class BiensController extends GetxController {
     } else {
       Get.toNamed(Routes.ADD_BIEN);
     }
-    // }
   }
 
   void handleStatutPaiement(Map<String, dynamic>? selectedValue) {
@@ -102,14 +82,6 @@ class BiensController extends GetxController {
 
   int _amountByCouverture(String couverture, bool promotion) {
     int amount;
-    // TypeType? couvertureObjet;
-    // for (var element in typesCouvertures) {
-    //   if (element.libelle == couverture) {
-    //     couvertureObjet = element;
-    //     break;
-    //   }
-    // }
-    // Vérifier le type de couverture
     switch (couverture) {
       case Constants.TYPE_COUVERTURE_BASIQUE:
         amount = 5000;
@@ -145,23 +117,22 @@ class BiensController extends GetxController {
       email: acteur!.email,
       onStatutPaiementsChanged: handleStatutPaiement,
     );
-    // await Get.to(paiement.initPaiement());
+    await Get.to(paiement.initPaiement());
 
-    // if (statutPaiement != null &&
-    //     statutPaiement!['code'] == Constants.SUCCESS) {
-    print(statutPaiement);
-    // Ajout des informations pour la transactions
-    data['amount'] = amount.toString();
-    // data['transaction_id'] = statutPaiement!['transactionId'];
-    data['transaction_id'] = "kbsdjjks";
-    data['promotion'] = data['promotion'].toString();
-    Map<String, dynamic>? response = await bienRepository.assureMoto(data);
-    if (response!['code'] == Constants.SUCCESS) {
-      allByActeur();
-      Get.toNamed(Routes.BIENS);
-    } else {
-      Get.toNamed(Routes.ADD_BIEN);
+    if (statutPaiement != null &&
+        statutPaiement!['code'] == Constants.SUCCESS) {
+      // Ajout des informations pour la transactions
+      data['amount'] = amount.toString();
+      data['transaction_id'] = statutPaiement!['transactionId'];
+      // data['transaction_id'] = "kbsdjjks";
+      data['promotion'] = data['promotion'].toString();
+      Map<String, dynamic>? response = await bienRepository.assureMoto(data);
+      if (response!['code'] == Constants.SUCCESS) {
+        allByActeur();
+        Get.toNamed(Routes.BIENS);
+      } else {
+        Get.toNamed(Routes.ADD_BIEN);
+      }
     }
-    // }
   }
 }

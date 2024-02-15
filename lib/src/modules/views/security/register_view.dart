@@ -38,7 +38,7 @@ class _RegisterFormState extends State<RegisterForm> {
   bool acceptCondiction = false;
   @override
   Widget build(BuildContext context) {
-    var controller = Get.put(SecurityController());
+    Get.put(SecurityController());
     return Form(
       key: _formKey,
       child: SingleChildScrollView(
