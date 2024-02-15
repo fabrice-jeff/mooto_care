@@ -48,7 +48,7 @@ class BienView extends StatelessWidget {
       appBar: AppBar(
         title: Expanded(
           child: TextComponent(
-            text: 'Motos enregistrées',
+            text: 'Détails Moto',
             size: 20,
           ),
         ),
@@ -128,33 +128,31 @@ class BienView extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: InkWell(
-                      onTap: () {
-                        Get.to(
-                          AssureBienView(
-                            bien: bien,
+                  if (bien.typeCouverture == null)
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          Get.to(
+                            AssureBienView(
+                              bien: bien,
+                            ),
+                          );
+                        },
+                        child: Container(
+                          margin: EdgeInsets.symmetric(horizontal: 10),
+                          alignment: Alignment.center,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: AppColors.backgroundColor,
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                        );
-                      },
-                      child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 10),
-                        alignment: Alignment.center,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: AppColors.backgroundColor,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: TextComponent(
-                          text: "Assurer",
-                          color: Colors.white,
+                          child: TextComponent(
+                            text: "Assurer",
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
-                  ),
                 ],
               ),
             ],

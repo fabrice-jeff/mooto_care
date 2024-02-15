@@ -25,6 +25,7 @@ class Api {
   static const ALL_BIENS_BY_ACTEUR = '/biens/all_acteur';
   static const ALL_BIENS = '/biens/all.php';
   static const BIEN_BY_NUM = '/biens/get_by_num';
+  static const ASSURE_BEIN = '/biens/assure_bien';
 
   // Plaintes
   static const ADD_PLAINTE = '/plaintes/add_plainte';

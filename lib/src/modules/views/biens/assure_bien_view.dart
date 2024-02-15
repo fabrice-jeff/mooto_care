@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -18,7 +19,7 @@ class AssureBienView extends GetView<BiensController> {
       appBar: AppBar(
         title: Expanded(
           child: TextComponent(
-            text: "Enregistrement d'une moto",
+            text: "Choisir une couverture",
             size: 20,
           ),
         ),
@@ -29,7 +30,7 @@ class AssureBienView extends GetView<BiensController> {
         child: Center(
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 10),
-            child: AssureBienForm(controller: controller),
+            child: AssureBienForm(controller: controller, bien: bien),
           ),
         ),
       ),
@@ -39,8 +40,10 @@ class AssureBienView extends GetView<BiensController> {
 
 class AssureBienForm extends StatefulWidget {
   final BiensController controller;
+  final Bien bien;
 
-  const AssureBienForm({super.key, required this.controller});
+  const AssureBienForm(
+      {super.key, required this.controller, required this.bien});
 
   @override
   State<AssureBienForm> createState() => _AssureBienFormState();
@@ -48,6 +51,14 @@ class AssureBienForm extends StatefulWidget {
 
 class _AssureBienFormState extends State<AssureBienForm> {
   String? couverture;
+  bool basiquePromotion = false;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.showPromotion = false;
+  }
+
   void handleSelectValue(String? selectedValue) {
     for (var couv in widget.controller.typesCouvertures) {
       if (selectedValue == couv.libelle) {
@@ -64,40 +75,93 @@ class _AssureBienFormState extends State<AssureBienForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-            height: 30,
-          ),
-          SelectFieldsWidget(
-            hintText: "Niveau de couverture",
-            icon: Icons.notes_sharp,
-            label: "Niveau de couverture",
-            items: widget.controller.couvertures,
-            onValueChanged: handleSelectValue,
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          InkWell(
-            onTap: () {},
-            child: Container(
+    return GetBuilder<BiensController>(
+      builder: (controller) => Form(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
               alignment: Alignment.center,
-              height: 50,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: AppColors.backgroundColor,
-                borderRadius: BorderRadius.circular(10),
-              ),
               child: TextComponent(
-                text: "Enregistrer",
-                color: Colors.white,
+                text: widget.bien.nomBien,
+                fontWeight: FontWeight.bold,
+                size: 30,
               ),
             ),
-          ),
-        ],
+            SizedBox(
+              height: 30,
+            ),
+            SelectFieldsWidget(
+              hintText: "Niveau de couverture",
+              icon: Icons.notes_sharp,
+              label: "Niveau de couverture",
+              items: widget.controller.couvertures,
+              onValueChanged: handleSelectValue,
+            ),
+            if (widget.controller.showPromotion == true)
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CupertinoSwitch(
+                      value: basiquePromotion,
+                      onChanged: (value) {
+                        setState(() {
+                          basiquePromotion = !basiquePromotion;
+                        });
+                      },
+                      activeColor: AppColors.backgroundColor,
+                    ),
+                    SizedBox(
+                      width: 35,
+                    ),
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            basiquePromotion = !basiquePromotion;
+                          });
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          child: TextComponent(
+                            text: "80% sur le niveau basique",
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            SizedBox(
+              height: 20,
+            ),
+            InkWell(
+              onTap: () {
+                Map<String, dynamic> data = {
+                  'couverture': couverture,
+                  'promotion': basiquePromotion,
+                  'code_bien': widget.bien.code
+                };
+                widget.controller.assureMoto(data);
+              },
+              child: Container(
+                alignment: Alignment.center,
+                height: 50,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: AppColors.backgroundColor,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: TextComponent(
+                  text: "Assurez votre moto",
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

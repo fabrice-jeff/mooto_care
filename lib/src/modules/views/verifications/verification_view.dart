@@ -5,13 +5,14 @@ import 'package:flutter/src/widgets/framework.dart';
 
 import 'package:get/get.dart';
 
-import '../../../../utils/colors.dart';
-import '../../../datas/models/status.dart';
-import '../../../utils/constants.dart';
-import '../../components/no_data.dart';
-import '../../components/text.dart';
-import '../../components/text_form_field.dart';
-import '../controllers/biens_controller.dart';
+import '../../../../../utils/colors.dart';
+import '../../../../datas/models/status.dart';
+import '../../../../utils/constants.dart';
+import '../../../components/no_data.dart';
+import '../../../components/text.dart';
+import '../../../components/text_form_field.dart';
+import '../../controllers/biens_controller.dart';
+import 'text_scanner.dart';
 
 class VerificationView extends GetView<BiensController> {
   const VerificationView();
@@ -212,7 +213,9 @@ class VerificationView extends GetView<BiensController> {
                       ),
                       Expanded(
                         child: InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            Get.to(TextScanner());
+                          },
                           child: Container(
                             alignment: Alignment.center,
                             height: 50,

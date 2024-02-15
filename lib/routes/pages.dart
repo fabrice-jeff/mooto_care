@@ -18,7 +18,7 @@ import '../src/modules/views/security/login_view.dart';
 import '../src/modules/views/security/register_view.dart';
 import '../src/modules/views/splash_screen_view.dart';
 import '../src/modules/views/tarifs_view.dart';
-import '../src/modules/views/verification_view.dart';
+import '../src/modules/views/verifications/verification_view.dart';
 import 'routes.dart';
 
 class AppPage {

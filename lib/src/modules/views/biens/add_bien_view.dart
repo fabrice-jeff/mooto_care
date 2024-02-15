@@ -227,42 +227,7 @@ class _AddBienFormState extends State<AddBienForm> {
                 SizedBox(
                   height: 10,
                 ),
-                if (controller.showPromotion == true)
-                  Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CupertinoSwitch(
-                          value: basiquePromotion,
-                          onChanged: (value) {
-                            setState(() {
-                              basiquePromotion = !basiquePromotion;
-                            });
-                          },
-                          activeColor: AppColors.backgroundColor,
-                        ),
-                        SizedBox(
-                          width: 35,
-                        ),
-                        Expanded(
-                          child: InkWell(
-                            onTap: () {
-                              setState(() {
-                                basiquePromotion = !basiquePromotion;
-                              });
-                            },
-                            child: Container(
-                              width: double.infinity,
-                              child: TextComponent(
-                                text: "80% sur le niveau basique",
-                                size: 20,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+
                 SizedBox(
                   height: 20,
                 ),
@@ -275,7 +240,7 @@ class _AddBienFormState extends State<AddBienForm> {
                       'num_chassis': numChassis.text,
                       'adresse': adresse.text,
                       'acteur': widget.controller.acteur!.code,
-                      'promotion': basiquePromotion,
+                      // 'promotion': basiquePromotion,
                       // 'couverture': couverture,
                       'file': _file,
                       'extension': _extension,

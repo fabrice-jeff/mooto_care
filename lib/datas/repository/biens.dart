@@ -89,4 +89,20 @@ class BienRepository {
     }
     return couvertures;
   }
+
+  // Assurer une moto
+  Future<Map<String, dynamic>?> assureMoto(data) async {
+    final endpoint = Api.ASSURE_BEIN;
+    final url = Uri.parse(api + endpoint);
+    final response = await http.post(
+      url,
+      body: data,
+      headers: {},
+    );
+    Map<String, dynamic>? result;
+    if (response.statusCode == 200) {
+      result = jsonDecode(response.body);
+    }
+    return result;
+  }
 }

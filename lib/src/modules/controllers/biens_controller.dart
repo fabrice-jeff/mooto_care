@@ -58,7 +58,7 @@ class BiensController extends GetxController {
     // data['transaction_id'] = statutPaiement!['transactionId'];
     // data['transaction_id'] = "kbsdjjks";
 
-    data['promotion'] = data['promotion'].toString();
+    // data['promotion'] = data['promotion'].toString();
     data['file'] = base64Encode(data['file'].readAsBytesSync());
     data['filename'] = generateRandomFileName('file');
     Map<String, dynamic>? response = await bienRepository.add(data);
@@ -133,5 +133,35 @@ class BiensController extends GetxController {
   showPromo(bool value) {
     showPromotion = value;
     update();
+  }
+
+  // Assure une moto
+  assureMoto(Map<String, dynamic> data) async {
+    // Demande de paiement
+    var amount = _amountByCouverture(data['couverture'], data['promotion']);
+    var paiement = Paiement(
+      amount: amount,
+      name: acteur!.nom + " " + acteur!.prenoms,
+      email: acteur!.email,
+      onStatutPaiementsChanged: handleStatutPaiement,
+    );
+    // await Get.to(paiement.initPaiement());
+
+    // if (statutPaiement != null &&
+    //     statutPaiement!['code'] == Constants.SUCCESS) {
+    print(statutPaiement);
+    // Ajout des informations pour la transactions
+    data['amount'] = amount.toString();
+    // data['transaction_id'] = statutPaiement!['transactionId'];
+    data['transaction_id'] = "kbsdjjks";
+    data['promotion'] = data['promotion'].toString();
+    Map<String, dynamic>? response = await bienRepository.assureMoto(data);
+    if (response!['code'] == Constants.SUCCESS) {
+      allByActeur();
+      Get.toNamed(Routes.BIENS);
+    } else {
+      Get.toNamed(Routes.ADD_BIEN);
+    }
+    // }
   }
 }
