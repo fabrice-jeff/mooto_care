@@ -8,6 +8,7 @@ import '../../../components/intl_phone_field.dart';
 import '../../../components/text.dart';
 import '../../../components/text_form_field.dart';
 import '../../controllers/security_controller.dart';
+import 'contribution.dart';
 
 class RegisterView extends StatelessWidget {
   @override
@@ -135,13 +136,6 @@ class _RegisterFormState extends State<RegisterForm> {
               InkWell(
                 onTap: () {
                   if (_formKey.currentState!.validate()) {
-                    // print("Nom ${nom.text}");
-                    // print("Prénoms ${prenoms.text}");
-                    // print("Email ${email.text}");
-                    // print("Téléphone ${telephone.text}");
-                    // print("Password ${password.text}");
-                    // print("Accept Condiction ${acceptCondiction}");
-
                     Map<String, dynamic> data = {
                       'name': nom.text,
                       'prenoms': prenoms.text,
@@ -149,7 +143,10 @@ class _RegisterFormState extends State<RegisterForm> {
                       'telephone': telephone.text,
                       'password': password.text,
                     };
-                    controller.register(data);
+                    // Vers la page de contribution pour la suite.
+                    Get.to(ContributionView(
+                      data: data,
+                    ));
                   }
                 },
                 child: Container(

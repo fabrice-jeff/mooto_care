@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class TextFormFieldsComponent extends StatelessWidget {
   final String hintText;
-  final IconData prefixIcon;
+  final IconData? prefixIcon;
   final bool obscureText;
   final TextInputType textInputType;
   final TextEditingController controller;
