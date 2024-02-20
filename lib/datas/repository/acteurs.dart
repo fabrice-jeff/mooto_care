@@ -24,7 +24,7 @@ class ActeurRepository {
   }
 
   //Login
-  Future<Map<String, dynamic>?> login(data) async {
+  Future<Map<String, dynamic>> login(data) async {
     final endpoint = Api.LOGIN;
     final url = Uri.parse(api + endpoint);
     final response = await http.post(
@@ -32,11 +32,9 @@ class ActeurRepository {
       body: data,
       headers: {},
     );
-    late Map<String, dynamic> results;
+    Map<String, dynamic> results;
+    results = jsonDecode(response.body);
 
-    if (response.statusCode == 200) {
-      results = jsonDecode(response.body);
-    }
     return results;
   }
 }

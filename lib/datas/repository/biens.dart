@@ -20,7 +20,8 @@ class BienRepository {
       headers: {},
     );
     Map<String, dynamic>? result;
-
+    print(response.statusCode);
+    print(response.body);
     if (response.statusCode == 200) {
       result = jsonDecode(response.body);
     }

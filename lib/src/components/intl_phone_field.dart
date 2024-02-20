@@ -7,18 +7,20 @@ class IntlPhoneFieldsComponent extends StatelessWidget {
   final String hintText;
   final TextInputType textInputType;
   final TextEditingController controller;
-
+  final Color enabledBorderColor;
   const IntlPhoneFieldsComponent({
     super.key,
     required this.hintText,
     this.textInputType = TextInputType.name,
     required this.controller,
+    this.enabledBorderColor = Colors.black38,
   });
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
       child: IntlPhoneField(
+        initialCountryCode: "BJ",
         controller: controller,
         focusNode: FocusNode(),
         decoration: InputDecoration(
@@ -28,7 +30,7 @@ class IntlPhoneFieldsComponent extends StatelessWidget {
           hintStyle: TextStyle(color: AppColors.inputColor),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(
-              color: Colors.black38,
+              color: enabledBorderColor,
             ),
             borderRadius: BorderRadius.circular(10),
           ),

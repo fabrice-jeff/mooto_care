@@ -11,7 +11,7 @@ import '../../../../utils/constants.dart';
 import '../../../components/no_data.dart';
 import '../../../components/text.dart';
 import '../../../components/text_form_field.dart';
-import '../../controllers/biens_controller.dart';
+import '../../biens/controllers/biens_controller.dart';
 import 'text_scanner.dart';
 
 class VerificationView extends GetView<BiensController> {

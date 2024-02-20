@@ -8,6 +8,7 @@ class TextFormFieldsComponent extends StatelessWidget {
   final bool obscureText;
   final TextInputType textInputType;
   final TextEditingController controller;
+  final Color enabledBorderColor;
 
   const TextFormFieldsComponent({
     super.key,
@@ -16,6 +17,7 @@ class TextFormFieldsComponent extends StatelessWidget {
     this.obscureText = false,
     this.textInputType = TextInputType.name,
     required this.controller,
+    this.enabledBorderColor = Colors.black38,
   });
   @override
   Widget build(BuildContext context) {
@@ -36,7 +38,7 @@ class TextFormFieldsComponent extends StatelessWidget {
           hintStyle: TextStyle(color: AppColors.inputColor),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(
-              color: Colors.black38,
+              color: enabledBorderColor,
             ),
             borderRadius: BorderRadius.circular(10),
           ),

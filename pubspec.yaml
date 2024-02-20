@@ -73,6 +73,8 @@ dependencies:
   flutter_barcode_scanner: ^2.0.0
   ai_barcode_scanner: ^3.4.3
   mobile_scanner: ^4.0.0
+  top_snackbar_flutter: ^3.1.0
+  awesome_top_snackbar: ^0.0.3
 
   
 
