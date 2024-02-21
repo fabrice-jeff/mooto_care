@@ -16,8 +16,6 @@ import '../controllers/biens_controller.dart';
 class AddBienView extends GetView<BiensController> {
   final Map<String, dynamic>? errors;
   final Map<String, dynamic>? oldData;
-  // AddBienView({this.errors = Get.arguments?['errors'], this.oldData});
-
   AddBienView(
       {super.key, Map<String, dynamic>? errors, Map<String, dynamic>? oldData})
       : errors = errors ?? Get.arguments?['errors'],
@@ -59,7 +57,7 @@ class AddBienForm extends StatefulWidget {
   State<AddBienForm> createState() => _AddBienFormState();
 }
 
-class _AddBienFormState extends State<AddBienForm> with WidgetsBindingObserver {
+class _AddBienFormState extends State<AddBienForm> {
   late TextEditingController nomBien;
   late TextEditingController numChassis;
   late TextEditingController numPlaque;
@@ -73,15 +71,6 @@ class _AddBienFormState extends State<AddBienForm> with WidgetsBindingObserver {
 
   @override
   void initState() {
-    //  'nom_bien': nomBien.text,
-    //                   'date_acquisition':
-    //                       (selectedDate == null) ? "" : selectedDate.toString(),
-    //                   'num_plaque': numPlaque.text,
-    //                   'num_chassis': numChassis.text,
-    //                   'adresse': adresse.text,
-    //                   'acteur': widget.controller.acteur!.code,
-    //                   'file': _file,
-    //                   'extension': _extension,
     if (widget.oldData != null) {
       nomBien = TextEditingController(text: widget.oldData!['nom_bien']);
       numChassis = TextEditingController(text: widget.oldData!['num_chassis']);
@@ -325,20 +314,9 @@ class _AddBienFormState extends State<AddBienForm> with WidgetsBindingObserver {
                       color: Colors.red,
                     ),
                   ),
-                // SizedBox(
-                //   height: 30,
-                // ),
-                // SelectFieldsWidget(
-                //   hintText: "Niveau de couverture",
-                //   icon: Icons.notes_sharp,
-                //   label: "Niveau de couverture",
-                //   items: controller.couvertures,
-                //   onValueChanged: handleSelectValue,
-                // ),
                 SizedBox(
                   height: 10,
                 ),
-
                 SizedBox(
                   height: 20,
                 ),

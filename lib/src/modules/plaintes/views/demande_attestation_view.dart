@@ -2,6 +2,8 @@ import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../services/datetime_format.dart';
+import '../../../../services/flashbag_message.dart';
 import '../../../../utils/colors.dart';
 import '../../../components/container_round.dart';
 import '../../../components/text.dart';
@@ -9,9 +11,16 @@ import '../../../components/text_form_field.dart';
 import '../controllers/plaintes_controller.dart';
 
 class DemandeAttestationView extends GetView<PlaintesController> {
-  const DemandeAttestationView();
+  final Map<String, dynamic>? errors;
+  final Map<String, dynamic>? oldData;
+  DemandeAttestationView(
+      {super.key, Map<String, dynamic>? errors, Map<String, dynamic>? oldData})
+      : errors = errors ?? Get.arguments?['errors'],
+        oldData = oldData ?? Get.arguments?['oldData'];
   @override
   Widget build(BuildContext context) {
+    var controller = Get.put(PlaintesController());
+    print(errors);
     return Scaffold(
       appBar: AppBar(
         title: Expanded(
@@ -27,6 +36,8 @@ class DemandeAttestationView extends GetView<PlaintesController> {
         child: Center(
           child: DemandeAttestationForm(
             controller: controller,
+            errors: errors,
+            oldData: oldData,
           ),
         ),
       ),
@@ -36,7 +47,10 @@ class DemandeAttestationView extends GetView<PlaintesController> {
 
 class DemandeAttestationForm extends StatefulWidget {
   final PlaintesController controller;
-  const DemandeAttestationForm({super.key, required this.controller});
+  final Map<String, dynamic>? errors;
+  final Map<String, dynamic>? oldData;
+  const DemandeAttestationForm(
+      {super.key, required this.controller, this.errors, this.oldData});
 
   @override
   State<DemandeAttestationForm> createState() => _DemandeAttestationFormState();
@@ -47,15 +61,58 @@ class _DemandeAttestationFormState extends State<DemandeAttestationForm> {
   late TextEditingController description;
   // late TextEditingController nom;
   // late TextEditingController prenoms;
-  var reasonValidation = true;
   DateTime? selectedDate;
   @override
   void initState() {
-    numeroPlaque = TextEditingController();
-    description = TextEditingController();
+    if (widget.errors != null && widget.errors!['not_num_plaque'] != null) {
+      flashbagMessage(context, widget.errors!['not_num_plaque'], Colors.red);
+    }
+
+    if (widget.errors != null && widget.errors!['paiement'] != null) {
+      flashbagMessage(context, widget.errors!['paiement'], Colors.red);
+    }
+
+    if (widget.oldData != null) {
+      numeroPlaque =
+          TextEditingController(text: widget.oldData!['numero_plaque']);
+      description = TextEditingController(text: widget.oldData!['description']);
+      if (widget.oldData!['date_perte'] != "") {
+        selectedDate = dateTimeFormat(widget.oldData!['date_perte']);
+      }
+    } else {
+      numeroPlaque = TextEditingController();
+      description = TextEditingController();
+    }
+
     // nom = TextEditingController(text: widget.controller.acteur!.nom);
     // prenoms = TextEditingController(text: widget.controller.acteur!.prenoms);
     super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant DemandeAttestationForm oldWidget) {
+    if (widget.errors != null && widget.errors!['not_num_plaque'] != null) {
+      flashbagMessage(context, widget.errors!['not_num_plaque'], Colors.red);
+    }
+
+    if (widget.errors != null && widget.errors!['paiement'] != null) {
+      flashbagMessage(context, widget.errors!['paiement'], Colors.red);
+    }
+
+    if (widget.oldData != null) {
+      numeroPlaque =
+          TextEditingController(text: widget.oldData!['numero_plaque']);
+      description = TextEditingController(text: widget.oldData!['description']);
+      if (widget.oldData!['date_perte'] != "") {
+        selectedDate = dateTimeFormat(widget.oldData!['date_perte']);
+      }
+    } else {
+      numeroPlaque = TextEditingController();
+      description = TextEditingController();
+    }
+    // nom = TextEditingController(text: widget.controller.acteur!.nom);
+    // prenoms = TextEditingController(text: widget.controller.acteur!.prenoms);
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -111,10 +168,21 @@ class _DemandeAttestationFormState extends State<DemandeAttestationForm> {
                 controller: numeroPlaque,
                 textInputType: TextInputType.name,
               ),
+              if (widget.errors != null &&
+                  widget.errors!['numero_plaque'] != null)
+                Container(
+                  alignment: Alignment.topLeft,
+                  child: TextComponent(
+                    text: widget.errors!['numero_plaque'][0],
+                    textAlign: TextAlign.left,
+                    color: Colors.red,
+                  ),
+                ),
               SizedBox(
                 height: 30,
               ),
               DateTimePicker(
+                initialValue: selectedDate.toString(),
                 type: DateTimePickerType.date,
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.symmetric(vertical: 10),
@@ -153,6 +221,15 @@ class _DemandeAttestationFormState extends State<DemandeAttestationForm> {
                 },
                 onSaved: (val) => print(val),
               ),
+              if (widget.errors != null && widget.errors!['date_perte'] != null)
+                Container(
+                  alignment: Alignment.topLeft,
+                  child: TextComponent(
+                    text: widget.errors!['date_perte'][0],
+                    textAlign: TextAlign.left,
+                    color: Colors.red,
+                  ),
+                ),
               SizedBox(
                 height: 30,
               ),
@@ -183,6 +260,16 @@ class _DemandeAttestationFormState extends State<DemandeAttestationForm> {
                   ),
                 ),
               ),
+              if (widget.errors != null &&
+                  widget.errors!['description'] != null)
+                Container(
+                  alignment: Alignment.topLeft,
+                  child: TextComponent(
+                    text: widget.errors!['description'][0],
+                    textAlign: TextAlign.left,
+                    color: Colors.red,
+                  ),
+                ),
               SizedBox(
                 height: 30,
               ),
@@ -192,7 +279,8 @@ class _DemandeAttestationFormState extends State<DemandeAttestationForm> {
                     // 'nom': nom.text,
                     // 'prenoms': prenoms.text,
                     'numero_plaque': numeroPlaque.text,
-                    'date_perte': selectedDate,
+                    'date_perte':
+                        (selectedDate == null) ? "" : selectedDate.toString(),
                     'description': description.text,
                   };
                   widget.controller.addDemandeAttestation(data);

@@ -75,7 +75,7 @@ class AppPage {
     ),
     GetPage(
       name: Routes.DEMANDE_ATTESTATION,
-      page: () => const DemandeAttestationView(),
+      page: () => DemandeAttestationView(),
       binding: PlaintesBinding(),
     ),
     GetPage(

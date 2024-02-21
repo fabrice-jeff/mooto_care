@@ -7,16 +7,14 @@ class PlainteRepository {
   final String api;
   const PlainteRepository({required this.api});
 
-  Future<Map<String, dynamic>?> addDemandeAttestation(
+  Future<Map<String, dynamic>> addDemandeAttestation(
       Map<String, dynamic> data) async {
     final String endpoint = Api.ADD_DEMANDE_ATTESTATION;
     final url = Uri.parse(api + endpoint);
-    Map<String, dynamic>? result;
+    Map<String, dynamic> result;
     final response = await http.post(url, body: data);
-    print(response.body);
-    if (response.statusCode == 200) {
-      result = jsonDecode(response.body);
-    }
+    result = jsonDecode(response.body);
+
     return result;
   }
 
@@ -45,7 +43,6 @@ class PlainteRepository {
       print("Une erreur");
       return null;
     }
-    return results;
   }
 
   // Future<void> uploadPdf(Map<String, dynamic> data) async {

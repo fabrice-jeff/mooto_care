@@ -75,12 +75,6 @@ class BiensController extends GetxController {
           arguments: {'errors': result['datas'], 'oldData': data});
       // Get.off(() => AddBienView(errors: result['datas'], oldData: data));
     }
-    // if (response!['code'] == Constants.SUCCESS) {
-    //   allByActeur();
-    //   Get.toNamed(Routes.BIENS);
-    // } else {
-    //   Get.toNamed(Routes.ADD_BIEN);
-    // }
   }
 
   void handleStatutPaiement(Map<String, dynamic>? selectedValue) {

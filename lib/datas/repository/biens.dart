@@ -42,18 +42,17 @@ class BienRepository {
   }
 
   // Récuperer un bien par son numéro  plaque
-  Future<Map<String, dynamic>?> getByNum(Map<String, dynamic> data) async {
+  Future<Map<String, dynamic>> getByNum(Map<String, dynamic> data) async {
     final endpoint = Api.BIEN_BY_NUM;
     final url = Uri.parse(api + endpoint);
-    dynamic result;
+
     final response = await http.post(
       url,
       body: data,
       headers: {},
     );
-    if (response.statusCode == 200) {
-      result = jsonDecode(response.body);
-    }
+    Map<String, dynamic> result;
+    result = jsonDecode(response.body);
     return result;
   }
 
