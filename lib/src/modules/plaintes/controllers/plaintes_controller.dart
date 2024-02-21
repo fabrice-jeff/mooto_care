@@ -120,38 +120,20 @@ class PlaintesController extends GetxController {
   }
 
   getPlaintesDeposes() async {
-    plaintesDeposes = await _plainteRepository.allPlaintes();
-    update();
-  }
-
-  void _sendEmail({
-    required String recipient,
-    required String subject,
-    required String content,
-  }) async {
-    String username = 'mootocare@gmail.com';
-    // String password = 'eetp stzy wrvx yntb';
-    String password = 'eetpstzywrvxyntb';
-
-    final smtpServer = gmail(username, password);
-
-    final message = Message()
-      ..from = Address(username, 'MootoCare Service')
-      ..recipients.add(recipient)
-      // ..ccRecipients.addAll(['destCc1@example.com', 'destCc2@example.com'])
-      // ..bccRecipients.add(Address('bccAddress@example.com'))
-      ..subject = subject
-      // ..text = 'This is the plain text.\nThis is line 2 of the text part.!'
-      ..html = content;
-
-    try {
-      final sendReport = await send(message, smtpServer);
-      print('Message sent: ' + sendReport.toString());
-    } on MailerException catch (e) {
-      print('Message not sent.');
-      for (var p in e.problems) {
-        print('Problem: ${p.code}: ${p.msg}');
+    var results = await _plainteRepository.allPlaintes();
+    if (results != null && results['success']) {
+      // Nous allons récupérer l'ensemble des  biens enregistré dans le tableau concerné
+      for (var plainte in results['datas']) {
+        plainte['bien']['acteur'] = plainte['acteur'];
+        plainte['bien']['fichier'] = plainte['fichier'];
+        plainte['bien']['type_couverture'] = plainte['type_type'];
+        plainte['bien']['status'] = plainte['status'];
+        plainte['plainte']['bien'] = plainte['bien'];
+        plaintesDeposes.add(Plainte.fromJson(plainte['plainte']));
       }
+    } else {
+      plaintesDeposes = [];
     }
+    update();
   }
 }

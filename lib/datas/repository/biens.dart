@@ -1,9 +1,7 @@
 import 'dart:convert';
 
-import 'package:autocare/utils/constants.dart';
 import 'package:http/http.dart' as http;
 import '../../src/api.dart';
-import '../models/bien.dart';
 import '../models/type_type.dart';
 
 class BienRepository {

@@ -12,7 +12,6 @@ import '../../../../services/paiement.dart';
 import '../../../../utils/constants.dart';
 import '../../../../utils/share_preference.dart';
 import '../../../api.dart';
-import '../views/add_bien_view.dart';
 
 class BiensController extends GetxController {
   final bienRepository = BienRepository(api: Api.BASE_URL);
@@ -37,9 +36,8 @@ class BiensController extends GetxController {
     Map<String, dynamic> data = {'code_acteur': acteur!.code};
 
     var results = await bienRepository.allByActeur(data);
-    if (results != null && results!['success']) {
+    if (results != null && results['success']) {
       // Nous allons récupérer l'ensemble des  biens enregistré dans le tableau concerné
-
       for (var bien in results['datas']) {
         bien['bien']['acteur'] = bien['acteur'];
         bien['bien']['fichier'] = bien['fichier'];
@@ -72,7 +70,7 @@ class BiensController extends GetxController {
       Get.offAllNamed(Routes.BASE);
     } else {
       // Echec
-      print(result);
+
       Get.offAndToNamed(Routes.ADD_BIEN,
           arguments: {'errors': result['datas'], 'oldData': data});
       // Get.off(() => AddBienView(errors: result['datas'], oldData: data));

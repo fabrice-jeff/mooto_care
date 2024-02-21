@@ -2,7 +2,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../services/flashbag_message.dart';
 import '../../../../utils/colors.dart';
 import '../../../../utils/constants.dart';
 import '../../../components/text.dart';
@@ -16,6 +15,7 @@ class BaseView extends GetView<BaseController> {
   const BaseView({super.key});
   @override
   Widget build(BuildContext context) {
+    Get.put(BaseController());
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
     return GetBuilder<BaseController>(
       builder: (_) => Scaffold(
