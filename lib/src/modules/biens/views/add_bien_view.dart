@@ -1,11 +1,11 @@
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 
 import 'package:get/get.dart';
+import '../../../../services/datetime_format.dart';
 import '../../../../utils/colors.dart';
 import '../../../../utils/constants.dart';
 import '../../../components/container_round.dart';
@@ -14,10 +14,18 @@ import '../../../components/text_form_field.dart';
 import '../controllers/biens_controller.dart';
 
 class AddBienView extends GetView<BiensController> {
-  const AddBienView();
+  final Map<String, dynamic>? errors;
+  final Map<String, dynamic>? oldData;
+  // AddBienView({this.errors = Get.arguments?['errors'], this.oldData});
 
+  AddBienView(
+      {super.key, Map<String, dynamic>? errors, Map<String, dynamic>? oldData})
+      : errors = errors ?? Get.arguments?['errors'],
+        oldData = oldData ?? Get.arguments?['oldData'];
   @override
   Widget build(BuildContext context) {
+    var controller = Get.put(BiensController());
+    print(errors);
     return Scaffold(
       appBar: AppBar(
         title: Expanded(
@@ -31,7 +39,11 @@ class AddBienView extends GetView<BiensController> {
       ),
       body: SafeArea(
         child: Center(
-          child: AddBienForm(controller: controller),
+          child: AddBienForm(
+            controller: controller,
+            errors: errors,
+            oldData: oldData,
+          ),
         ),
       ),
     );
@@ -40,22 +52,72 @@ class AddBienView extends GetView<BiensController> {
 
 class AddBienForm extends StatefulWidget {
   final BiensController controller;
-  const AddBienForm({required this.controller});
+  final Map<String, dynamic>? errors;
+  final Map<String, dynamic>? oldData;
+  const AddBienForm({required this.controller, this.errors, this.oldData});
   @override
   State<AddBienForm> createState() => _AddBienFormState();
 }
 
-class _AddBienFormState extends State<AddBienForm> {
-  TextEditingController nomBien = TextEditingController();
-  TextEditingController numChassis = TextEditingController();
-  TextEditingController numPlaque = TextEditingController();
-  TextEditingController adresse = TextEditingController();
-  DateTime? selectedDate = DateTime.now();
+class _AddBienFormState extends State<AddBienForm> with WidgetsBindingObserver {
+  late TextEditingController nomBien;
+  late TextEditingController numChassis;
+  late TextEditingController numPlaque;
+  late TextEditingController adresse;
+  DateTime? selectedDate;
   bool basiquePromotion = false;
-  String? couverture;
+  late String? couverture;
   File? _file;
   bool _fileSelected = false;
   String? _extension;
+
+  @override
+  void initState() {
+    //  'nom_bien': nomBien.text,
+    //                   'date_acquisition':
+    //                       (selectedDate == null) ? "" : selectedDate.toString(),
+    //                   'num_plaque': numPlaque.text,
+    //                   'num_chassis': numChassis.text,
+    //                   'adresse': adresse.text,
+    //                   'acteur': widget.controller.acteur!.code,
+    //                   'file': _file,
+    //                   'extension': _extension,
+    if (widget.oldData != null) {
+      nomBien = TextEditingController(text: widget.oldData!['nom_bien']);
+      numChassis = TextEditingController(text: widget.oldData!['num_chassis']);
+      numPlaque = TextEditingController(text: widget.oldData!['num_plaque']);
+      adresse = TextEditingController(text: widget.oldData!['num_chassis']);
+      if (widget.oldData!['date_acquisition'] != "") {
+        selectedDate = dateTimeFormat(widget.oldData!['date_acquisition']);
+      }
+    } else {
+      nomBien = TextEditingController();
+      numChassis = TextEditingController();
+      numPlaque = TextEditingController();
+      adresse = TextEditingController();
+    }
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant AddBienForm oldWidget) {
+    if (widget.oldData != null) {
+      nomBien = TextEditingController(text: widget.oldData!['nom_bien']);
+      numChassis = TextEditingController(text: widget.oldData!['num_chassis']);
+      numPlaque = TextEditingController(text: widget.oldData!['num_plaque']);
+      adresse = TextEditingController(text: widget.oldData!['num_chassis']);
+      if (widget.oldData!['date_acquisition'] != "") {
+        selectedDate = dateTimeFormat(widget.oldData!['date_acquisition']);
+      }
+    } else {
+      nomBien = TextEditingController();
+      numChassis = TextEditingController();
+      numPlaque = TextEditingController();
+      adresse = TextEditingController();
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
   void handleSelectValue(String? selectedValue) {
     for (var couv in widget.controller.typesCouvertures) {
       if (selectedValue == couv.libelle) {
@@ -113,10 +175,20 @@ class _AddBienFormState extends State<AddBienForm> {
                   controller: nomBien,
                   textInputType: TextInputType.name,
                 ),
+                if (widget.errors != null && widget.errors!['nom_bien'] != null)
+                  Container(
+                    alignment: Alignment.topLeft,
+                    child: TextComponent(
+                      text: widget.errors!['nom_bien'][0],
+                      textAlign: TextAlign.left,
+                      color: Colors.red,
+                    ),
+                  ),
                 SizedBox(
                   height: 30,
                 ),
                 DateTimePicker(
+                  initialValue: selectedDate.toString(),
                   type: DateTimePickerType.date,
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.symmetric(vertical: 10),
@@ -156,6 +228,16 @@ class _AddBienFormState extends State<AddBienForm> {
                   },
                   onSaved: (val) => print(val),
                 ),
+                if (widget.errors != null &&
+                    widget.errors!['date_acquisition'] != null)
+                  Container(
+                    alignment: Alignment.topLeft,
+                    child: TextComponent(
+                      text: widget.errors!['date_acquisition'][0],
+                      textAlign: TextAlign.left,
+                      color: Colors.red,
+                    ),
+                  ),
                 SizedBox(
                   height: 30,
                 ),
@@ -165,6 +247,16 @@ class _AddBienFormState extends State<AddBienForm> {
                   controller: numChassis,
                   textInputType: TextInputType.name,
                 ),
+                if (widget.errors != null &&
+                    widget.errors!['num_chassis'] != null)
+                  Container(
+                    alignment: Alignment.topLeft,
+                    child: TextComponent(
+                      text: widget.errors!['num_chassis'][0],
+                      textAlign: TextAlign.left,
+                      color: Colors.red,
+                    ),
+                  ),
                 SizedBox(
                   height: 30,
                 ),
@@ -174,6 +266,16 @@ class _AddBienFormState extends State<AddBienForm> {
                   controller: numPlaque,
                   textInputType: TextInputType.name,
                 ),
+                if (widget.errors != null &&
+                    widget.errors!['num_plaque'] != null)
+                  Container(
+                    alignment: Alignment.topLeft,
+                    child: TextComponent(
+                      text: widget.errors!['num_plaque'][0],
+                      textAlign: TextAlign.left,
+                      color: Colors.red,
+                    ),
+                  ),
                 SizedBox(
                   height: 30,
                 ),
@@ -214,6 +316,15 @@ class _AddBienFormState extends State<AddBienForm> {
                     ),
                   ),
                 ),
+                if (widget.errors != null && widget.errors!['file'] != null)
+                  Container(
+                    alignment: Alignment.topLeft,
+                    child: TextComponent(
+                      text: widget.errors!['file'][0],
+                      textAlign: TextAlign.left,
+                      color: Colors.red,
+                    ),
+                  ),
                 // SizedBox(
                 //   height: 30,
                 // ),
@@ -235,13 +346,12 @@ class _AddBienFormState extends State<AddBienForm> {
                   onTap: () {
                     Map<String, dynamic> data = {
                       'nom_bien': nomBien.text,
-                      'date_acquisition': selectedDate.toString(),
+                      'date_acquisition':
+                          (selectedDate == null) ? "" : selectedDate.toString(),
                       'num_plaque': numPlaque.text,
                       'num_chassis': numChassis.text,
                       'adresse': adresse.text,
                       'acteur': widget.controller.acteur!.code,
-                      // 'promotion': basiquePromotion,
-                      // 'couverture': couverture,
                       'file': _file,
                       'extension': _extension,
                     };

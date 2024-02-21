@@ -51,8 +51,8 @@ class _RegisterFormState extends State<RegisterForm> {
                 alignment: Alignment.center,
                 child: Image.asset(
                   Constants.logo,
-                  width: 200,
-                  height: 200,
+                  width: 150,
+                  height: 150,
                 ),
               ),
               // LineComponnent(

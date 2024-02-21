@@ -55,7 +55,7 @@ class AppPage {
     ),
     GetPage(
       name: Routes.ADD_BIEN,
-      page: () => const AddBienView(),
+      page: () => AddBienView(),
       binding: BiensBinding(),
     ),
     GetPage(

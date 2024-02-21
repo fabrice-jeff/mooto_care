@@ -1,8 +1,8 @@
-import 'package:awesome_top_snackbar/awesome_top_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:top_snackbar_flutter/tap_bounce_container.dart';
 
+import '../../../../routes/routes.dart';
+import '../../../../services/flashbag_message.dart';
 import '../../../../utils/colors.dart';
 import '../../../../utils/constants.dart';
 import '../../../components/intl_phone_field.dart';
@@ -52,12 +52,9 @@ class _LoginFormState extends State<LoginForm> {
     username = (widget.oldData == null)
         ? TextEditingController()
         : TextEditingController(text: widget.oldData!['username']);
-    if (widget.errors == null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _showMessage();
-      });
+    if (widget.errors == null && widget.oldData != null) {
+      flashbagMessage(context, 'Identifiants incorrects', Colors.red);
     }
-
     password = TextEditingController();
     super.initState();
   }
@@ -65,9 +62,7 @@ class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     var controller = Get.put(SecurityController());
-    if (widget.errors != null) {
-      print(widget.oldData);
-    }
+
     return Form(
       key: _formkey,
       child: SingleChildScrollView(
@@ -119,11 +114,10 @@ class _LoginFormState extends State<LoginForm> {
               SizedBox(
                 height: 20,
               ),
-              TapBounceContainer(
+              InkWell(
                 onTap: () {
                   if (_formkey.currentState!.validate()) {
                     //La connexion
-
                     Map<String, dynamic> data = {
                       'username': username.text,
                       'password': password.text,
@@ -158,8 +152,13 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                 ),
               ),
+              SizedBox(
+                height: 5,
+              ),
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  Get.toNamed(Routes.REGISTER);
+                },
                 child: Container(
                   alignment: Alignment.center,
                   child: TextComponent(
@@ -172,18 +171,6 @@ class _LoginFormState extends State<LoginForm> {
           ),
         ),
       ),
-    );
-  }
-
-  _showMessage() {
-    awesomeTopSnackbar(
-      context,
-      "Identifiants incorrects",
-      iconWithDecoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(),
-      ),
-      backgroundColor: Colors.red.withOpacity(0.8),
     );
   }
 }

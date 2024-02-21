@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import '../../../../routes/routes.dart';
+import '../../../../services/flashbag_message.dart';
 import '../../../../services/paiement.dart';
 import '../../../../utils/constants.dart';
 import '../../../../utils/share_preference.dart';
@@ -43,10 +46,11 @@ class SecurityController extends GetxController {
   void login(Map<String, dynamic> data) async {
     final result = await acteurRepository.login(data);
     if (result['success']) {
-      SharePreferences.prefs.setString('acteur', result['acteur']);
-      Get.offNamed(Routes.BASE);
+      SharePreferences.prefs.setString('acteur', jsonEncode(result['datas']));
+      Get.offNamed(
+        Routes.BASE,
+      );
     } else {
-      print(result);
       Get.offAll(() => LoginView(errors: result['datas'], oldData: data));
     }
   }

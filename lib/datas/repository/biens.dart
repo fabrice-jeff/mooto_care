@@ -11,7 +11,7 @@ class BienRepository {
   BienRepository({required this.api});
 
   //  Ajouter un bien
-  Future<Map<String, dynamic>?> add(Map<String, dynamic> data) async {
+  Future<Map<String, dynamic>> add(Map<String, dynamic> data) async {
     final endpoint = Api.ADD_BIEN;
     final url = Uri.parse(api + endpoint);
     final response = await http.post(
@@ -19,42 +19,28 @@ class BienRepository {
       body: data,
       headers: {},
     );
-    Map<String, dynamic>? result;
-    print(response.statusCode);
-    print(response.body);
-    if (response.statusCode == 200) {
-      result = jsonDecode(response.body);
-    }
+    Map<String, dynamic> result;
+    result = jsonDecode(response.body);
     return result;
   }
 
   // Récupérer tous les biens de l'acteur connecté
-  Future<List<Bien>> allByActeur(data) async {
+  Future<Map<String, dynamic>?> allByActeur(data) async {
     final endpoint = Api.ALL_BIENS_BY_ACTEUR;
     final url = Uri.parse(api + endpoint);
-    List<Bien> biens = [];
+    final Map<String, dynamic> results;
     final response = await http.post(
       url,
       body: data,
       headers: {},
     );
-    if (response.statusCode == 200) {
-      var result = jsonDecode(response.body);
-      if (result['code'] == Constants.SUCCESS) {
-        var datas = jsonDecode(result['biens']);
-        for (var bien in datas) {
-          bien['bien']['acteur'] = jsonDecode(result['acteur']);
-          bien['bien']['fichier'] = jsonDecode(bien['fichier']);
-          var typeType = bien['type_type'];
-          bien['bien']['type_couverture'] =
-              (typeType == null) ? null : jsonDecode(typeType);
-          bien['bien']['status'] = jsonDecode(bien['status']);
-          biens.add(Bien.fromJson(bien['bien']));
-        }
-      }
+    try {
+      results = jsonDecode(response.body);
+      return results;
+    } catch (e) {
+      print("Une erreur");
+      return null;
     }
-
-    return biens;
   }
 
   // Récuperer un bien par son numéro  plaque

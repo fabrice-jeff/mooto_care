@@ -12,6 +12,7 @@ import '../../../../services/paiement.dart';
 import '../../../../utils/constants.dart';
 import '../../../../utils/share_preference.dart';
 import '../../../api.dart';
+import '../views/add_bien_view.dart';
 
 class BiensController extends GetxController {
   final bienRepository = BienRepository(api: Api.BASE_URL);
@@ -34,21 +35,54 @@ class BiensController extends GetxController {
   // Récupération de tous les biens de l'acteur connecté
   allByActeur() async {
     Map<String, dynamic> data = {'code_acteur': acteur!.code};
-    biensByActeur = await bienRepository.allByActeur(data);
+
+    var results = await bienRepository.allByActeur(data);
+    if (results != null && results!['success']) {
+      // Nous allons récupérer l'ensemble des  biens enregistré dans le tableau concerné
+
+      for (var bien in results['datas']) {
+        bien['bien']['acteur'] = bien['acteur'];
+        bien['bien']['fichier'] = bien['fichier'];
+        var typeType = bien['type_type'];
+        bien['bien']['type_couverture'] = typeType;
+        bien['bien']['status'] = bien['status'];
+        biensByActeur.add(Bien.fromJson(bien['bien']));
+      }
+    } else {
+      biensByActeur = [];
+    }
     update();
   }
 
   // Ajout d'un bien
   add(Map<String, dynamic> data) async {
-    data['file'] = base64Encode(data['file'].readAsBytesSync());
-    data['filename'] = generateRandomFileName('file');
-    Map<String, dynamic>? response = await bienRepository.add(data);
-    if (response!['code'] == Constants.SUCCESS) {
-      allByActeur();
-      Get.toNamed(Routes.BIENS);
+    if (data['file'] == null) {
+      data['file'] = "";
+      data['extension'] = "";
     } else {
-      Get.toNamed(Routes.ADD_BIEN);
+      data['file'] = base64Encode(data['file'].readAsBytesSync());
     }
+
+    data['filename'] = generateRandomFileName('file');
+
+    Map<String, dynamic> result = await bienRepository.add(data);
+    // print(result['datas']);
+    if (result['success']) {
+      // Succes
+      Get.offAllNamed(Routes.BASE);
+    } else {
+      // Echec
+      print(result);
+      Get.offAndToNamed(Routes.ADD_BIEN,
+          arguments: {'errors': result['datas'], 'oldData': data});
+      // Get.off(() => AddBienView(errors: result['datas'], oldData: data));
+    }
+    // if (response!['code'] == Constants.SUCCESS) {
+    //   allByActeur();
+    //   Get.toNamed(Routes.BIENS);
+    // } else {
+    //   Get.toNamed(Routes.ADD_BIEN);
+    // }
   }
 
   void handleStatutPaiement(Map<String, dynamic>? selectedValue) {
