@@ -10,19 +10,26 @@ import '../../../components/text.dart';
 import '../../../components/text_form_field.dart';
 import '../controllers/security_controller.dart';
 
-class LoginView extends StatelessWidget {
+class LoginView extends GetView<SecurityController> {
   final Map<String, dynamic>? errors;
   final Map<String, dynamic>? oldData;
   const LoginView({
+    super.key,
     this.errors,
     this.oldData,
   });
   @override
   Widget build(BuildContext context) {
+    Get.put(SecurityController());
+
     return Scaffold(
       body: SafeArea(
         child: Center(
-          child: LoginForm(errors: errors, oldData: oldData),
+          child: LoginForm(
+            controller: controller,
+            errors: errors,
+            oldData: oldData,
+          ),
         ),
       ),
     );
@@ -32,8 +39,10 @@ class LoginView extends StatelessWidget {
 class LoginForm extends StatefulWidget {
   final Map<String, dynamic>? errors;
   final Map<String, dynamic>? oldData;
+  final SecurityController controller;
   const LoginForm({
     super.key,
+    required this.controller,
     this.errors,
     this.oldData,
   });
@@ -61,8 +70,6 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    var controller = Get.put(SecurityController());
-
     return Form(
       key: _formkey,
       child: SingleChildScrollView(
@@ -84,33 +91,37 @@ class _LoginFormState extends State<LoginForm> {
               SizedBox(
                 height: 50,
               ),
-              (widget.errors != null && widget.errors!['username'] != null)
-                  ? IntlPhoneFieldsComponent(
-                      hintText: 'Téléphone',
-                      controller: username,
-                      enabledBorderColor: Colors.red,
-                    )
-                  : IntlPhoneFieldsComponent(
-                      hintText: 'Téléphone',
-                      controller: username,
-                    ),
+              IntlPhoneFieldsComponent(
+                hintText: 'Téléphone',
+                controller: username,
+              ),
+              if (widget.errors != null && widget.errors!['username'] != null)
+                Container(
+                  alignment: Alignment.topLeft,
+                  child: TextComponent(
+                    text: widget.errors!['username'][0],
+                    textAlign: TextAlign.left,
+                    color: Colors.red,
+                  ),
+                ),
               SizedBox(
                 height: 10,
               ),
-              (widget.errors != null && widget.errors!['password'] != null)
-                  ? TextFormFieldsComponent(
-                      hintText: "Mot de passe",
-                      obscureText: true,
-                      prefixIcon: Icons.lock,
-                      controller: password,
-                      enabledBorderColor: Colors.red,
-                    )
-                  : TextFormFieldsComponent(
-                      hintText: "Mot de passe",
-                      obscureText: true,
-                      prefixIcon: Icons.lock,
-                      controller: password,
-                    ),
+              TextFormFieldsComponent(
+                hintText: "Mot de passe",
+                obscureText: true,
+                prefixIcon: Icons.lock,
+                controller: password,
+              ),
+              if (widget.errors != null && widget.errors!['password'] != null)
+                Container(
+                  alignment: Alignment.topLeft,
+                  child: TextComponent(
+                    text: widget.errors!['password'][0],
+                    textAlign: TextAlign.left,
+                    color: Colors.red,
+                  ),
+                ),
               SizedBox(
                 height: 20,
               ),
@@ -122,7 +133,7 @@ class _LoginFormState extends State<LoginForm> {
                       'username': username.text,
                       'password': password.text,
                     };
-                    controller.login(data);
+                    widget.controller.login(data);
                   }
                 },
                 child: Container(

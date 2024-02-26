@@ -1,10 +1,10 @@
-import 'package:autocare/utils/share_preference.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'routes/pages.dart';
-import 'src/modules/views/verifications/text_scanner.dart';
+import 'src/modules/verifications/text_scanner.dart';
 import 'utils/colors.dart';
+import 'utils/share_preference.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

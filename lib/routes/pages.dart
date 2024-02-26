@@ -19,7 +19,7 @@ import '../src/modules/home/views/home_view.dart';
 import '../src/modules/views/plus_view.dart';
 import '../src/modules/splashscreen/views/splash_screen_view.dart';
 import '../src/modules/views/tarifs_view.dart';
-import '../src/modules/views/verifications/verification_view.dart';
+import '../src/modules/verifications/verification_view.dart';
 import 'routes.dart';
 
 class AppPage {
@@ -60,7 +60,7 @@ class AppPage {
     ),
     GetPage(
       name: Routes.VERIFICATION,
-      page: () => const VerificationView(),
+      page: () => VerificationView(),
       binding: BiensBinding(),
     ),
     GetPage(

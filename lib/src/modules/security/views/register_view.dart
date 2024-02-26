@@ -1,3 +1,4 @@
+import 'package:autocare/services/flashbag_message.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -8,21 +9,38 @@ import '../../../components/intl_phone_field.dart';
 import '../../../components/text.dart';
 import '../../../components/text_form_field.dart';
 import '../controllers/security_controller.dart';
-import 'contribution_view.dart';
 
-class RegisterView extends StatelessWidget {
+class RegisterView extends GetView<SecurityController> {
+  final Map<String, dynamic>? errors;
+  final Map<String, dynamic>? oldData;
+  const RegisterView({
+    super.key,
+    this.errors,
+    this.oldData,
+  });
   @override
   Widget build(BuildContext context) {
+    Get.put(SecurityController());
     return Scaffold(
       body: SafeArea(
-        child: Center(child: RegisterForm()),
+        child: Center(
+          child: RegisterForm(
+            controller: controller,
+            errors: errors,
+            oldData: oldData,
+          ),
+        ),
       ),
     );
   }
 }
 
 class RegisterForm extends StatefulWidget {
-  const RegisterForm({super.key});
+  final SecurityController controller;
+  final Map<String, dynamic>? errors;
+  final Map<String, dynamic>? oldData;
+  const RegisterForm(
+      {super.key, required this.controller, this.errors, this.oldData});
 
   @override
   State<RegisterForm> createState() => _RegisterFormState();
@@ -30,11 +48,32 @@ class RegisterForm extends StatefulWidget {
 
 class _RegisterFormState extends State<RegisterForm> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController nom = TextEditingController();
-  TextEditingController prenoms = TextEditingController();
-  TextEditingController email = TextEditingController();
-  TextEditingController telephone = TextEditingController();
-  TextEditingController password = TextEditingController();
+  late TextEditingController nom;
+  late TextEditingController prenoms;
+  late TextEditingController email;
+  late TextEditingController telephone;
+  late TextEditingController password;
+  late TextEditingController passwordConfirm;
+
+  @override
+  void initState() {
+    nom = (widget.oldData == null)
+        ? TextEditingController()
+        : TextEditingController(text: widget.oldData!['nom']);
+    prenoms = (widget.oldData == null)
+        ? TextEditingController()
+        : TextEditingController(text: widget.oldData!['prenoms']);
+    email = (widget.oldData == null)
+        ? TextEditingController()
+        : TextEditingController(text: widget.oldData!['email']);
+    telephone = (widget.oldData == null)
+        ? TextEditingController()
+        : TextEditingController(text: widget.oldData!['telephone']);
+    password = TextEditingController();
+    passwordConfirm = TextEditingController();
+    super.initState();
+  }
+
   bool acceptCondiction = false;
   @override
   Widget build(BuildContext context) {
@@ -55,10 +94,6 @@ class _RegisterFormState extends State<RegisterForm> {
                   height: 150,
                 ),
               ),
-              // LineComponnent(
-              //   width: 100,
-              //   alignment: Alignment.center,
-              // ),
               SizedBox(
                 height: 20,
               ),
@@ -67,6 +102,15 @@ class _RegisterFormState extends State<RegisterForm> {
                 prefixIcon: Icons.person,
                 controller: nom,
               ),
+              if (widget.errors != null && widget.errors!['nom'] != null)
+                Container(
+                  alignment: Alignment.topLeft,
+                  child: TextComponent(
+                    text: widget.errors!['nom'][0],
+                    textAlign: TextAlign.left,
+                    color: Colors.red,
+                  ),
+                ),
               SizedBox(
                 height: 20,
               ),
@@ -75,6 +119,15 @@ class _RegisterFormState extends State<RegisterForm> {
                 prefixIcon: Icons.person,
                 controller: prenoms,
               ),
+              if (widget.errors != null && widget.errors!['prenoms'] != null)
+                Container(
+                  alignment: Alignment.topLeft,
+                  child: TextComponent(
+                    text: widget.errors!['prenoms'][0],
+                    textAlign: TextAlign.left,
+                    color: Colors.red,
+                  ),
+                ),
               SizedBox(
                 height: 20,
               ),
@@ -83,6 +136,15 @@ class _RegisterFormState extends State<RegisterForm> {
                 prefixIcon: Icons.email,
                 controller: email,
               ),
+              if (widget.errors != null && widget.errors!['email'] != null)
+                Container(
+                  alignment: Alignment.topLeft,
+                  child: TextComponent(
+                    text: widget.errors!['email'][0],
+                    textAlign: TextAlign.left,
+                    color: Colors.red,
+                  ),
+                ),
               SizedBox(
                 height: 20,
               ),
@@ -90,6 +152,15 @@ class _RegisterFormState extends State<RegisterForm> {
                 hintText: 'Téléphone',
                 controller: telephone,
               ),
+              if (widget.errors != null && widget.errors!['telephone'] != null)
+                Container(
+                  alignment: Alignment.topLeft,
+                  child: TextComponent(
+                    text: widget.errors!['telephone'][0],
+                    textAlign: TextAlign.left,
+                    color: Colors.red,
+                  ),
+                ),
               SizedBox(
                 height: 20,
               ),
@@ -99,6 +170,34 @@ class _RegisterFormState extends State<RegisterForm> {
                 prefixIcon: Icons.lock,
                 controller: password,
               ),
+              if (widget.errors != null && widget.errors!['password'] != null)
+                Container(
+                  alignment: Alignment.topLeft,
+                  child: TextComponent(
+                    text: widget.errors!['password'][0],
+                    textAlign: TextAlign.left,
+                    color: Colors.red,
+                  ),
+                ),
+              SizedBox(
+                height: 20,
+              ),
+              TextFormFieldsComponent(
+                hintText: "Confirmation mot de passe",
+                obscureText: true,
+                prefixIcon: Icons.lock,
+                controller: passwordConfirm,
+              ),
+              if (widget.errors != null &&
+                  widget.errors!['password_confirmation'] != null)
+                Container(
+                  alignment: Alignment.topLeft,
+                  child: TextComponent(
+                    text: widget.errors!['password_confirmation'][0],
+                    textAlign: TextAlign.left,
+                    color: Colors.red,
+                  ),
+                ),
               SizedBox(
                 height: 20,
               ),
@@ -137,16 +236,23 @@ class _RegisterFormState extends State<RegisterForm> {
                 onTap: () {
                   if (_formKey.currentState!.validate()) {
                     Map<String, dynamic> data = {
-                      'name': nom.text,
+                      'nom': nom.text,
                       'prenoms': prenoms.text,
                       'email': email.text,
                       'telephone': telephone.text,
                       'password': password.text,
+                      'password_confirmation': passwordConfirm.text,
                     };
-                    // Vers la page de contribution pour la suite.
-                    Get.to(ContributionView(
-                      data: data,
-                    ));
+                    print(data);
+                    if (acceptCondiction) {
+                      widget.controller.register(data);
+                    } else {
+                      flashbagMessage(
+                          context,
+                          "Vous devez accepter les condictions d'utilisation la création du compte",
+                          Colors.redAccent);
+                    }
+                    // Enregistrement d'un utilisateur dans la base
                   }
                 },
                 child: Container(
@@ -166,32 +272,17 @@ class _RegisterFormState extends State<RegisterForm> {
               SizedBox(
                 height: 5,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  InkWell(
-                    onTap: () {},
-                    child: Container(
-                      child: TextComponent(
-                        text: "Vous avez déja un compte?",
-                        color: AppColors.backgroundColor,
-                        size: 15,
-                      ),
-                    ),
+              InkWell(
+                onTap: () {
+                  Get.offAndToNamed(Routes.LOGIN);
+                },
+                child: Container(
+                  child: TextComponent(
+                    text: "Connectez-vous",
+                    color: AppColors.backgroundColor,
+                    size: 15,
                   ),
-                  InkWell(
-                    onTap: () {
-                      Get.offAndToNamed(Routes.LOGIN);
-                    },
-                    child: Container(
-                      child: TextComponent(
-                        text: "Connectez-vous",
-                        color: AppColors.backgroundColor,
-                        size: 15,
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ],
           ),

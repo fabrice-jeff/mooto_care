@@ -7,7 +7,7 @@ class ActeurRepository {
   ActeurRepository({required this.api});
 
   //Register
-  Future<Map<String, dynamic>?> register(data) async {
+  Future<Map<String, dynamic>> register(data) async {
     final endpoint = Api.REGISTER;
     final url = Uri.parse(api + endpoint);
     final response = await http.post(
@@ -15,11 +15,8 @@ class ActeurRepository {
       body: data,
       headers: {},
     );
-    Map<String, dynamic>? results;
-    if (response.statusCode == 200) {
-      results = jsonDecode(response.body);
-      print(results);
-    }
+    Map<String, dynamic> results;
+    results = jsonDecode(response.body);
     return results;
   }
 

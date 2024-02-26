@@ -1,3 +1,4 @@
+import 'package:barcode_widget/barcode_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -59,25 +60,35 @@ class BienView extends StatelessWidget {
         child: SafeArea(
           child: Column(
             children: [
+              // Center(
+              //   child: Container(
+              //     decoration: BoxDecoration(
+              //       borderRadius: BorderRadius.circular(150),
+              //       image: DecorationImage(
+              //         image: AssetImage(
+              //           "assets/images/user.webp",
+              //         ),
+              //       ),
+              //     ),
+              //     width: 100,
+              //     height: 150,
+              //   ),
+              // ),
               SizedBox(
                 height: 20,
               ),
-              Center(
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(150),
-                    image: DecorationImage(
-                      image: AssetImage(
-                        "assets/images/user.webp",
-                      ),
-                    ),
+              Container(
+                child: BarcodeWidget(
+                  barcode: Barcode.qrCode(
+                    errorCorrectLevel: BarcodeQRCorrectionLevel.high,
                   ),
-                  width: 150,
-                  height: 150,
+                  data: bien.code,
+                  width: 200,
+                  height: 200,
                 ),
               ),
               SizedBox(
-                height: 50,
+                height: 20,
               ),
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 10),
@@ -108,6 +119,31 @@ class BienView extends StatelessWidget {
               SizedBox(
                 height: 20,
               ),
+              // InkWell(
+              //   onTap: () {
+              //     Get.to(
+              //       AssureBienView(
+              //         bien: bien,
+              //       ),
+              //     );
+              //   },
+              //   child: Container(
+              //     margin: EdgeInsets.symmetric(horizontal: 10),
+              //     alignment: Alignment.center,
+              //     height: 50,
+              //     decoration: BoxDecoration(
+              //       color: AppColors.backgroundColor,
+              //       borderRadius: BorderRadius.circular(10),
+              //     ),
+              //     child: TextComponent(
+              //       text: "Identité numérique de la moto",
+              //       color: Colors.white,
+              //     ),
+              //   ),
+              // ),
+              // SizedBox(
+              //   height: 20,
+              // ),
               if (bien.typeCouverture == null)
                 InkWell(
                   onTap: () {

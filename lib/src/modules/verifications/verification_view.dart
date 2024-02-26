@@ -1,21 +1,25 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 import 'package:get/get.dart';
 
-import '../../../../../utils/colors.dart';
-import '../../../../datas/models/status.dart';
-import '../../../../utils/constants.dart';
-import '../../../components/no_data.dart';
-import '../../../components/text.dart';
-import '../../../components/text_form_field.dart';
-import '../../biens/controllers/biens_controller.dart';
+import '../../../../utils/colors.dart';
+import '../../../datas/models/status.dart';
+import '../../../utils/constants.dart';
+import '../../components/no_data.dart';
+import '../../components/text.dart';
+import '../../components/text_form_field.dart';
+import '../biens/controllers/biens_controller.dart';
 import 'text_scanner.dart';
 
 class VerificationView extends GetView<BiensController> {
-  const VerificationView();
+  final Map<String, dynamic>? errors;
+  final Map<String, dynamic>? oldData;
+  VerificationView(
+      {super.key, Map<String, dynamic>? errors, Map<String, dynamic>? oldData})
+      : errors = errors ?? Get.arguments?['errors'],
+        oldData = oldData ?? Get.arguments?['oldData'];
 
   @override
   Widget build(BuildContext context) {
@@ -299,6 +303,7 @@ class NumPlaqueForm extends StatefulWidget {
 
 class _NumPlaqueFormState extends State<NumPlaqueForm> {
   TextEditingController numPlaque = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -334,6 +339,7 @@ class _NumPlaqueFormState extends State<NumPlaqueForm> {
             height: 20,
           ),
           InkWell(
+            // Recupération d'un bien depuis la base de donnée
             onTap: () {
               widget.controller.getByNum(numPlaque.text);
               Get.back();

@@ -73,7 +73,6 @@ class BiensController extends GetxController {
 
       Get.offAndToNamed(Routes.ADD_BIEN,
           arguments: {'errors': result['datas'], 'oldData': data});
-      // Get.off(() => AddBienView(errors: result['datas'], oldData: data));
     }
   }
 
@@ -86,16 +85,20 @@ class BiensController extends GetxController {
     Map<String, dynamic> data = {
       'num_plaque': numPlaque,
     };
-    dynamic result = await bienRepository.getByNum(data);
-
-    if (result['code'] == Constants.SUCCESS) {
-      var bien = jsonDecode(result['bien']);
-      bien['type_couverture'] = jsonDecode(result['type_type']);
-      bien['fichier'] = jsonDecode(result['fichier']);
-      bien['acteur'] = jsonDecode(result['acteur']);
-      bien['status'] = jsonDecode(result['status']);
-      bienByNum = Bien.fromJson(bien);
+    var result = await bienRepository.getByNum(data);
+    // print(result);
+    if (result['success']) {
+      var data = result['datas'];
+      print(data['bien']);
+      data['bien']['type_couverture'] = result['type_type'];
+      data['bien']['fichier'] = data['fichier'];
+      data["bien"]['acteur'] = data['acteur'];
+      data["bien"]['status'] = data['status'];
+      bienByNum = Bien.fromJson(data['bien']);
+    } else {
+      bienByNum = null;
     }
+
     update();
   }
 
