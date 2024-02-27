@@ -65,7 +65,7 @@ class AppPage {
     ),
     GetPage(
       name: Routes.ADD_PLAINTE,
-      page: () => const AddPlainteView(),
+      page: () => AddPlainteView(),
       binding: PlaintesBinding(),
     ),
     GetPage(

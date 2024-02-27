@@ -110,36 +110,72 @@ class PlaintesController extends GetxController {
 
   // Ajout d'une plainte
   addPlainte(Map<String, dynamic> data) async {
-    // Demande de paiement
-    int amount = 1000;
-    var paiement = Paiement(
-      amount: amount,
-      name: acteur!.nom + " " + acteur!.prenoms,
-      email: acteur!.email,
-      onStatutPaiementsChanged: handleStatutPaiement,
-    );
-    await Get.to(paiement.initPaiement());
+    if (data['date_perte'] == null) {
+      data['date_perte'] = "";
+    } else {
+      data['date_perte'] = data["date_perte"].toString();
+    }
 
-    if (statutPaiement != null &&
-        statutPaiement!['code'] == Constants.SUCCESS) {
-      data['code_acteur'] = acteur!.code;
-      // Ajout des informations pour la transactions
-      data['amount'] = amount.toString();
-      // data['transaction_id'] = statutPaiement!['transactionId'];
-      data['transaction_id'] = "kbsdjjks";
-      // Informations sur le fichier
+    // Si aucune valeur n'est renseigné dans les champs,  alors on affiche les messages d'erreur
+    // Pour cela, nous devons mettre les autres parametres à nul
+    if ((data['numero_plaque'] == '' && data['numero_chassis'] == '') ||
+        data['attestation'] == null ||
+        data['date_perte'] == "") {
+      // Mettre à vide les valeur qui doivent être envoyé à l'api
+      data['attestation'] = "";
+      data["extension"] = "";
+    } else {
       data['attestation'] = base64Encode(data['attestation'].readAsBytesSync());
-      data['filename'] = generateRandomFileName('attestation');
-      var results = await _plainteRepository.addPlainte(data);
+      data['filename'] = generateRandomFileName('plainte');
+      // Verifier si le numéro de plaque correspond à un bien
+      var bienExist =
+          await _bienRepository.getByNum({"num_plaque": data['numero_plaque']});
+      if (bienExist['success']) {
+        // Demande de paiement
+        int amount = 1000;
+        var paiement = Paiement(
+          amount: amount,
+          name: acteur!.nom + " " + acteur!.prenoms,
+          email: acteur!.email,
+          onStatutPaiementsChanged: handleStatutPaiement,
+        );
+        await Get.to(paiement.initPaiement());
 
-      if (results!['code'] == Constants.SUCCESS) {
-        getPlaintesDeposes();
-        Get.toNamed(Routes.PLAINTES);
+        if (statutPaiement != null &&
+            statutPaiement!['code'] == Constants.SUCCESS) {
+          // Ajout des informations pour la transactions
+          data['amount'] = amount.toString();
+
+          data['transaction_id'] = statutPaiement!['transactionId'];
+          // data['transaction_id'] = "kbsdjjks";
+        } else {
+          Get.offAndToNamed(Routes.ADD_PLAINTE, arguments: {
+            'errors': {'paiement': 'Le paiement a échoué. Veuillez réessayeer'},
+          });
+        }
       } else {
-        Get.toNamed(Routes.ADD_PLAINTE);
+        // Nous devons retourné vers la page avec une erreur.
+        Get.offAndToNamed(Routes.ADD_PLAINTE, arguments: {
+          'errors': {
+            'not_num_plaque': 'Le numéro de plaque ne correspond à aucune moto'
+          },
+        });
       }
     }
 
+    var results = await _plainteRepository.addPlainte(data);
+    if (results != null) {
+      if (results['success']) {
+        Get.offAllNamed(Routes.BASE);
+      } else {
+        Get.offAndToNamed(Routes.ADD_PLAINTE,
+            arguments: {'errors': results['datas'], 'oldData': data});
+      }
+    } else {
+      Get.offAndToNamed(
+        Routes.ADD_PLAINTE,
+      );
+    }
     update();
   }
 

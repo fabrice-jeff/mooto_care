@@ -6,6 +6,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../services/datetime_format.dart';
+import '../../../../services/flashbag_message.dart';
 import '../../../../utils/colors.dart';
 
 import '../../../components/container_round.dart';
@@ -14,14 +16,21 @@ import '../../../components/text_form_field.dart';
 import '../controllers/plaintes_controller.dart';
 
 class AddPlainteView extends GetView<PlaintesController> {
-  const AddPlainteView();
+  final Map<String, dynamic>? errors;
+  final Map<String, dynamic>? oldData;
+  AddPlainteView(
+      {super.key, Map<String, dynamic>? errors, Map<String, dynamic>? oldData})
+      : errors = errors ?? Get.arguments?['errors'],
+        oldData = oldData ?? Get.arguments?['oldData'];
   @override
   Widget build(BuildContext context) {
+    Get.put(PlaintesController());
+
     return Scaffold(
       appBar: AppBar(
         title: Expanded(
           child: TextComponent(
-            text: 'Déposer une ',
+            text: 'Déposer une plainte',
             size: 20,
           ),
         ),
@@ -30,7 +39,11 @@ class AddPlainteView extends GetView<PlaintesController> {
       ),
       body: SafeArea(
         child: Center(
-          child: AddPlainteForm(controller: controller),
+          child: AddPlainteForm(
+            controller: controller,
+            errors: errors,
+            oldData: oldData,
+          ),
         ),
       ),
     );
@@ -39,7 +52,10 @@ class AddPlainteView extends GetView<PlaintesController> {
 
 class AddPlainteForm extends StatefulWidget {
   final PlaintesController controller;
-  const AddPlainteForm({super.key, required this.controller});
+  final Map<String, dynamic>? errors;
+  final Map<String, dynamic>? oldData;
+  const AddPlainteForm(
+      {super.key, required this.controller, this.errors, this.oldData});
 
   @override
   State<AddPlainteForm> createState() => _AddPlainteFormState();
@@ -47,13 +63,34 @@ class AddPlainteForm extends StatefulWidget {
 
 class _AddPlainteFormState extends State<AddPlainteForm> {
   // TextEditingController nomBien = TextEditingController();
-  TextEditingController datePerte = TextEditingController();
-  TextEditingController numPlaque = TextEditingController();
-  TextEditingController numChassis = TextEditingController();
+  late TextEditingController numPlaque;
+  late TextEditingController numChassis;
   DateTime? selectedDate;
   File? _file;
   bool _fileSelected = false;
   String? _extension;
+  @override
+  void initState() {
+    if (widget.errors != null && widget.errors!['not_num_plaque'] != null) {
+      flashbagMessage(context, widget.errors!['not_num_plaque'], Colors.red);
+    }
+
+    if (widget.errors != null && widget.errors!['paiement'] != null) {
+      flashbagMessage(context, widget.errors!['paiement'], Colors.red);
+    }
+    if (widget.oldData != null) {
+      numPlaque = TextEditingController(text: widget.oldData!['numero_plaque']);
+      numChassis =
+          TextEditingController(text: widget.oldData!['numero_chassis']);
+      if (widget.oldData!['date_perte'] != "") {
+        selectedDate = dateTimeFormat(widget.oldData!['date_perte']);
+      }
+    } else {
+      numPlaque = TextEditingController();
+      numChassis = TextEditingController();
+    }
+    super.initState();
+  }
 
   // void startScan(BuildContext context) async {
   //   var image = await DocumentScannerFlutter.launch(context);
@@ -130,6 +167,7 @@ class _AddPlainteFormState extends State<AddPlainteForm> {
                 height: 30,
               ),
               DateTimePicker(
+                initialValue: selectedDate.toString(),
                 type: DateTimePickerType.date,
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.symmetric(vertical: 10),
@@ -169,6 +207,15 @@ class _AddPlainteFormState extends State<AddPlainteForm> {
                 },
                 onSaved: (val) => print(val),
               ),
+              if (widget.errors != null && widget.errors!['date_perte'] != null)
+                Container(
+                  alignment: Alignment.topLeft,
+                  child: TextComponent(
+                    text: widget.errors!['date_perte'][0],
+                    textAlign: TextAlign.left,
+                    color: Colors.red,
+                  ),
+                ),
               SizedBox(
                 height: 30,
               ),
@@ -178,6 +225,16 @@ class _AddPlainteFormState extends State<AddPlainteForm> {
                 controller: numPlaque,
                 textInputType: TextInputType.name,
               ),
+              if (widget.errors != null &&
+                  widget.errors!['numero_plaque'] != null)
+                Container(
+                  alignment: Alignment.topLeft,
+                  child: TextComponent(
+                    text: widget.errors!['numero_plaque'][0],
+                    textAlign: TextAlign.left,
+                    color: Colors.red,
+                  ),
+                ),
               SizedBox(
                 height: 30,
               ),
@@ -187,6 +244,16 @@ class _AddPlainteFormState extends State<AddPlainteForm> {
                 controller: numChassis,
                 textInputType: TextInputType.name,
               ),
+              if (widget.errors != null &&
+                  widget.errors!['numero_chassis'] != null)
+                Container(
+                  alignment: Alignment.topLeft,
+                  child: TextComponent(
+                    text: widget.errors!['numero_chassis'][0],
+                    textAlign: TextAlign.left,
+                    color: Colors.red,
+                  ),
+                ),
               SizedBox(
                 height: 30,
               ),
@@ -227,20 +294,30 @@ class _AddPlainteFormState extends State<AddPlainteForm> {
                   ),
                 ),
               ),
+              if (widget.errors != null &&
+                  widget.errors!['attestation'] != null)
+                Container(
+                  alignment: Alignment.topLeft,
+                  child: TextComponent(
+                    text: widget.errors!['attestation'][0],
+                    textAlign: TextAlign.left,
+                    color: Colors.red,
+                  ),
+                ),
               SizedBox(
                 height: 30,
               ),
               InkWell(
                 onTap: () {
                   Map<String, dynamic> data = {
-                    'date_perte': selectedDate.toString(),
+                    'date_perte': selectedDate,
                     'numero_chassis': numChassis.text,
                     'numero_plaque': numPlaque.text,
                     // 'nom_bien': nomBien.text,
                     'attestation': _file,
                     'extension': _extension,
                   };
-
+                  print(data);
                   widget.controller.addPlainte(data);
                 },
                 child: Container(

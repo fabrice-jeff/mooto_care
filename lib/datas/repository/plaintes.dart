@@ -21,13 +21,20 @@ class PlainteRepository {
   Future<Map<String, dynamic>?> addPlainte(Map<String, dynamic> data) async {
     final String endpoint = Api.ADD_PLAINTE;
     final url = Uri.parse(api + endpoint);
-    final response = await http.post(url, body: data);
+    final response = await http.post(
+      url,
+      body: data,
+      headers: {},
+    );
     Map<String, dynamic>? result;
 
-    if (response.statusCode == 200) {
+    try {
       result = jsonDecode(response.body);
+      return result;
+    } catch (e) {
+      print("Une erreur");
+      return null;
     }
-    return result;
   }
 
   Future<Map<String, dynamic>?> allPlaintes() async {

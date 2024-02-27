@@ -1,8 +1,8 @@
-import 'package:autocare/services/flashbag_message.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../routes/routes.dart';
+import '../../../../services/flashbag_message.dart';
 import '../../../../utils/colors.dart';
 import '../../../../utils/constants.dart';
 import '../../../components/intl_phone_field.dart';
