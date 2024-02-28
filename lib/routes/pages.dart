@@ -10,8 +10,10 @@ import '../src/modules/plaintes/views/add_plainte_view.dart';
 import '../src/modules/plaintes/views/demande_attestation_view.dart';
 import '../src/modules/plaintes/views/home_plainte_view.dart';
 import '../src/modules/plaintes/views/plaintes_view.dart';
+import '../src/modules/security/bindings/security_binding.dart';
 import '../src/modules/security/views/login_view.dart';
 import '../src/modules/security/views/register_view.dart';
+import '../src/modules/security/views/verification_code_view.dart';
 import '../src/modules/views/parametres_view.dart';
 import '../src/modules/base/views/base_view.dart';
 import '../src/modules/home/views/home_view.dart';
@@ -41,7 +43,7 @@ class AppPage {
       page: () => const SplashScreenView(),
     ),
     GetPage(
-      name: Routes.REGISTER,
+      name: Routes.register,
       page: () => RegisterView(),
     ),
     GetPage(
@@ -94,6 +96,11 @@ class AppPage {
     GetPage(
       name: Routes.PARAMETRES,
       page: () => const ParametresView(),
+    ),
+    // Verification code email
+    GetPage(
+      name: Routes.verificationEmail,
+      page: () => VerificationCodeView(),
     ),
   ];
 }

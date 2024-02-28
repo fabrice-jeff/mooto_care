@@ -144,6 +144,7 @@ class _AssureBienFormState extends State<AssureBienForm> {
                   'promotion': basiquePromotion,
                   'code_bien': widget.bien.code
                 };
+                print(data);
                 widget.controller.assureMoto(data);
               },
               child: Container(

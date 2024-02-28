@@ -2,8 +2,8 @@ class Routes {
   Routes._();
   static const SPLASH = "/splash";
   static const HOME_SECURITY = "/home_security";
-  static const LOGIN = "/login";
-  static const REGISTER = "/register";
+  static const login = "/login";
+  static const register = "/register";
   static const BASE = "/base";
   static const HOME = "/home";
   static const BIENS = "/biens";
@@ -20,4 +20,5 @@ class Routes {
   static const PARAMETRES = "/parametres";
   static const NOTIFICATIONS = "/notifications";
   static const BIEN = '/bien';
+  static const verificationEmail = "/verification_email";
 }

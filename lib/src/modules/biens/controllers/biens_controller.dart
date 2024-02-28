@@ -8,7 +8,6 @@ import '../../../../datas/models/type_type.dart';
 import '../../../../datas/repository/biens.dart';
 import '../../../../routes/routes.dart';
 import '../../../../services/generate_random_file_name.dart';
-import '../../../../services/paiement.dart';
 import '../../../../utils/constants.dart';
 import '../../../../utils/share_preference.dart';
 import '../../../api.dart';
@@ -89,7 +88,6 @@ class BiensController extends GetxController {
     // print(result);
     if (result['success']) {
       var data = result['datas'];
-      print(data['bien']);
       data['bien']['type_couverture'] = result['type_type'];
       data['bien']['fichier'] = data['fichier'];
       data["bien"]['acteur'] = data['acteur'];
@@ -138,30 +136,36 @@ class BiensController extends GetxController {
 
   // Assure une moto
   assureMoto(Map<String, dynamic> data) async {
-    // Demande de paiement
-    var amount = _amountByCouverture(data['couverture'], data['promotion']);
-    var paiement = Paiement(
-      amount: amount,
-      name: acteur!.nom + " " + acteur!.prenoms,
-      email: acteur!.email,
-      onStatutPaiementsChanged: handleStatutPaiement,
-    );
-    await Get.to(paiement.initPaiement());
+    //  'code_bien' => 'required|string',
+    // 'transaction_id' => 'required|string',
+    // 'amount' => 'required|string',
+    // 'couverture' => 'required|string',
+    // 'promotion' => 'required|string',
 
-    if (statutPaiement != null &&
-        statutPaiement!['code'] == Constants.SUCCESS) {
-      // Ajout des informations pour la transactions
-      data['amount'] = amount.toString();
-      data['transaction_id'] = statutPaiement!['transactionId'];
-      // data['transaction_id'] = "kbsdjjks";
-      data['promotion'] = data['promotion'].toString();
-      Map<String, dynamic>? response = await bienRepository.assureMoto(data);
-      if (response!['code'] == Constants.SUCCESS) {
-        allByActeur();
-        Get.toNamed(Routes.BIENS);
-      } else {
-        Get.toNamed(Routes.ADD_BIEN);
-      }
-    }
+    // Demande de paiement
+    // var amount = _amountByCouverture(data['couverture'], data['promotion']);
+    // var paiement = Paiement(
+    //   amount: amount,
+    //   name: acteur!.nom + " " + acteur!.prenoms,
+    //   email: acteur!.email,
+    //   onStatutPaiementsChanged: handleStatutPaiement,
+    // );
+    // await Get.to(paiement.initPaiement());
+
+    // if (statutPaiement != null &&
+    //     statutPaiement!['code'] == Constants.SUCCESS) {
+    //   // Ajout des informations pour la transactions
+    //   data['amount'] = amount.toString();
+    //   data['transaction_id'] = statutPaiement!['transactionId'];
+    //   // data['transaction_id'] = "kbsdjjks";
+    //   data['promotion'] = data['promotion'].toString();
+    //   Map<String, dynamic>? response = await bienRepository.assureMoto(data);
+    //   if (response!['code'] == Constants.SUCCESS) {
+    //     allByActeur();
+    //     Get.toNamed(Routes.BIENS);
+    //   } else {
+    //     Get.toNamed(Routes.ADD_BIEN);
+    //   }
+    // }
   }
 }

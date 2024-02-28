@@ -6,6 +6,7 @@ import '../../../../services/flashbag_message.dart';
 import '../../../../utils/colors.dart';
 import '../../../../utils/constants.dart';
 import '../../../components/intl_phone_field.dart';
+import '../../../components/select_fields.dart';
 import '../../../components/text.dart';
 import '../../../components/text_form_field.dart';
 import '../controllers/security_controller.dart';
@@ -54,6 +55,9 @@ class _RegisterFormState extends State<RegisterForm> {
   late TextEditingController telephone;
   late TextEditingController password;
   late TextEditingController passwordConfirm;
+  late TextEditingController numeroCarte;
+  List<String> genres = ["Homme", "Femme"];
+  String? sexe;
 
   @override
   void initState() {
@@ -69,9 +73,15 @@ class _RegisterFormState extends State<RegisterForm> {
     telephone = (widget.oldData == null)
         ? TextEditingController()
         : TextEditingController(text: widget.oldData!['telephone']);
+    numeroCarte = TextEditingController();
     password = TextEditingController();
     passwordConfirm = TextEditingController();
+
     super.initState();
+  }
+
+  void handleSelectValue(String? selectedValue) {
+    sexe = selectedValue;
   }
 
   bool acceptCondiction = false;
@@ -124,6 +134,43 @@ class _RegisterFormState extends State<RegisterForm> {
                   alignment: Alignment.topLeft,
                   child: TextComponent(
                     text: widget.errors!['prenoms'][0],
+                    textAlign: TextAlign.left,
+                    color: Colors.red,
+                  ),
+                ),
+              SizedBox(
+                height: 20,
+              ),
+              SelectFieldsWidget(
+                hintText: "Sélectionner le sexe",
+                icon: Icons.confirmation_number_outlined,
+                label: "Sexe",
+                items: genres,
+                onValueChanged: handleSelectValue,
+              ),
+              if (widget.errors != null && widget.errors!['sexe'] != null)
+                Container(
+                  alignment: Alignment.topLeft,
+                  child: TextComponent(
+                    text: widget.errors!['sexe'][0],
+                    textAlign: TextAlign.left,
+                    color: Colors.red,
+                  ),
+                ),
+              SizedBox(
+                height: 20,
+              ),
+              TextFormFieldsComponent(
+                hintText: "Numéro pièce d'identité",
+                prefixIcon: Icons.numbers_sharp,
+                controller: numeroCarte,
+              ),
+              if (widget.errors != null &&
+                  widget.errors!['numero_carte'] != null)
+                Container(
+                  alignment: Alignment.topLeft,
+                  child: TextComponent(
+                    text: widget.errors!['numero_carte'][0],
                     textAlign: TextAlign.left,
                     color: Colors.red,
                   ),
@@ -237,13 +284,14 @@ class _RegisterFormState extends State<RegisterForm> {
                   if (_formKey.currentState!.validate()) {
                     Map<String, dynamic> data = {
                       'nom': nom.text,
+                      'sexe': sexe,
+                      'numero_carte': numeroCarte.text,
                       'prenoms': prenoms.text,
                       'email': email.text,
                       'telephone': telephone.text,
                       'password': password.text,
                       'password_confirmation': passwordConfirm.text,
                     };
-                    print(data);
                     if (acceptCondiction) {
                       widget.controller.register(data);
                     } else {

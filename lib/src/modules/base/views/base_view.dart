@@ -2,6 +2,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../datas/models/acteur.dart';
+import '../../../../routes/routes.dart';
 import '../../../../utils/colors.dart';
 import '../../../../utils/constants.dart';
 import '../../../components/text.dart';
@@ -21,7 +23,9 @@ class BaseView extends GetView<BaseController> {
       builder: (_) => Scaffold(
         key: scaffoldKey,
         drawer: Drawer(
-          child: MenuApp(),
+          child: MenuApp(
+            acteur: controller.acteur,
+          ),
         ),
         appBar: AppBar(
           leading: IconButton(
@@ -131,13 +135,80 @@ class BaseView extends GetView<BaseController> {
   }
 }
 
+List<Map<String, dynamic>> menuItemList = [
+  {
+    "name": "Assurence biens divers",
+    'route': Routes.ADD_BIEN,
+  },
+  {
+    "name": "Autres prestations",
+    "route": Routes.ADD_PLAINTE,
+  }
+];
+
 class MenuApp extends StatelessWidget {
-  const MenuApp({super.key});
+  final Acteur? acteur;
+  const MenuApp({super.key, required this.acteur});
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [DrawerHeader(child: Container())],
+      children: [
+        DrawerHeader(
+          child: Column(
+            children: [
+              Expanded(
+                child: Center(
+                  child: Container(
+                    width: 120,
+                    height: 120,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(150),
+                      image: DecorationImage(
+                        image: AssetImage(
+                          "assets/images/user.webp",
+                        ),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                child: TextComponent(
+                  text: (acteur!.nom + " " + acteur!.prenoms).toUpperCase(),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          child: Column(
+            children: [
+              for (int i = 0; i < menuItemList.length; i++)
+                ListTile(
+                  onTap: () {
+                    Get.toNamed(menuItemList[i]['route']);
+                  },
+                  title: Container(
+                      margin:
+                          EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                      child: TextComponent(
+                        text: menuItemList[i]['name'],
+                      )),
+                  trailing: SvgPicture.asset(
+                    Constants.forwardArrowIcon,
+                    color: AppColors.backgroundColor,
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

@@ -15,16 +15,18 @@ class SecurityController extends GetxController {
 
   //Register
   void register(Map<String, dynamic> data) async {
+    data["sexe"] = (data['sexe'] == null) ? "" : data['sexe'];
     final result = await acteurRepository.register(data);
+    if (result != null) {
+      if (result['success']) {
+        // Verification de l'email de l'utilisateur
 
-    if (result['success']) {
-      Get.offNamed(
-        Routes.LOGIN,
-      );
-    } else {
-      print(data);
-      Get.offAll(() => RegisterView(errors: result['datas'], oldData: data));
+        Get.toNamed(Routes.verificationEmail, arguments: {'data': data});
+      } else {
+        Get.offAll(() => RegisterView(errors: result['datas'], oldData: data));
+      }
     }
+
     // // Demande de paiement
     // int amount = int.parse(data['amount']);
     // if (amount >= 100) {
@@ -66,5 +68,17 @@ class SecurityController extends GetxController {
 
   void handleStatutPaiement(Map<String, dynamic>? selectedValue) {
     statutPaiement = selectedValue;
+  }
+
+  void verificationCodeEmail(Map<String, dynamic> data) async {
+    print(data);
+    final result = await acteurRepository.verificationEmail(data);
+    if (result != null) {
+      if (result['success']) {
+        Get.toNamed(Routes.login);
+      } else {
+        print(result['datas']);
+      }
+    }
   }
 }

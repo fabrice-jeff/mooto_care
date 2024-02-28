@@ -17,8 +17,9 @@ class Api {
   // static const ADD_DEMANDE_ATTESTATION =
   //     '/plaintes/add_demande_attestation.php';
   // static const ALL_PLAINTES = '/plaintes/all_plaintes.php';
-  static const REGISTER = "/acteurs/register";
-  static const LOGIN = '/acteurs/login';
+  static const register = "/acteurs/register";
+  static const login = '/acteurs/login';
+  static const verificationEmail = '/acteurs/verification_email';
 
   //  Biens
   static const ADD_BIEN = '/biens/add';

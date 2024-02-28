@@ -1,3 +1,4 @@
+import 'package:autocare/src/components/text.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 
@@ -46,6 +47,7 @@ class SelectFieldsWidget extends StatelessWidget {
               hintText,
               style: TextStyle(fontSize: 15, color: Colors.black38),
             ),
+
             items: items
                 .map((item) => DropdownMenuItem<String>(
                       value: item,
@@ -58,12 +60,13 @@ class SelectFieldsWidget extends StatelessWidget {
                       ),
                     ))
                 .toList(),
-            validator: (value) {
-              if (value == null) {
-                return 'Please select gender.';
-              }
-              return null;
-            },
+            // validator: (value) {
+            //   if (value == null) {
+            //     return 'Please select gender.';
+            //   }
+            //   return null;
+            // },
+
             onChanged: (value) {
               onValueChanged(value);
             },
@@ -73,6 +76,7 @@ class SelectFieldsWidget extends StatelessWidget {
             buttonStyleData: ButtonStyleData(
               padding: EdgeInsets.only(right: 10),
             ),
+
             iconStyleData: IconStyleData(
               icon: Icon(
                 Icons.arrow_drop_down,

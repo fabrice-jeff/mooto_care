@@ -168,7 +168,7 @@ class _LoginFormState extends State<LoginForm> {
               ),
               InkWell(
                 onTap: () {
-                  Get.toNamed(Routes.REGISTER);
+                  Get.toNamed(Routes.register);
                 },
                 child: Container(
                   alignment: Alignment.center,

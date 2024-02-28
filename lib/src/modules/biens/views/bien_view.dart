@@ -60,20 +60,6 @@ class BienView extends StatelessWidget {
         child: SafeArea(
           child: Column(
             children: [
-              // Center(
-              //   child: Container(
-              //     decoration: BoxDecoration(
-              //       borderRadius: BorderRadius.circular(150),
-              //       image: DecorationImage(
-              //         image: AssetImage(
-              //           "assets/images/user.webp",
-              //         ),
-              //       ),
-              //     ),
-              //     width: 100,
-              //     height: 150,
-              //   ),
-              // ),
               SizedBox(
                 height: 20,
               ),
