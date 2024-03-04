@@ -105,7 +105,7 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                 ),
               SizedBox(
-                height: 10,
+                height: 20,
               ),
               TextFormFieldsComponent(
                 hintText: "Mot de passe",

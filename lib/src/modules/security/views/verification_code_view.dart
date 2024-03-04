@@ -134,12 +134,6 @@ class _VerificationCodeFormState extends State<VerificationCodeForm> {
                             // Récupérer le code
                             var code =
                                 '${_otpController1.text}${_otpController2.text}${_otpController3.text}${_otpController4.text}${_otpController5.text}';
-
-                            _otpController1.clear();
-                            _otpController2.clear();
-                            _otpController3.clear();
-                            _otpController4.clear();
-                            _otpController5.clear();
                             Map<String, dynamic> data = {
                               'code': code,
                               'email': widget.data['email']

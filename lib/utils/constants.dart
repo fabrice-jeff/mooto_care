@@ -31,6 +31,8 @@ class Constants {
   static const decreaseIcon = 'assets/vectors/decrease.svg';
   static const cancelIcon = 'assets/vectors/cancel.svg';
   static const forwardArrowIcon = 'assets/vectors/forward_arrow.svg';
+  static const downArrowIcon = 'assets/vectors/down-arrow.svg';
+
   static const userIcon = 'assets/vectors/user.svg';
   static const themeIcon = 'assets/vectors/theme.svg';
   static const languageIcon = 'assets/vectors/language.svg';

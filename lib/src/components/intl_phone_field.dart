@@ -1,7 +1,8 @@
-import 'package:autocare/src/components/text.dart';
-import 'package:autocare/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+
+import '../../utils/colors.dart';
+import 'text.dart';
 
 class IntlPhoneFieldsComponent extends StatelessWidget {
   final String hintText;
@@ -24,6 +25,8 @@ class IntlPhoneFieldsComponent extends StatelessWidget {
         controller: controller,
         focusNode: FocusNode(),
         decoration: InputDecoration(
+          counter: null,
+          counterText: '',
           contentPadding: EdgeInsets.symmetric(vertical: 10),
           hintText: hintText,
           label: TextComponent(text: hintText),

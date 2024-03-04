@@ -322,7 +322,7 @@ class _RegisterFormState extends State<RegisterForm> {
               ),
               InkWell(
                 onTap: () {
-                  Get.offAndToNamed(Routes.LOGIN);
+                  Get.offAndToNamed(Routes.login);
                 },
                 child: Container(
                   child: TextComponent(

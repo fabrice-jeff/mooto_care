@@ -47,7 +47,7 @@ class AppPage {
       page: () => RegisterView(),
     ),
     GetPage(
-      name: Routes.LOGIN,
+      name: Routes.login,
       page: () => const LoginView(),
     ),
     GetPage(

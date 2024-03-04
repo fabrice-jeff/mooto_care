@@ -137,49 +137,60 @@ class BaseView extends GetView<BaseController> {
 
 List<Map<String, dynamic>> menuItemList = [
   {
-    "name": "Assurence biens divers",
+    "name": "Assurance biens divers",
     'route': Routes.ADD_BIEN,
   },
   {
-    "name": "Autres prestations",
+    "name": "Prestations divers",
+    "route": null,
+  },
+  {
+    "name": "Parametres",
+    "route": Routes.ADD_PLAINTE,
+  },
+  {
+    "name": "Deconnexion",
     "route": Routes.ADD_PLAINTE,
   }
 ];
 
-class MenuApp extends StatelessWidget {
+class MenuApp extends StatefulWidget {
   final Acteur? acteur;
   const MenuApp({super.key, required this.acteur});
 
+  @override
+  State<MenuApp> createState() => _MenuAppState();
+}
+
+class _MenuAppState extends State<MenuApp> {
+  bool _isVisiblePrestation = false;
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         DrawerHeader(
+          // padding: EdgeInsets.only(bottom: 10, top: 10),
           child: Column(
             children: [
-              Expanded(
-                child: Center(
-                  child: Container(
-                    width: 120,
-                    height: 120,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(150),
-                      image: DecorationImage(
-                        image: AssetImage(
-                          "assets/images/user.webp",
-                        ),
-                        fit: BoxFit.cover,
+              Center(
+                child: Container(
+                  width: 110,
+                  height: 110,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(150),
+                    image: DecorationImage(
+                      image: AssetImage(
+                        "assets/images/user.webp",
                       ),
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
               ),
-              SizedBox(
-                height: 20,
-              ),
               Container(
                 child: TextComponent(
-                  text: (acteur!.nom + " " + acteur!.prenoms).toUpperCase(),
+                  text: (widget.acteur!.nom + " " + widget.acteur!.prenoms)
+                      .toUpperCase(),
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -192,18 +203,84 @@ class MenuApp extends StatelessWidget {
               for (int i = 0; i < menuItemList.length; i++)
                 ListTile(
                   onTap: () {
-                    Get.toNamed(menuItemList[i]['route']);
+                    if (menuItemList[i]['route'] == null) {
+                      setState(() {
+                        _isVisiblePrestation = !_isVisiblePrestation;
+                      });
+                    } else {
+                      Get.toNamed(menuItemList[i]['route']);
+                    }
                   },
                   title: Container(
-                      margin:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                      child: TextComponent(
-                        text: menuItemList[i]['name'],
-                      )),
-                  trailing: SvgPicture.asset(
-                    Constants.forwardArrowIcon,
-                    color: AppColors.backgroundColor,
+                    margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    child: (menuItemList[i]['route'] == null)
+                        ? Container(
+                            alignment: Alignment.topLeft,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                TextComponent(
+                                  size: 14,
+                                  textAlign: TextAlign.left,
+                                  text: menuItemList[i]['name']
+                                      .toString()
+                                      .toUpperCase(),
+                                ),
+                                if (_isVisiblePrestation)
+                                  Container(
+                                    alignment: Alignment.topLeft,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        TextComponent(
+                                          size: 14,
+                                          text:
+                                              "Item A".toString().toUpperCase(),
+                                        ),
+                                        TextComponent(
+                                          size: 14,
+                                          text:
+                                              "Item B".toString().toUpperCase(),
+                                        ),
+                                        TextComponent(
+                                          size: 14,
+                                          text:
+                                              "Item C".toString().toUpperCase(),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                              ],
+                            ),
+                          )
+                        : TextComponent(
+                            size: 14,
+                            text: menuItemList[i]['name']
+                                .toString()
+                                .toUpperCase(),
+                          ),
                   ),
+                  trailing: (menuItemList[i]['route'] == null)
+                      ? (_isVisiblePrestation)
+                          ? Container(
+                              width: 24, // Largeur spécifique pour le conteneur
+                              child: SvgPicture.asset(
+                                Constants.downArrowIcon,
+                                color: AppColors.backgroundColor,
+                              ),
+                            )
+                          : Container(
+                              width: 24, // Largeur spécifique pour le conteneur
+                              child: SvgPicture.asset(
+                                Constants.forwardArrowIcon,
+                                color: AppColors.backgroundColor,
+                              ),
+                            )
+                      : null,
                 ),
             ],
           ),

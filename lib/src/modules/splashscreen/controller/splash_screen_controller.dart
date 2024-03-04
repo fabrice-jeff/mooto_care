@@ -10,7 +10,7 @@ class SplashScreenController extends GetxController {
     await Future.delayed(const Duration(seconds: 3));
     setActeur();
     if (acteur == null) {
-      Get.offNamed(Routes.LOGIN);
+      Get.offNamed(Routes.login);
     } else {
       Get.offNamed(Routes.BASE);
     }
