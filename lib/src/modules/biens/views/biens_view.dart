@@ -16,11 +16,9 @@ class BiensView extends GetView<BiensController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Expanded(
-          child: TextComponent(
-            text: 'Motos enregistrées',
-            size: 20,
-          ),
+        title: TextComponent(
+          text: 'Motos enregistrées',
+          size: 20,
         ),
         elevation: 5,
         shadowColor: Colors.black,

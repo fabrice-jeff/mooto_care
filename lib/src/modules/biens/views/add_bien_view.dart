@@ -26,11 +26,9 @@ class AddBienView extends GetView<BiensController> {
     print(errors);
     return Scaffold(
       appBar: AppBar(
-        title: Expanded(
-          child: TextComponent(
-            text: "Enregistrement d'une moto",
-            size: 20,
-          ),
+        title: TextComponent(
+          text: "Enregistrement d'une moto",
+          size: 20,
         ),
         elevation: 5,
         shadowColor: Colors.black,
@@ -328,10 +326,8 @@ class _AddBienFormState extends State<AddBienForm> {
                           (selectedDate == null) ? "" : selectedDate.toString(),
                       'num_plaque': numPlaque.text,
                       'num_chassis': numChassis.text,
-                      'adresse': adresse.text,
-                      'acteur': widget.controller.acteur!.code,
-                      'file': _file,
                       'extension': _extension,
+                      'file': _file,
                     };
                     widget.controller.add(data);
                   },

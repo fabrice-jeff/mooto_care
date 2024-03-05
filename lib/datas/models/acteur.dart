@@ -10,6 +10,8 @@ class Acteur {
   final DateTime updatedAt;
   final String code;
   final String? photo;
+  final String? token;
+
   Acteur({
     this.id,
     required this.code,
@@ -20,27 +22,19 @@ class Acteur {
     required this.createdAt,
     required this.updatedAt,
     this.photo,
+    this.token,
   });
 
   factory Acteur.fromJson(Map<String, dynamic> json) {
     return Acteur(
-      code: json['code'],
-      nom: json['nom'],
-      prenoms: json['prenoms'],
-      telephone: json['telephone'],
-      email: json['email'],
-      createdAt: dateTimeFormat(json['created_at']),
-      updatedAt: dateTimeFormat(json['updated_at']),
-    );
+        code: json['code'],
+        nom: json['nom'],
+        prenoms: json['prenoms'],
+        telephone: json['telephone'],
+        email: json['email'],
+        createdAt: dateTimeFormat(json['created_at']),
+        updatedAt: dateTimeFormat(json['updated_at']),
+        photo: json['photo'],
+        token: json['token']);
   }
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        'nom': nom,
-        'prenoms': prenoms,
-        'code': code,
-        'telephone': telephone,
-        'email': email,
-        'createdAt': createdAt,
-        'updatedAt': updatedAt,
-      };
 }

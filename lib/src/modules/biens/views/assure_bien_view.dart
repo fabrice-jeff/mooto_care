@@ -17,11 +17,9 @@ class AssureBienView extends GetView<BiensController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Expanded(
-          child: TextComponent(
-            text: "Choisir une couverture",
-            size: 20,
-          ),
+        title: TextComponent(
+          text: "Choisir une couverture",
+          size: 20,
         ),
         elevation: 5,
         shadowColor: Colors.black,

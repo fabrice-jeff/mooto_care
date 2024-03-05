@@ -13,11 +13,9 @@ class HomePlainteView extends GetView<PlaintesController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Expanded(
-          child: TextComponent(
-            text: 'Dépot d\'une plainte',
-            size: 20,
-          ),
+        title: TextComponent(
+          text: 'Dépot d\'une plainte',
+          size: 20,
         ),
         elevation: 5,
         shadowColor: Colors.black,

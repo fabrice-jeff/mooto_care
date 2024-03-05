@@ -42,9 +42,28 @@ class ActeurRepository {
     return results;
   }
 
-  //Login
+  //Verification de l'adresse email de l'utilisateur
   Future<Map<String, dynamic>?> verificationEmail(data) async {
     final endpoint = Api.verificationEmail;
+    final url = Uri.parse(api + endpoint);
+    final response = await http.post(
+      url,
+      body: data,
+      headers: {},
+    );
+    Map<String, dynamic> results;
+    try {
+      results = jsonDecode(response.body);
+      return results;
+    } catch (e) {
+      print('erreur');
+      return null;
+    }
+  }
+
+  // Renvoi de l'email de l'utilisateur
+  Future<Map<String, dynamic>?> resendValidationMail(data) async {
+    final endpoint = Api.resendValidationEmail;
     final url = Uri.parse(api + endpoint);
     final response = await http.post(
       url,

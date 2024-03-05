@@ -20,6 +20,7 @@ class Api {
   static const register = "/acteurs/register";
   static const login = '/acteurs/login';
   static const verificationEmail = '/acteurs/verification_email';
+  static const resendValidationEmail = '/acteurs/resend_code';
 
   //  Biens
   static const ADD_BIEN = '/biens/add';

@@ -28,11 +28,9 @@ class AddPlainteView extends GetView<PlaintesController> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Expanded(
-          child: TextComponent(
-            text: 'Déposer une plainte',
-            size: 20,
-          ),
+        title: TextComponent(
+          text: 'Déposer une plainte',
+          size: 20,
         ),
         elevation: 5,
         shadowColor: Colors.black,

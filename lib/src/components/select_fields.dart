@@ -64,8 +64,7 @@ class SelectFieldsWidget extends StatelessWidget {
             //     return 'Please select gender.';
             //   }
             //   return null;
-            // },
-
+            // }
             onChanged: (value) {
               onValueChanged(value);
             },

@@ -23,11 +23,9 @@ class DemandeAttestationView extends GetView<PlaintesController> {
     print(errors);
     return Scaffold(
       appBar: AppBar(
-        title: Expanded(
-          child: TextComponent(
-            text: 'Demande d\'attesttion',
-            size: 20,
-          ),
+        title: TextComponent(
+          text: 'Demande d\'attesttion',
+          size: 20,
         ),
         elevation: 5,
         shadowColor: Colors.black,

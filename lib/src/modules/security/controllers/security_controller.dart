@@ -1,13 +1,14 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
-import '../../../../routes/routes.dart';
 
+import '../../../../routes/routes.dart';
 import '../../../../utils/share_preference.dart';
 import '../../../api.dart';
 import '../../../../datas/repository/acteurs.dart';
 import '../views/login_view.dart';
 import '../views/register_view.dart';
+import '../views/verification_code_view.dart';
 
 class SecurityController extends GetxController {
   final acteurRepository = ActeurRepository(api: Api.BASE_URL);
@@ -21,7 +22,8 @@ class SecurityController extends GetxController {
       if (result['success']) {
         // Verification de l'email de l'utilisateur
 
-        Get.toNamed(Routes.verificationEmail, arguments: {'data': data});
+        Get.toNamed(Routes.verificationEmail,
+            arguments: {'email': data['email']});
       } else {
         Get.offAll(() => RegisterView(errors: result['datas'], oldData: data));
       }
@@ -56,8 +58,12 @@ class SecurityController extends GetxController {
   //Login
   void login(Map<String, dynamic> data) async {
     final result = await acteurRepository.login(data);
+    print(result);
     if (result['success']) {
-      SharePreferences.prefs.setString('acteur', jsonEncode(result['datas']));
+      Map<String, dynamic> data = result['datas'];
+      data['token'] = result['token'];
+      SharePreferences.prefs.setString('acteur', jsonEncode(data));
+
       Get.offNamed(
         Routes.BASE,
       );
@@ -77,8 +83,30 @@ class SecurityController extends GetxController {
       if (result['success']) {
         Get.toNamed(Routes.login);
       } else {
-        print(result['datas']);
+        Get.offAll(
+          () => VerificationCodeView(
+            errors: result['datas'],
+            email: data['email'],
+          ),
+        );
       }
     }
+  }
+
+  void resendValidationMail(Map<String, dynamic> data) async {
+    final result = await acteurRepository.resendValidationMail(data);
+    print(result);
+    // if (result != null) {
+    //   if (result['success']) {
+    //     Get.toNamed(Routes.login);
+    //   } else {
+    //     Get.offAll(
+    //       () => VerificationCodeView(
+    //         errors: result['datas'],
+    //         email: data['email'],
+    //       ),
+    //     );
+    //   }
+    // }
   }
 }

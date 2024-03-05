@@ -47,11 +47,9 @@ class BienView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Expanded(
-          child: TextComponent(
-            text: 'Détails Moto',
-            size: 20,
-          ),
+        title: TextComponent(
+          text: 'Détails Moto',
+          size: 20,
         ),
         elevation: 5,
         shadowColor: Colors.black,

@@ -2,24 +2,33 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import '../../src/api.dart';
+import '../../utils/share_preference.dart';
+import '../models/acteur.dart';
 import '../models/type_type.dart';
 
 class BienRepository {
   final String api;
   BienRepository({required this.api});
+  Acteur? acteur = SharePreferences.getActeur();
 
   //  Ajouter un bien
-  Future<Map<String, dynamic>> add(Map<String, dynamic> data) async {
+  Future<Map<String, dynamic>?> add(Map<String, dynamic> data) async {
     final endpoint = Api.ADD_BIEN;
     final url = Uri.parse(api + endpoint);
     final response = await http.post(
       url,
       body: data,
-      headers: {},
+      headers: {
+        'Authorization': "Bearer ${acteur!.token}",
+      },
     );
     Map<String, dynamic> result;
-    result = jsonDecode(response.body);
-    return result;
+    try {
+      result = jsonDecode(response.body);
+      return result;
+    } catch (e) {
+      return null;
+    }
   }
 
   // Récupérer tous les biens de l'acteur connecté
@@ -27,11 +36,14 @@ class BienRepository {
     final endpoint = Api.ALL_BIENS_BY_ACTEUR;
     final url = Uri.parse(api + endpoint);
     final Map<String, dynamic> results;
-    final response = await http.post(
+    final response = await http.get(
       url,
-      body: data,
-      headers: {},
+      headers: {
+        'Authorization': "Bearer ${acteur!.token}",
+        'Content-Type': 'application/json',
+      },
     );
+    print(response.body);
     try {
       results = jsonDecode(response.body);
       return results;

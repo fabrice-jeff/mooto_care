@@ -39,14 +39,10 @@ class BaseView extends GetView<BaseController> {
               scaffoldKey.currentState!.openDrawer();
             },
           ),
-          title: Expanded(
-            child: Center(
-              child: TextComponent(
-                text: "MOOTOCARE",
-                size: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+          title: TextComponent(
+            text: "MOOTOCARE",
+            size: 20,
+            fontWeight: FontWeight.bold,
           ),
           actions: [
             Container(
@@ -156,7 +152,7 @@ List<Map<String, dynamic>> menuItemList = [
 
 class MenuApp extends StatefulWidget {
   final Acteur? acteur;
-  const MenuApp({super.key, required this.acteur});
+  const MenuApp({Key? key, required this.acteur}) : super(key: key);
 
   @override
   State<MenuApp> createState() => _MenuAppState();
@@ -164,12 +160,13 @@ class MenuApp extends StatefulWidget {
 
 class _MenuAppState extends State<MenuApp> {
   bool _isVisiblePrestation = false;
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         DrawerHeader(
-          // padding: EdgeInsets.only(bottom: 10, top: 10),
+          key: UniqueKey(), // Ajout de la clé pour DrawerHeader
           child: Column(
             children: [
               Center(
@@ -179,19 +176,17 @@ class _MenuAppState extends State<MenuApp> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(150),
                     image: DecorationImage(
-                      image: AssetImage(
-                        "assets/images/user.webp",
-                      ),
+                      image: AssetImage("assets/images/user.webp"),
                       fit: BoxFit.cover,
                     ),
                   ),
                 ),
               ),
               Container(
-                child: TextComponent(
-                  text: (widget.acteur!.nom + " " + widget.acteur!.prenoms)
+                child: Text(
+                  (widget.acteur!.nom + " " + widget.acteur!.prenoms)
                       .toUpperCase(),
-                  fontWeight: FontWeight.bold,
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
             ],
@@ -219,12 +214,11 @@ class _MenuAppState extends State<MenuApp> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                TextComponent(
-                                  size: 14,
-                                  textAlign: TextAlign.left,
-                                  text: menuItemList[i]['name']
+                                Text(
+                                  menuItemList[i]['name']
                                       .toString()
                                       .toUpperCase(),
+                                  style: TextStyle(fontSize: 14),
                                 ),
                                 if (_isVisiblePrestation)
                                   Container(
@@ -233,23 +227,18 @@ class _MenuAppState extends State<MenuApp> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
-                                        SizedBox(
-                                          height: 10,
+                                        SizedBox(height: 10),
+                                        Text(
+                                          "Item A".toUpperCase(),
+                                          style: TextStyle(fontSize: 14),
                                         ),
-                                        TextComponent(
-                                          size: 14,
-                                          text:
-                                              "Item A".toString().toUpperCase(),
+                                        Text(
+                                          "Item B".toUpperCase(),
+                                          style: TextStyle(fontSize: 14),
                                         ),
-                                        TextComponent(
-                                          size: 14,
-                                          text:
-                                              "Item B".toString().toUpperCase(),
-                                        ),
-                                        TextComponent(
-                                          size: 14,
-                                          text:
-                                              "Item C".toString().toUpperCase(),
+                                        Text(
+                                          "Item C".toUpperCase(),
+                                          style: TextStyle(fontSize: 14),
                                         ),
                                       ],
                                     ),
@@ -257,24 +246,22 @@ class _MenuAppState extends State<MenuApp> {
                               ],
                             ),
                           )
-                        : TextComponent(
-                            size: 14,
-                            text: menuItemList[i]['name']
-                                .toString()
-                                .toUpperCase(),
+                        : Text(
+                            menuItemList[i]['name'].toString().toUpperCase(),
+                            style: TextStyle(fontSize: 14),
                           ),
                   ),
                   trailing: (menuItemList[i]['route'] == null)
                       ? (_isVisiblePrestation)
                           ? Container(
-                              width: 24, // Largeur spécifique pour le conteneur
+                              width: 24,
                               child: SvgPicture.asset(
                                 Constants.downArrowIcon,
                                 color: AppColors.backgroundColor,
                               ),
                             )
                           : Container(
-                              width: 24, // Largeur spécifique pour le conteneur
+                              width: 24,
                               child: SvgPicture.asset(
                                 Constants.forwardArrowIcon,
                                 color: AppColors.backgroundColor,

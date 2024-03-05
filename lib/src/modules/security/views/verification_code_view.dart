@@ -1,13 +1,16 @@
-import 'package:autocare/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../services/flashbag_message.dart';
+import '../../../../utils/colors.dart';
 import '../controllers/security_controller.dart';
 
 class VerificationCodeView extends GetView<SecurityController> {
-  final Map<String, dynamic> data;
-  VerificationCodeView({super.key, Map<String, dynamic>? data})
-      : data = data ?? Get.arguments?['data'];
+  final String? email;
+  final Map<String, dynamic>? errors;
+  VerificationCodeView({super.key, String? email, Map<String, dynamic>? errors})
+      : email = email ?? Get.arguments?['email'],
+        errors = errors ?? Get.arguments?['errors'];
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +20,8 @@ class VerificationCodeView extends GetView<SecurityController> {
         child: Center(
           child: VerificationCodeForm(
             controller: controller,
-            data: data,
+            email: email,
+            errors: errors,
           ),
         ),
       ),
@@ -27,11 +31,13 @@ class VerificationCodeView extends GetView<SecurityController> {
 
 class VerificationCodeForm extends StatefulWidget {
   final SecurityController controller;
-  final Map<String, dynamic> data;
+  final String? email;
+  final Map<String, dynamic>? errors;
   const VerificationCodeForm({
     super.key,
     required this.controller,
-    required this.data,
+    required this.email,
+    this.errors,
   });
 
   @override
@@ -44,6 +50,19 @@ class _VerificationCodeFormState extends State<VerificationCodeForm> {
   final TextEditingController _otpController3 = TextEditingController();
   final TextEditingController _otpController4 = TextEditingController();
   final TextEditingController _otpController5 = TextEditingController();
+  @override
+  void initState() {
+    print(widget.email);
+
+    if (widget.errors != null) {
+      flashbagMessage(
+        context,
+        widget.errors!['error'],
+        Colors.redAccent,
+      );
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +155,7 @@ class _VerificationCodeFormState extends State<VerificationCodeForm> {
                                 '${_otpController1.text}${_otpController2.text}${_otpController3.text}${_otpController4.text}${_otpController5.text}';
                             Map<String, dynamic> data = {
                               'code': code,
-                              'email': widget.data['email']
+                              'email': widget.email,
                             };
 
                             // Vérifier si le code est correct
@@ -181,14 +200,21 @@ class _VerificationCodeFormState extends State<VerificationCodeForm> {
                 SizedBox(
                   height: 18,
                 ),
-                Text(
-                  "Renvoyer un nouveau code",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.backgroundColor,
+                InkWell(
+                  onTap: () {
+                    // Renvoyer un autre email avec code de vérification
+                    widget.controller
+                        .resendValidationMail({'email': widget.email});
+                  },
+                  child: Text(
+                    "Renvoyer un nouveau code",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.backgroundColor,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
                 ),
               ],
             ),

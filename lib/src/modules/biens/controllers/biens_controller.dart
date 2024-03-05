@@ -33,21 +33,25 @@ class BiensController extends GetxController {
   // Récupération de tous les biens de l'acteur connecté
   allByActeur() async {
     Map<String, dynamic> data = {'code_acteur': acteur!.code};
-
-    var results = await bienRepository.allByActeur(data);
-    if (results != null && results['success']) {
-      // Nous allons récupérer l'ensemble des  biens enregistré dans le tableau concerné
-      for (var bien in results['datas']) {
-        bien['bien']['acteur'] = bien['acteur'];
-        bien['bien']['fichier'] = bien['fichier'];
-        var typeType = bien['type_type'];
-        bien['bien']['type_couverture'] = typeType;
-        bien['bien']['status'] = bien['status'];
-        biensByActeur.add(Bien.fromJson(bien['bien']));
+    try {
+      var results = await bienRepository.allByActeur(data);
+      if (results != null && results['success']) {
+        // Nous allons récupérer l'ensemble des  biens enregistré dans le tableau concerné
+        for (var bien in results['datas']) {
+          bien['bien']['acteur'] = bien['acteur'];
+          bien['bien']['fichier'] = bien['fichier'];
+          var typeType = bien['type_type'];
+          bien['bien']['type_couverture'] = typeType;
+          bien['bien']['status'] = bien['status'];
+          biensByActeur.add(Bien.fromJson(bien['bien']));
+        }
+      } else {
+        biensByActeur = [];
       }
-    } else {
-      biensByActeur = [];
+    } catch (e) {
+      print("Erreur");
     }
+
     update();
   }
 
@@ -57,21 +61,21 @@ class BiensController extends GetxController {
       data['file'] = "";
       data['extension'] = "";
     } else {
+      data['filename'] = generateRandomFileName('file');
       data['file'] = base64Encode(data['file'].readAsBytesSync());
     }
 
-    data['filename'] = generateRandomFileName('file');
+    Map<String, dynamic>? result = await bienRepository.add(data);
+    if (result != null) {
+      if (result['success']) {
+        // Succes
+        Get.offAllNamed(Routes.BASE);
+      } else {
+        // Echec
 
-    Map<String, dynamic> result = await bienRepository.add(data);
-    // print(result['datas']);
-    if (result['success']) {
-      // Succes
-      Get.offAllNamed(Routes.BASE);
-    } else {
-      // Echec
-
-      Get.offAndToNamed(Routes.ADD_BIEN,
-          arguments: {'errors': result['datas'], 'oldData': data});
+        Get.offAndToNamed(Routes.ADD_BIEN,
+            arguments: {'errors': result['datas'], 'oldData': data});
+      }
     }
   }
 
@@ -79,7 +83,7 @@ class BiensController extends GetxController {
     statutPaiement = selectedValue;
   }
 
-  // Récupérer un bien pat son numero plaque
+  // Récupérer un bien par son numero plaque
   getByNum(String numPlaque) async {
     Map<String, dynamic> data = {
       'num_plaque': numPlaque,
@@ -88,10 +92,10 @@ class BiensController extends GetxController {
     // print(result);
     if (result['success']) {
       var data = result['datas'];
-      data['bien']['type_couverture'] = result['type_type'];
-      data['bien']['fichier'] = data['fichier'];
-      data["bien"]['acteur'] = data['acteur'];
-      data["bien"]['status'] = data['status'];
+      data['moto']['type_type'] = result['type_type'];
+      data['moto']['fichier'] = data['fichier'];
+      data["moto"]['acteur'] = data['acteur'];
+      data["moto"]['status'] = data['status'];
       bienByNum = Bien.fromJson(data['bien']);
     } else {
       bienByNum = null;
