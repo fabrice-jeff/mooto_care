@@ -37,6 +37,7 @@ class PlaintesController extends GetxController {
         data['date_perte'] == '' ||
         data['description'] == '') {
       data['transaction_id'] = "";
+      data['amount'] = "";
       data['file'] = "";
       data['extension'] = "";
       data["filename"] = "";
@@ -45,60 +46,67 @@ class PlaintesController extends GetxController {
       // Si ca correspond à un bien nous pouvons générer le fichier
       var bienExist =
           await _bienRepository.getByNum({"num_plaque": data['numero_plaque']});
-      if (bienExist['success']) {
-        // Générer le fichier PDF
-        Map<String, dynamic> attestationDemande = {
-          'nom': acteur!.nom,
-          'prenoms': acteur!.prenoms,
-          'date_perte': dateTimeFormat(data['date_perte']),
-          'numero_plaque': data['numero_plaque'],
-        };
-        final pdfData = await generatePDF(attestationDemande);
-        String file = base64Encode(pdfData);
-        String filename = generateRandomFileName('demande');
-        String extension = "pdf";
-        data['file'] = file;
-        data['filename'] = filename;
-        data['extension'] = extension;
-        data['date_perte'] = data['date_perte'];
+      if (bienExist != null) {
+        if (bienExist['success']) {
+          // Générer le fichier PDF
+          Map<String, dynamic> attestationDemande = {
+            'nom': acteur!.nom,
+            'prenoms': acteur!.prenoms,
+            'date_perte': dateTimeFormat(data['date_perte']),
+            'numero_plaque': data['numero_plaque'],
+          };
+          final pdfData = await generatePDF(attestationDemande);
+          String file = base64Encode(pdfData);
+          String filename = generateRandomFileName('demande');
+          String extension = "pdf";
+          data['file'] = file;
+          data['filename'] = filename;
+          data['extension'] = extension;
+          data['date_perte'] = data['date_perte'];
 
-        // Demande de paiement
-        int amount = 1000;
-        var paiement = Paiement(
-          amount: amount,
-          name: acteur!.nom + " " + acteur!.prenoms,
-          email: acteur!.email,
-          onStatutPaiementsChanged: handleStatutPaiement,
-        );
-        await Get.to(paiement.initPaiement());
+          // Demande de paiement
+          int amount = 1000;
+          var paiement = Paiement(
+            amount: amount,
+            name: acteur!.nom + " " + acteur!.prenoms,
+            email: acteur!.email,
+            onStatutPaiementsChanged: handleStatutPaiement,
+          );
+          await Get.to(paiement.initPaiement());
 
-        if (statutPaiement != null &&
-            statutPaiement!['code'] == Constants.SUCCESS) {
-          // Ajout des informations pour la transactions
-          data['amount'] = amount.toString();
-          data['transaction_id'] = statutPaiement!['transactionId'];
-          // data['transaction_id'] = "kbsdjjks";
+          if (statutPaiement != null &&
+              statutPaiement!['code'] == Constants.SUCCESS) {
+            // Ajout des informations pour la transactions
+            data['amount'] = amount.toString();
+            data['transaction_id'] = statutPaiement!['transactionId'];
+            // data['transaction_id'] = "kbsdjjks";
+          } else {
+            Get.offAndToNamed(Routes.DEMANDE_ATTESTATION, arguments: {
+              'errors': {
+                'paiement': 'Le paiement a échoué. Veuillez réessayeer'
+              },
+            });
+          }
         } else {
+          // Nous devons retourné vers la page avec une erreur.
           Get.offAndToNamed(Routes.DEMANDE_ATTESTATION, arguments: {
-            'errors': {'paiement': 'Le paiement a échoué. Veuillez réessayeer'},
+            'errors': {
+              'not_num_plaque':
+                  'Le numéro de plaque ne correspond à aucune moto'
+            },
           });
         }
-      } else {
-        // Nous devons retourné vers la page avec une erreur.
-        Get.offAndToNamed(Routes.DEMANDE_ATTESTATION, arguments: {
-          'errors': {
-            'not_num_plaque': 'Le numéro de plaque ne correspond à aucune moto'
-          },
-        });
       }
     }
 
     var result = await _plainteRepository.addDemandeAttestation(data);
-    if (result['success']) {
-      Get.offAllNamed(Routes.BASE);
-    } else {
-      Get.offAndToNamed(Routes.DEMANDE_ATTESTATION,
-          arguments: {'errors': result['datas'], 'oldData': data});
+    if (result != null) {
+      if (result['success']) {
+        Get.offAllNamed(Routes.BASE);
+      } else {
+        Get.offAndToNamed(Routes.DEMANDE_ATTESTATION,
+            arguments: {'errors': result['datas'], 'oldData': data});
+      }
     }
 
     update();
@@ -130,36 +138,41 @@ class PlaintesController extends GetxController {
       // Verifier si le numéro de plaque correspond à un bien
       var bienExist =
           await _bienRepository.getByNum({"num_plaque": data['numero_plaque']});
-      if (bienExist['success']) {
-        // Demande de paiement
-        int amount = 1000;
-        var paiement = Paiement(
-          amount: amount,
-          name: acteur!.nom + " " + acteur!.prenoms,
-          email: acteur!.email,
-          onStatutPaiementsChanged: handleStatutPaiement,
-        );
-        await Get.to(paiement.initPaiement());
+      if (bienExist != null) {
+        if (bienExist['success']) {
+          // Demande de paiement
+          int amount = 1000;
+          var paiement = Paiement(
+            amount: amount,
+            name: acteur!.nom + " " + acteur!.prenoms,
+            email: acteur!.email,
+            onStatutPaiementsChanged: handleStatutPaiement,
+          );
+          await Get.to(paiement.initPaiement());
 
-        if (statutPaiement != null &&
-            statutPaiement!['code'] == Constants.SUCCESS) {
-          // Ajout des informations pour la transactions
-          data['amount'] = amount.toString();
+          if (statutPaiement != null &&
+              statutPaiement!['code'] == Constants.SUCCESS) {
+            // Ajout des informations pour la transactions
+            data['amount'] = amount.toString();
 
-          data['transaction_id'] = statutPaiement!['transactionId'];
-          // data['transaction_id'] = "kbsdjjks";
+            data['transaction_id'] = statutPaiement!['transactionId'];
+            // data['transaction_id'] = "kbsdjjks";
+          } else {
+            Get.offAndToNamed(Routes.ADD_PLAINTE, arguments: {
+              'errors': {
+                'paiement': 'Le paiement a échoué. Veuillez réessayeer'
+              },
+            });
+          }
         } else {
+          // Nous devons retourné vers la page avec une erreur.
           Get.offAndToNamed(Routes.ADD_PLAINTE, arguments: {
-            'errors': {'paiement': 'Le paiement a échoué. Veuillez réessayeer'},
+            'errors': {
+              'not_num_plaque':
+                  'Le numéro de plaque ne correspond à aucune moto'
+            },
           });
         }
-      } else {
-        // Nous devons retourné vers la page avec une erreur.
-        Get.offAndToNamed(Routes.ADD_PLAINTE, arguments: {
-          'errors': {
-            'not_num_plaque': 'Le numéro de plaque ne correspond à aucune moto'
-          },
-        });
       }
     }
 

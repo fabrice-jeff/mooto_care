@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../datas/models/bien.dart';
 import '../../../../utils/colors.dart';
@@ -10,11 +11,18 @@ import '../../../components/text.dart';
 import '../controllers/biens_controller.dart';
 
 class AssureBienView extends GetView<BiensController> {
-  final Bien bien;
-  const AssureBienView({required this.bien});
+  final Map<String, dynamic>? errors;
+  final Map<String, dynamic>? oldData;
+  final Bien? bien;
+  AssureBienView(
+      {Bien? bien, Map<String, dynamic>? errors, Map<String, dynamic>? oldData})
+      : errors = errors ?? Get.arguments?['errors'],
+        bien = bien ?? Get.arguments?['bien'],
+        oldData = oldData ?? Get.arguments?['oldData'];
 
   @override
   Widget build(BuildContext context) {
+    Get.put(BiensController());
     return Scaffold(
       appBar: AppBar(
         title: TextComponent(
@@ -38,10 +46,17 @@ class AssureBienView extends GetView<BiensController> {
 
 class AssureBienForm extends StatefulWidget {
   final BiensController controller;
-  final Bien bien;
+  final Bien? bien;
+  final Map<String, dynamic>? errors;
+  final Map<String, dynamic>? oldData;
 
-  const AssureBienForm(
-      {super.key, required this.controller, required this.bien});
+  const AssureBienForm({
+    super.key,
+    required this.controller,
+    required this.bien,
+    this.errors,
+    this.oldData,
+  });
 
   @override
   State<AssureBienForm> createState() => _AssureBienFormState();
@@ -79,15 +94,70 @@ class _AssureBienFormState extends State<AssureBienForm> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              alignment: Alignment.center,
-              child: TextComponent(
-                text: widget.bien.nomBien,
-                fontWeight: FontWeight.bold,
-                size: 30,
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextComponent(text: "Création d'une identité numérique"),
+                      Container(
+                        width: 24,
+                        child: SvgPicture.asset(
+                          Constants.forwardArrowIcon,
+                          color: AppColors.backgroundColor,
+                        ),
+                      )
+                    ],
+                  )
+                ],
               ),
             ),
             SizedBox(
-              height: 30,
+              height: 20,
+            ),
+            Container(
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextComponent(text: "Signaler la perte de votre moto"),
+                      Container(
+                        width: 24,
+                        child: SvgPicture.asset(
+                          Constants.forwardArrowIcon,
+                          color: AppColors.backgroundColor,
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Container(
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextComponent(text: "Traçabilité de votre moto"),
+                      Container(
+                        width: 24,
+                        child: SvgPicture.asset(
+                          Constants.forwardArrowIcon,
+                          color: AppColors.backgroundColor,
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 20,
             ),
             SelectFieldsWidget(
               hintText: "Niveau de couverture",
@@ -96,6 +166,15 @@ class _AssureBienFormState extends State<AssureBienForm> {
               items: widget.controller.couvertures,
               onValueChanged: handleSelectValue,
             ),
+            if (widget.errors != null && widget.errors!['couverture'] != null)
+              Container(
+                alignment: Alignment.topLeft,
+                child: TextComponent(
+                  text: widget.errors!['couverture'][0],
+                  textAlign: TextAlign.left,
+                  color: Colors.red,
+                ),
+              ),
             if (widget.controller.showPromotion == true)
               Container(
                 child: Row(
@@ -137,13 +216,15 @@ class _AssureBienFormState extends State<AssureBienForm> {
             ),
             InkWell(
               onTap: () {
-                Map<String, dynamic> data = {
-                  'couverture': couverture,
-                  'promotion': basiquePromotion,
-                  'code_bien': widget.bien.code
-                };
-                print(data);
-                widget.controller.assureMoto(data);
+                if (widget.bien != null) {
+                  Map<String, dynamic> data = {
+                    'couverture': couverture,
+                    'promotion': basiquePromotion,
+                    'num_plaque': widget.bien!.numPlaque,
+                  };
+                  widget.controller.assureMoto(data, widget.bien!);
+                }
+                print(widget.bien);
               },
               child: Container(
                 alignment: Alignment.center,

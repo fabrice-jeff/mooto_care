@@ -1,3 +1,4 @@
+import 'package:autocare/src/modules/biens/views/assure_bien_view.dart';
 import 'package:get/get.dart';
 
 import '../src/modules/base/bindings/base_binding.dart';
@@ -100,6 +101,11 @@ class AppPage {
     GetPage(
       name: Routes.verificationEmail,
       page: () => VerificationCodeView(),
+    ),
+
+    GetPage(
+      name: Routes.assureBien,
+      page: () => AssureBienView(),
     ),
   ];
 }

@@ -21,4 +21,5 @@ class Routes {
   static const NOTIFICATIONS = "/notifications";
   static const BIEN = '/bien';
   static const verificationEmail = "/verification_email";
+  static const assureBien = "/assure_bien";
 }

@@ -3,19 +3,34 @@ import 'dart:convert';
 import '../../src/api.dart';
 import 'package:http/http.dart' as http;
 
+import '../../utils/share_preference.dart';
+import '../models/acteur.dart';
+
 class PlainteRepository {
   final String api;
-  const PlainteRepository({required this.api});
+  PlainteRepository({required this.api});
+  Acteur? acteur = SharePreferences.getActeur();
 
-  Future<Map<String, dynamic>> addDemandeAttestation(
+  Future<Map<String, dynamic>?> addDemandeAttestation(
       Map<String, dynamic> data) async {
     final String endpoint = Api.ADD_DEMANDE_ATTESTATION;
     final url = Uri.parse(api + endpoint);
     Map<String, dynamic> result;
-    final response = await http.post(url, body: data);
-    result = jsonDecode(response.body);
+    final response = await http.post(
+      url,
+      body: data,
+      headers: {
+        'Authorization': "Bearer ${acteur!.token}",
+      },
+    );
 
-    return result;
+    try {
+      result = jsonDecode(response.body);
+      return result;
+    } catch (e) {
+      print('Une erreur');
+      return null;
+    }
   }
 
   Future<Map<String, dynamic>?> addPlainte(Map<String, dynamic> data) async {
@@ -24,9 +39,12 @@ class PlainteRepository {
     final response = await http.post(
       url,
       body: data,
-      headers: {},
+      headers: {
+        'Authorization': "Bearer ${acteur!.token}",
+      },
     );
     Map<String, dynamic>? result;
+    print(response.body);
 
     try {
       result = jsonDecode(response.body);
@@ -40,30 +58,20 @@ class PlainteRepository {
   Future<Map<String, dynamic>?> allPlaintes() async {
     final String endpoint = Api.ALL_PLAINTES;
     var url = Uri.parse(api + endpoint);
-    final response = await http.get(url);
+    final response = await http.get(
+      url,
+      headers: {
+        'Authorization': "Bearer ${acteur!.token}",
+        'Content-Type': 'application/json',
+      },
+    );
 
     Map<String, dynamic>? results;
     try {
       results = jsonDecode(response.body);
-      return results;
     } catch (e) {
-      print("Une erreur");
-      return null;
+      print("Une erreur inattendue s'est produite : $e");
     }
+    return results;
   }
-
-  // Future<void> uploadPdf(Map<String, dynamic> data) async {
-  //   final url = 'http://10.0.2.2:8000/api/upload-pdf';
-  //   // Utilisez http.post pour envoyer le fichier PDF
-  //   final response = await http.post(
-  //     Uri.parse(url),
-  //     body: data, // Ajoutez d'autres données si nécessaire
-  //   );
-  //   print(response.statusCode);
-  //   if (response.statusCode == 200) {
-  //     print('Fichier PDF envoyé avec succès à Laravel');
-  //   } else {
-  //     print('Erreur lors de l\'envoi du fichier PDF à Laravel');
-  //   }
-  // }
 }

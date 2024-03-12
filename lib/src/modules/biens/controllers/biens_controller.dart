@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:autocare/src/modules/biens/views/assure_bien_view.dart';
 import 'package:get/get.dart';
 
 import '../../../../datas/models/acteur.dart';
@@ -33,25 +34,20 @@ class BiensController extends GetxController {
   // Récupération de tous les biens de l'acteur connecté
   allByActeur() async {
     Map<String, dynamic> data = {'code_acteur': acteur!.code};
-    try {
-      var results = await bienRepository.allByActeur(data);
-      if (results != null && results['success']) {
-        // Nous allons récupérer l'ensemble des  biens enregistré dans le tableau concerné
-        for (var bien in results['datas']) {
-          bien['bien']['acteur'] = bien['acteur'];
-          bien['bien']['fichier'] = bien['fichier'];
-          var typeType = bien['type_type'];
-          bien['bien']['type_couverture'] = typeType;
-          bien['bien']['status'] = bien['status'];
-          biensByActeur.add(Bien.fromJson(bien['bien']));
-        }
-      } else {
-        biensByActeur = [];
+    var results = await bienRepository.allByActeur(data);
+    if (results != null && results['success']) {
+      // Nous allons récupérer l'ensemble des  biens enregistré dans le tableau concerné
+      for (var bien in results['datas']) {
+        bien['bien']['acteur'] = bien['acteur'];
+        bien['bien']['fichier'] = bien['fichier'];
+        var typeType = bien['type_type'];
+        bien['bien']['type_couverture'] = typeType;
+        bien['bien']['status'] = bien['status'];
+        biensByActeur.add(Bien.fromJson(bien['bien']));
       }
-    } catch (e) {
-      print("Erreur");
+    } else {
+      biensByActeur = [];
     }
-
     update();
   }
 
@@ -66,6 +62,7 @@ class BiensController extends GetxController {
     }
 
     Map<String, dynamic>? result = await bienRepository.add(data);
+
     if (result != null) {
       if (result['success']) {
         // Succes
@@ -89,26 +86,39 @@ class BiensController extends GetxController {
       'num_plaque': numPlaque,
     };
     var result = await bienRepository.getByNum(data);
-    // print(result);
-    if (result['success']) {
-      var data = result['datas'];
-      data['moto']['type_type'] = result['type_type'];
-      data['moto']['fichier'] = data['fichier'];
-      data["moto"]['acteur'] = data['acteur'];
-      data["moto"]['status'] = data['status'];
-      bienByNum = Bien.fromJson(data['bien']);
-    } else {
-      bienByNum = null;
+    if (result != null) {
+      if (result['success']) {
+        var data = result['datas'];
+        data['bien']['type_type'] = result['type_type'];
+        data['bien']['fichier'] = data['fichier'];
+        data["bien"]['acteur'] = data['user'];
+        data["bien"]['status'] = data['status'];
+        bienByNum = Bien.fromJson(data['bien']);
+      } else {
+        bienByNum = null;
+      }
     }
-
     update();
   }
 
   getCouvertures() async {
-    typesCouvertures = await bienRepository.getCouvertures();
-    for (var couverture in typesCouvertures) {
-      couvertures.add(couverture.libelle);
+    // typesCouvertures =
+
+    var result = await bienRepository.getCouvertures();
+    if (result != null) {
+      for (var couverture in result['datas']) {
+        var objet = TypeType.fromJson(couverture);
+        typesCouvertures.add(objet);
+        couvertures.add(objet.libelle);
+      }
+      print(typesCouvertures);
+      print(couvertures);
     }
+
+    // return couvertures;
+    // for (var couverture in typesCouvertures) {
+    //   couvertures.add(couverture.libelle);
+    // }
   }
 
   int _amountByCouverture(String couverture, bool promotion) {
@@ -139,37 +149,35 @@ class BiensController extends GetxController {
   }
 
   // Assure une moto
-  assureMoto(Map<String, dynamic> data) async {
+  assureMoto(Map<String, dynamic> data, Bien moto) async {
     //  'code_bien' => 'required|string',
     // 'transaction_id' => 'required|string',
     // 'amount' => 'required|string',
     // 'couverture' => 'required|string',
     // 'promotion' => 'required|string',
-
-    // Demande de paiement
-    // var amount = _amountByCouverture(data['couverture'], data['promotion']);
-    // var paiement = Paiement(
-    //   amount: amount,
-    //   name: acteur!.nom + " " + acteur!.prenoms,
-    //   email: acteur!.email,
-    //   onStatutPaiementsChanged: handleStatutPaiement,
-    // );
-    // await Get.to(paiement.initPaiement());
-
-    // if (statutPaiement != null &&
-    //     statutPaiement!['code'] == Constants.SUCCESS) {
-    //   // Ajout des informations pour la transactions
-    //   data['amount'] = amount.toString();
-    //   data['transaction_id'] = statutPaiement!['transactionId'];
-    //   // data['transaction_id'] = "kbsdjjks";
-    //   data['promotion'] = data['promotion'].toString();
-    //   Map<String, dynamic>? response = await bienRepository.assureMoto(data);
-    //   if (response!['code'] == Constants.SUCCESS) {
-    //     allByActeur();
-    //     Get.toNamed(Routes.BIENS);
-    //   } else {
-    //     Get.toNamed(Routes.ADD_BIEN);
-    //   }
-    // }
+    if (data['couverture'] == null) {
+      data['couverture'] = "";
+      data['transaction_id'] = "";
+      data["amount"] = "";
+      data['promotion'] = "";
+      data['bien'] = jsonEncode(data['bien']);
+    }
+    Map<String, dynamic>? result = await bienRepository.assureMoto(
+      data,
+    );
+    print(result);
+    if (result != null) {
+      if (result['success']) {
+        // Succes
+        Get.offAllNamed(Routes.BASE);
+      } else {
+        // Echec
+        Get.offAndToNamed(Routes.assureBien, arguments: {
+          'bien': moto,
+          'errors': result['datas'],
+          'oldData': data
+        });
+      }
+    }
   }
 }

@@ -103,31 +103,6 @@ class BienView extends StatelessWidget {
               SizedBox(
                 height: 20,
               ),
-              // InkWell(
-              //   onTap: () {
-              //     Get.to(
-              //       AssureBienView(
-              //         bien: bien,
-              //       ),
-              //     );
-              //   },
-              //   child: Container(
-              //     margin: EdgeInsets.symmetric(horizontal: 10),
-              //     alignment: Alignment.center,
-              //     height: 50,
-              //     decoration: BoxDecoration(
-              //       color: AppColors.backgroundColor,
-              //       borderRadius: BorderRadius.circular(10),
-              //     ),
-              //     child: TextComponent(
-              //       text: "Identité numérique de la moto",
-              //       color: Colors.white,
-              //     ),
-              //   ),
-              // ),
-              // SizedBox(
-              //   height: 20,
-              // ),
               if (bien.typeCouverture == null)
                 InkWell(
                   onTap: () {
@@ -169,6 +144,9 @@ class BienView extends StatelessWidget {
                     color: Colors.white,
                   ),
                 ),
+              ),
+              SizedBox(
+                height: 10,
               ),
             ],
           ),

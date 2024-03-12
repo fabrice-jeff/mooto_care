@@ -315,7 +315,6 @@ class _AddPlainteFormState extends State<AddPlainteForm> {
                     'attestation': _file,
                     'extension': _extension,
                   };
-                  print(data);
                   widget.controller.addPlainte(data);
                 },
                 child: Container(

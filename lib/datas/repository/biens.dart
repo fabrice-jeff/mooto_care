@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 import '../../src/api.dart';
 import '../../utils/share_preference.dart';
 import '../models/acteur.dart';
-import '../models/type_type.dart';
 
 class BienRepository {
   final String api;
@@ -43,47 +42,53 @@ class BienRepository {
         'Content-Type': 'application/json',
       },
     );
-    print(response.body);
     try {
       results = jsonDecode(response.body);
       return results;
     } catch (e) {
-      print("Une erreur");
       return null;
     }
   }
 
   // Récuperer un bien par son numéro  plaque
-  Future<Map<String, dynamic>> getByNum(Map<String, dynamic> data) async {
+  Future<Map<String, dynamic>?> getByNum(Map<String, dynamic> data) async {
     final endpoint = Api.BIEN_BY_NUM;
-    final url = Uri.parse(api + endpoint);
+    final url = Uri.parse(
+      api + endpoint,
+    );
 
     final response = await http.post(
       url,
       body: data,
-      headers: {},
+      headers: {
+        'Authorization': "Bearer ${acteur!.token}",
+      },
     );
-    Map<String, dynamic> result;
-    result = jsonDecode(response.body);
-    return result;
+
+    Map<String, dynamic>? result;
+    try {
+      result = jsonDecode(response.body);
+      return result;
+    } catch (e) {
+      return null;
+    }
   }
 
-  Future<List<TypeType>> getCouvertures() async {
+  Future<Map<String, dynamic>?> getCouvertures() async {
     final endpoint = Api.TYPE_COUVERTURE;
     final url = Uri.parse(api + endpoint);
-    List<TypeType> couvertures = [];
     final response = await http.get(
       url,
-      headers: {},
+      headers: {
+        'Authorization': "Bearer ${acteur!.token}",
+      },
     );
-    if (response.statusCode == 200) {
-      var datas = jsonDecode(jsonDecode(response.body)['couvertures']);
-      for (var couverture in datas) {
-        couvertures.add(TypeType.fromJson(couverture));
-      }
-      // result = jsonDecode(response.body);
+    try {
+      var datas = jsonDecode(response.body);
+      return datas;
+    } catch (e) {
+      return null;
     }
-    return couvertures;
   }
 
   // Assurer une moto
@@ -93,12 +98,16 @@ class BienRepository {
     final response = await http.post(
       url,
       body: data,
-      headers: {},
+      headers: {
+        'Authorization': "Bearer ${acteur!.token}",
+      },
     );
     Map<String, dynamic>? result;
-    if (response.statusCode == 200) {
+    try {
       result = jsonDecode(response.body);
+      return result;
+    } catch (e) {
+      return null;
     }
-    return result;
   }
 }
