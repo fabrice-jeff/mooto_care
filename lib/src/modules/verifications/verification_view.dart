@@ -1,11 +1,10 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 
 import '../../../../utils/colors.dart';
 import '../../../datas/models/status.dart';
+import '../../../services/flashbag_message.dart';
 import '../../../utils/constants.dart';
 import '../../components/no_data.dart';
 import '../../components/text.dart';
@@ -23,6 +22,14 @@ class VerificationView extends GetView<BiensController> {
 
   @override
   Widget build(BuildContext context) {
+    var controller = Get.put(BiensController());
+    if (errors != null && errors!['error'] != null) {
+      flashbagMessage(context, errors!['error'], Colors.red);
+    }
+    if (errors != null && errors!['num_plaque'] != null) {
+      flashbagMessage(context, errors!['num_plaque'][0], Colors.red);
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Expanded(
@@ -54,85 +61,9 @@ class VerificationView extends GetView<BiensController> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                // Container(
-                                //   width: 120,
-                                //   height: 120,
-                                //   decoration: BoxDecoration(
-                                //     borderRadius: BorderRadius.circular(75),
-                                //     image: DecorationImage(
-                                //       image:
-                                //           AssetImage('assets/images/user.webp'),
-                                //     ),
-                                //   ),
-                                // ),
-                                // SizedBox(
-                                //   height: 10,
-                                // ),
-                                // Expanded(
-                                //   child: _rowInformation(
-                                //       label: "Nom:",
-                                //       value: controller
-                                //               .bienByNum!.acteur.nom[0] +
-                                //           ". " +
-                                //           controller.bienByNum!.acteur.prenoms),
-                                // ),
-                                // SizedBox(
-                                //   height: 10,
-                                // ),
-                                // SizedBox(
-                                //   height: 10,
-                                // ),
-                                // Expanded(
-                                //   child: _rowInformation(
-                                //     label: "Télephone:",
-                                //     value:
-                                //         controller.bienByNum!.acteur.telephone,
-                                //   ),
-                                // ),
-                                // SizedBox(
-                                //   height: 10,
-                                // ),
-                                // Expanded(
-                                //   child: _rowInformation(
-                                //     label: "Nom du bien:",
-                                //     value: controller.bienByNum!.nomBien,
-                                //   ),
-                                // ),
-                                // SizedBox(
-                                //   height: 10,
-                                // ),
-                                // Expanded(
-                                //   child: _rowInformation(
-                                //     label: "Numero Plaque:",
-                                //     value: controller.bienByNum!.numPlaque,
-                                //   ),
-                                // ),
-                                // SizedBox(
-                                //   height: 10,
-                                // ),
-                                // Expanded(
-                                //   child: _rowInformation(
-                                //     label: "Numero Chassis:",
-                                //     value: controller.bienByNum!.numChassis,
-                                //   ),
-                                // ),
-                                // SizedBox(
-                                //   height: 10,
-                                // ),
-                                // Container(
-                                //   alignment: Alignment.center,
-                                //   padding: EdgeInsets.only(left: 10),
-                                //   child: TextComponent(
-                                //     text: "Etat de la moto".toUpperCase(),
-                                //     fontWeight: FontWeight.bold,
-                                //     size: 30,
-                                //   ),
-                                // ),
-
                                 BlinkingWidget(
                                   status: controller.bienByNum!.status,
-                                ), // L'animation clignotante
-
+                                ),
                                 Container(
                                   margin: EdgeInsets.symmetric(vertical: 10),
                                   alignment: Alignment.center,
@@ -180,7 +111,10 @@ class VerificationView extends GetView<BiensController> {
                             showModalBottomSheet<void>(
                               context: context,
                               builder: (BuildContext context) {
-                                return NumPlaqueForm(controller: controller);
+                                return NumPlaqueForm(
+                                  controller: controller,
+                                  errors: errors,
+                                );
                               },
                             );
                           },
@@ -295,7 +229,10 @@ class VerificationView extends GetView<BiensController> {
 
 class NumPlaqueForm extends StatefulWidget {
   final BiensController controller;
-  const NumPlaqueForm({super.key, required this.controller});
+  final Map<String, dynamic>? errors;
+  final Map<String, dynamic>? oldData;
+  const NumPlaqueForm(
+      {super.key, required this.controller, this.errors, this.oldData});
 
   @override
   State<NumPlaqueForm> createState() => _NumPlaqueFormState();

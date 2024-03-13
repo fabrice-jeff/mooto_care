@@ -61,7 +61,7 @@ class AppPage {
       binding: BiensBinding(),
     ),
     GetPage(
-      name: Routes.VERIFICATION,
+      name: Routes.verificationMoto,
       page: () => VerificationView(),
       binding: BiensBinding(),
     ),

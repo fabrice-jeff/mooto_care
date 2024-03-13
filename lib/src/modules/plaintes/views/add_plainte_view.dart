@@ -69,12 +69,8 @@ class _AddPlainteFormState extends State<AddPlainteForm> {
   String? _extension;
   @override
   void initState() {
-    if (widget.errors != null && widget.errors!['not_num_plaque'] != null) {
-      flashbagMessage(context, widget.errors!['not_num_plaque'], Colors.red);
-    }
-
-    if (widget.errors != null && widget.errors!['paiement'] != null) {
-      flashbagMessage(context, widget.errors!['paiement'], Colors.red);
+    if (widget.errors != null && widget.errors!['error'] != null) {
+      flashbagMessage(context, widget.errors!['error'], Colors.red);
     }
     if (widget.oldData != null) {
       numPlaque = TextEditingController(text: widget.oldData!['numero_plaque']);

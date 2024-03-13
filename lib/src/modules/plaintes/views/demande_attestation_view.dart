@@ -24,7 +24,7 @@ class DemandeAttestationView extends GetView<PlaintesController> {
     return Scaffold(
       appBar: AppBar(
         title: TextComponent(
-          text: 'Demande d\'attesttion',
+          text: 'Demande d\'attestion',
           size: 20,
         ),
         elevation: 5,
@@ -62,12 +62,8 @@ class _DemandeAttestationFormState extends State<DemandeAttestationForm> {
   DateTime? selectedDate;
   @override
   void initState() {
-    if (widget.errors != null && widget.errors!['not_num_plaque'] != null) {
-      flashbagMessage(context, widget.errors!['not_num_plaque'], Colors.red);
-    }
-
-    if (widget.errors != null && widget.errors!['paiement'] != null) {
-      flashbagMessage(context, widget.errors!['paiement'], Colors.red);
+    if (widget.errors != null && widget.errors!['error'] != null) {
+      flashbagMessage(context, widget.errors!['error'], Colors.red);
     }
 
     if (widget.oldData != null) {

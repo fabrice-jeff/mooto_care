@@ -82,19 +82,14 @@ class PlaintesController extends GetxController {
             // data['transaction_id'] = "kbsdjjks";
           } else {
             Get.offAndToNamed(Routes.DEMANDE_ATTESTATION, arguments: {
-              'errors': {
-                'paiement': 'Le paiement a échoué. Veuillez réessayeer'
-              },
+              'errors': {'error': 'Le paiement a échoué. Veuillez réessayeer'},
             });
           }
         } else {
           // Nous devons retourné vers la page avec une erreur.
-          Get.offAndToNamed(Routes.DEMANDE_ATTESTATION, arguments: {
-            'errors': {
-              'not_num_plaque':
-                  'Le numéro de plaque ne correspond à aucune moto'
-            },
-          });
+          // print();
+          Get.offAndToNamed(Routes.DEMANDE_ATTESTATION,
+              arguments: {'errors': bienExist['datas']});
         }
       }
     }
@@ -159,18 +154,13 @@ class PlaintesController extends GetxController {
             // data['transaction_id'] = "kbsdjjks";
           } else {
             Get.offAndToNamed(Routes.ADD_PLAINTE, arguments: {
-              'errors': {
-                'paiement': 'Le paiement a échoué. Veuillez réessayeer'
-              },
+              'errors': {'error': 'Le paiement a échoué. Veuillez réessayeer'},
             });
           }
         } else {
           // Nous devons retourné vers la page avec une erreur.
           Get.offAndToNamed(Routes.ADD_PLAINTE, arguments: {
-            'errors': {
-              'not_num_plaque':
-                  'Le numéro de plaque ne correspond à aucune moto'
-            },
+            'errors': bienExist['datas'],
           });
         }
       }

@@ -188,7 +188,7 @@ class HomeView extends GetView<HomeController> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          Get.toNamed(Routes.VERIFICATION);
+          Get.toNamed(Routes.verificationMoto);
         },
         label: TextComponent(
           text: "Vérification",

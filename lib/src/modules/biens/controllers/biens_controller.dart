@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:autocare/src/modules/biens/views/assure_bien_view.dart';
 import 'package:get/get.dart';
 
 import '../../../../datas/models/acteur.dart';
@@ -10,6 +8,7 @@ import '../../../../datas/repository/biens.dart';
 import '../../../../routes/routes.dart';
 import '../../../../services/generate_random_file_name.dart';
 import '../../../../utils/constants.dart';
+import '../../../../services/paiement.dart';
 import '../../../../utils/share_preference.dart';
 import '../../../api.dart';
 
@@ -65,11 +64,8 @@ class BiensController extends GetxController {
 
     if (result != null) {
       if (result['success']) {
-        // Succes
         Get.offAllNamed(Routes.BASE);
       } else {
-        // Echec
-
         Get.offAndToNamed(Routes.ADD_BIEN,
             arguments: {'errors': result['datas'], 'oldData': data});
       }
@@ -96,14 +92,15 @@ class BiensController extends GetxController {
         bienByNum = Bien.fromJson(data['bien']);
       } else {
         bienByNum = null;
+        print(result['datas']);
+        Get.offAndToNamed(Routes.verificationMoto,
+            arguments: {'errors': result['datas']});
       }
     }
     update();
   }
 
   getCouvertures() async {
-    // typesCouvertures =
-
     var result = await bienRepository.getCouvertures();
     if (result != null) {
       for (var couverture in result['datas']) {
@@ -111,14 +108,7 @@ class BiensController extends GetxController {
         typesCouvertures.add(objet);
         couvertures.add(objet.libelle);
       }
-      print(typesCouvertures);
-      print(couvertures);
     }
-
-    // return couvertures;
-    // for (var couverture in typesCouvertures) {
-    //   couvertures.add(couverture.libelle);
-    // }
   }
 
   int _amountByCouverture(String couverture, bool promotion) {
@@ -161,10 +151,35 @@ class BiensController extends GetxController {
       data["amount"] = "";
       data['promotion'] = "";
       data['bien'] = jsonEncode(data['bien']);
+    } else {
+      // Lancer le paiement
+      int amount = _amountByCouverture(data['couverture'], data['promotion']);
+      var paiement = Paiement(
+        amount: amount,
+        name: acteur!.nom + " " + acteur!.prenoms,
+        email: acteur!.email,
+        onStatutPaiementsChanged: handleStatutPaiement,
+      );
+      await Get.to(paiement.initPaiement());
+      if (statutPaiement != null &&
+          statutPaiement!['code'] == Constants.SUCCESS) {
+        // Ajout des informations pour la transactions
+        data['amount'] = amount.toString();
+
+        data['transaction_id'] = statutPaiement!['transactionId'];
+        // data['transaction_id'] = "kbsdjjks";
+      } else {
+        data['amount'] = "";
+        data['transaction_id'] = "";
+        data['promotion'] = data['promotion'].toString();
+
+        Get.offAndToNamed(Routes.ADD_PLAINTE, arguments: {
+          'errors': {'error': 'Le paiement a échoué. Veuillez réessayeer'},
+        });
+      }
+      data['promotion'] = data['promotion'].toString();
     }
-    Map<String, dynamic>? result = await bienRepository.assureMoto(
-      data,
-    );
+    Map<String, dynamic>? result = await bienRepository.assureMoto(data);
     print(result);
     if (result != null) {
       if (result['success']) {

@@ -13,8 +13,6 @@ class BaseBinding extends Bindings {
     Get.lazyPut<HomeController>(() => HomeController());
     Get.lazyPut<BiensController>(() => BiensController());
     Get.lazyPut<PlaintesController>(() => PlaintesController());
-    Get.lazyPut<NotificationsController>(
-      () => NotificationsController(),
-    );
+    Get.lazyPut<NotificationsController>(() => NotificationsController());
   }
 }
