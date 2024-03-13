@@ -1,27 +1,27 @@
-import 'package:autocare/src/modules/biens/views/assure_bien_view.dart';
 import 'package:get/get.dart';
 
-import '../src/modules/base/bindings/base_binding.dart';
-import '../src/modules/biens/bindings/biens_binding.dart';
-import '../src/modules/biens/views/add_bien_view.dart';
-import '../src/modules/biens/views/biens_view.dart';
-import '../src/modules/home/bindings/home_binding.dart';
-import '../src/modules/plaintes/bindings/plainte_binding.dart';
-import '../src/modules/plaintes/views/add_plainte_view.dart';
-import '../src/modules/plaintes/views/demande_attestation_view.dart';
-import '../src/modules/plaintes/views/home_plainte_view.dart';
-import '../src/modules/plaintes/views/plaintes_view.dart';
-import '../src/modules/security/views/login_view.dart';
-import '../src/modules/security/views/register_view.dart';
-import '../src/modules/security/views/verification_code_view.dart';
-import '../src/modules/views/parametres_view.dart';
-import '../src/modules/base/views/base_view.dart';
-import '../src/modules/home/views/home_view.dart';
+import '../modules/base/bindings/base_binding.dart';
+import '../modules/biens/bindings/biens_binding.dart';
+import '../modules/biens/views/add_bien_view.dart';
+import '../modules/biens/views/assure_bien_view.dart';
+import '../modules/biens/views/biens_view.dart';
+import '../modules/home/bindings/home_binding.dart';
+import '../modules/plaintes/bindings/plainte_binding.dart';
+import '../modules/plaintes/views/add_plainte_view.dart';
+import '../modules/plaintes/views/demande_attestation_view.dart';
+import '../modules/plaintes/views/home_plainte_view.dart';
+import '../modules/plaintes/views/plaintes_view.dart';
+import '../modules/security/views/login_view.dart';
+import '../modules/security/views/register_view.dart';
+import '../modules/security/views/verification_code_view.dart';
+import '../modules/views/parametres_view.dart';
+import '../modules/base/views/base_view.dart';
+import '../modules/home/views/home_view.dart';
 
-import '../src/modules/views/plus_view.dart';
-import '../src/modules/splashscreen/views/splash_screen_view.dart';
-import '../src/modules/views/tarifs_view.dart';
-import '../src/modules/verifications/verification_view.dart';
+import '../modules/views/plus_view.dart';
+import '../modules/splashscreen/views/splash_screen_view.dart';
+import '../modules/views/tarifs_view.dart';
+import '../modules/verifications/verification_view.dart';
 import 'routes.dart';
 
 class AppPage {

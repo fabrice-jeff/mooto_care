@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'routes/pages.dart';
-import 'src/modules/verifications/text_scanner.dart';
+import 'modules/verifications/text_scanner.dart';
 import 'utils/colors.dart';
 import 'utils/share_preference.dart';
 

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import '../../src/api.dart';
+import '../api.dart';
 import 'package:http/http.dart' as http;
 
 import '../../utils/share_preference.dart';

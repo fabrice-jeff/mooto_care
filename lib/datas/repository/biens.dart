@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import '../../src/api.dart';
+import '../api.dart';
 import '../../utils/share_preference.dart';
 import '../models/acteur.dart';
 
